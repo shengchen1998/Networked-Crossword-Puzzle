@@ -59,14 +59,12 @@ public class Server
 			index = (int) (Math.random() * fileCount);
 		}
 		BufferedReader reader = null;
-		
 		try
 		{
 			reader = new BufferedReader(new FileReader(list[index]));
 		} catch (FileNotFoundException e1)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			System.out.println("Cannot open file "+index);
 		}
 		String s = null;
 		try
@@ -74,8 +72,7 @@ public class Server
 			s = reader.readLine();
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("File is empty.");
 		}
 		s = s.toLowerCase();
 		if ((!s.equals("across")) && (!s.equals("down")))
@@ -84,12 +81,24 @@ public class Server
 		}
 		if (s.equals("across"))
 		{
-			s = reader.readLine();
+			try
+			{
+				s = reader.readLine();
+			} catch (IOException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			s = s.toLowerCase();
-			while (s != "down")
+			while (!s.equals("down"))
 			{
 				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
+				if (tokenizer.countTokens() != 3)
+				{
+					System.out.println("Malformatted:not 3 token");
+					return;
+				}
 				String num = tokenizer.nextToken();
 				int n;
 				try
@@ -98,7 +107,29 @@ public class Server
 					acrossNumber.add(n);
 				} catch (Exception e)
 				{
-					System.out.println("Malformatted");
+					System.out.println("Malformatted:not number");
+					return;
+				}
+				String answer = tokenizer.nextToken();
+				answer = answer.toLowerCase();
+				for (int i = 0; i < answer.length(); ++i)
+				{
+					char c = answer.charAt(i);
+					if (c < 'a' || c > 'z')
+					{
+						System.out.println("Malformatted:not letter");
+						return;
+					}
+				}
+				acrossAnswer.add(answer);
+				String question = tokenizer.nextToken();
+				try
+				{
+					s = reader.readLine();
+				} catch (IOException e)
+				{
+					System.out.println("Malformatted: no down");
+					return;
 				}
 			}
 		}
