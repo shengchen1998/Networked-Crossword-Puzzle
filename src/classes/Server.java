@@ -64,7 +64,7 @@ public class Server
 			reader = new BufferedReader(new FileReader(list[index]));
 		} catch (FileNotFoundException e1)
 		{
-			System.out.println("Cannot open file "+index);
+			System.out.println("Cannot open file " + index);
 		}
 		String s = null;
 		try
@@ -75,10 +75,11 @@ public class Server
 			System.out.println("File is empty.");
 		}
 		s = s.toLowerCase();
-		if ((!s.equals("across")) && (!s.equals("down")))
-		{
-			return;
-		}
+//		if ((!s.equals("across")) && (!s.equals("down")))
+//		{
+//			System.out.println("First line is malformatted.");
+//			return;
+//		}
 		if (s.equals("across"))
 		{
 			try
@@ -89,14 +90,273 @@ public class Server
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			s = s.toLowerCase();
-			while (!s.equals("down"))
+			
+			while ((s!=null)&&(!s.toLowerCase().equals("down")))
 			{
+				s = s.toLowerCase();
 				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
 				if (tokenizer.countTokens() != 3)
 				{
 					System.out.println("Malformatted:not 3 token");
+					for(int i = 0;i < tokenizer.countTokens();++i)
+					{
+						System.out.println(tokenizer.nextToken());
+					}
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
+					return;
+				}
+				String num = tokenizer.nextToken();
+				int n;
+				try
+				{
+					n = Integer.parseInt(num);
+					acrossNumber.add(n);
+					System.out.println(n);
+				} catch (Exception e)
+				{
+					System.out.println("Malformatted:not number");
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
+					return;
+				}
+				String answer = tokenizer.nextToken();
+				for (int i = 0; i < answer.length(); ++i)
+				{
+					char c = answer.charAt(i);
+					if (c < 'a' || c > 'z')
+					{
+						System.out.println("Malformatted:not letter");
+						acrossNumber.clear();
+						acrossAnswer.clear();
+						acrossQuestion.clear();
+						downNumber.clear();
+						downAnswer.clear();
+						downQuestion.clear();
+						return;
+					}
+				}
+				acrossAnswer.add(answer);
+				System.out.println(answer);
+				String question = tokenizer.nextToken();
+				acrossQuestion.add(question);
+				System.out.println(question);
+				try
+				{
+					s = reader.readLine();
+					
+				} catch (IOException e)
+				{
+					System.out.println("Malformatted: no down");
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
+					return;
+				}
+			}
+			try
+			{
+				s = reader.readLine();
+			} catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			while (s != null)
+			{
+				s = s.toLowerCase();
+				ArrayList<String> tokens = new ArrayList<String>();
+				StringTokenizer tokenizer = new StringTokenizer(s, "|");
+				if (tokenizer.countTokens() != 3)
+				{
+					System.out.println("Malformatted:not 3 token");
+					for(int i = 0;i < tokenizer.countTokens();++i)
+					{
+						System.out.println(tokenizer.nextToken());
+					}
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
+					return;
+				}
+				String num = tokenizer.nextToken();
+				int n;
+				try
+				{
+					n = Integer.parseInt(num);
+					downNumber.add(n);
+					System.out.println(n);
+				} catch (Exception e)
+				{
+					System.out.println("Malformatted:not number");
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
+					return;
+				}
+				String answer = tokenizer.nextToken();
+				for (int i = 0; i < answer.length(); ++i)
+				{
+					char c = answer.charAt(i);
+					if (c < 'a' || c > 'z')
+					{
+						System.out.println("Malformatted:not letter");
+						acrossNumber.clear();
+						acrossAnswer.clear();
+						acrossQuestion.clear();
+						downNumber.clear();
+						downAnswer.clear();
+						downQuestion.clear();
+						return;
+					}
+				}
+				downAnswer.add(answer);
+				System.out.println(answer);
+				String question = tokenizer.nextToken();
+				downQuestion.add(question);
+				System.out.println(question);
+				try
+				{
+					s = reader.readLine();
+				} catch (IOException e)
+				{
+					System.out.println("Malformatted: no down");
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
+					return;
+				}
+			}
+		} else if (s.equals("down"))
+		{
+			try
+			{
+				s = reader.readLine();
+				
+			} catch (IOException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			while ((s!=null)&&(!s.toLowerCase().equals("across")))
+			{
+				s = s.toLowerCase();
+				ArrayList<String> tokens = new ArrayList<String>();
+				StringTokenizer tokenizer = new StringTokenizer(s, "|");
+				if (tokenizer.countTokens() != 3)
+				{
+					System.out.println("Malformatted:not 3 token");
+					for(int i = 0;i < tokenizer.countTokens();++i)
+					{
+						System.out.println(tokenizer.nextToken());
+					}
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
+					return;
+				}
+				String num = tokenizer.nextToken();
+				int n;
+				try
+				{
+					n = Integer.parseInt(num);
+					downNumber.add(n);
+				} catch (Exception e)
+				{
+					System.out.println("Malformatted:not number");
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
+					return;
+				}
+				String answer = tokenizer.nextToken();
+				for (int i = 0; i < answer.length(); ++i)
+				{
+					char c = answer.charAt(i);
+					if (c < 'a' || c > 'z')
+					{
+						System.out.println("Malformatted:not letter");
+						acrossNumber.clear();
+						acrossAnswer.clear();
+						acrossQuestion.clear();
+						downNumber.clear();
+						downAnswer.clear();
+						downQuestion.clear();
+						return;
+					}
+				}
+				downAnswer.add(answer);
+				String question = tokenizer.nextToken();
+				downQuestion.add(question);
+				try
+				{
+					s = reader.readLine();
+				} catch (IOException e)
+				{
+					System.out.println("Malformatted: no down");
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
+					return;
+				}
+			}
+			try
+			{
+				s = reader.readLine();
+			} catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			while (s != null)
+			{
+				s = s.toLowerCase();
+				ArrayList<String> tokens = new ArrayList<String>();
+				StringTokenizer tokenizer = new StringTokenizer(s, "|");
+				if (tokenizer.countTokens() != 3)
+				{
+					System.out.println("Malformatted:not 3 token");
+					for(int i = 0;i < tokenizer.countTokens();++i)
+					{
+						System.out.println(tokenizer.nextToken());
+					}
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
 					return;
 				}
 				String num = tokenizer.nextToken();
@@ -108,44 +368,75 @@ public class Server
 				} catch (Exception e)
 				{
 					System.out.println("Malformatted:not number");
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
 					return;
 				}
 				String answer = tokenizer.nextToken();
-				answer = answer.toLowerCase();
 				for (int i = 0; i < answer.length(); ++i)
 				{
 					char c = answer.charAt(i);
 					if (c < 'a' || c > 'z')
 					{
 						System.out.println("Malformatted:not letter");
+						acrossNumber.clear();
+						acrossAnswer.clear();
+						acrossQuestion.clear();
+						downNumber.clear();
+						downAnswer.clear();
+						downQuestion.clear();
 						return;
 					}
 				}
 				acrossAnswer.add(answer);
 				String question = tokenizer.nextToken();
+				acrossQuestion.add(question);
 				try
 				{
 					s = reader.readLine();
 				} catch (IOException e)
 				{
 					System.out.println("Malformatted: no down");
+					acrossNumber.clear();
+					acrossAnswer.clear();
+					acrossQuestion.clear();
+					downNumber.clear();
+					downAnswer.clear();
+					downQuestion.clear();
 					return;
 				}
 			}
 		}
-		int line = 1;
-//			while ((tempString = reader.readLine()) != null)
-//			{
-//				System.out.println("line " + line + ": " + tempString);
-//				line++;
-//			}
-		try
+		else
 		{
-			reader.close();
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("First line is malformatted.");
+			return;
 		}
+		for (int i = 0; i < acrossNumber.size(); ++i)
+		{
+			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
+		}
+		for (int i = 0; i < downNumber.size(); ++i)
+		{
+			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
+		}
+//		int line = 1;
+////			while ((tempString = reader.readLine()) != null)
+////			{
+////				System.out.println("line " + line + ": " + tempString);
+////				line++;
+////			}
+//		try
+//		{
+//			reader.close();
+//		} catch (IOException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }
