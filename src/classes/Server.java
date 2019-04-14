@@ -12,39 +12,39 @@ import javafx.util.Pair;
 
 public class Server
 {
-	int acrossSize;
-	int downSize;
-	ArrayList<Integer> acrossNumber;
-	ArrayList<Integer> downNumber;
-	ArrayList<String> acrossAnswer;
-	ArrayList<String> downAnswer;
-	ArrayList<String> acrossQuestion;
-	ArrayList<String> downQuestion;
-	ArrayList<Pair<String, Boolean>> answers;
+	public static int acrossSize;
+	public static int downSize;
+	public static ArrayList<Integer> acrossNumber;
+	public static ArrayList<Integer> downNumber;
+	public static ArrayList<String> acrossAnswer;
+	public static ArrayList<String> downAnswer;
+	public static ArrayList<String> acrossQuestion;
+	public static ArrayList<String> downQuestion;
+	public static ArrayList<Pair<String, Boolean>> answers;
 	
 	public Server(int acrossSize, int downSize, ArrayList<Integer> acrossNumber, ArrayList<Integer> downNumber,
 			ArrayList<String> acrossAnswer, ArrayList<String> downAnswer, ArrayList<String> acrossQuestion,
 			ArrayList<String> downQuestion)
 	{
-		this.acrossSize = acrossSize;
-		this.downSize = downSize;
-		this.acrossNumber = acrossNumber;
-		this.downNumber = downNumber;
-		this.acrossAnswer = acrossAnswer;
-		this.downAnswer = downAnswer;
-		this.acrossQuestion = acrossQuestion;
-		this.downQuestion = downQuestion;
+//		this.acrossSize = acrossSize;
+//		this.downSize = downSize;
+//		this.acrossNumber = acrossNumber;
+//		this.downNumber = downNumber;
+//		this.acrossAnswer = acrossAnswer;
+//		this.downAnswer = downAnswer;
+//		this.acrossQuestion = acrossQuestion;
+//		this.downQuestion = downQuestion;
 	}
 	
 	public static void main(String[] args)
 	{
-		ArrayList<Integer> acrossNumber = new ArrayList<Integer>();
-		ArrayList<Integer> downNumber = new ArrayList<Integer>();
-		ArrayList<String> acrossAnswer = new ArrayList<String>();
-		ArrayList<String> downAnswer = new ArrayList<String>();
-		ArrayList<String> acrossQuestion = new ArrayList<String>();
-		ArrayList<String> downQuestion = new ArrayList<String>();
-		ArrayList<Pair<String, Boolean>> answers = new ArrayList<Pair<String, Boolean>>();
+		Server.acrossNumber = new ArrayList<Integer>();
+		Server.downNumber = new ArrayList<Integer>();
+		Server.acrossAnswer = new ArrayList<String>();
+		Server.downAnswer = new ArrayList<String>();
+		Server.acrossQuestion = new ArrayList<String>();
+		Server.downQuestion = new ArrayList<String>();
+		Server.answers = new ArrayList<Pair<String, Boolean>>();
 		String path = "gamedata";
 		int fileCount = 0;
 		File d = new File(path);
@@ -98,7 +98,7 @@ public class Server
 			while ((s != null) && (!s.toLowerCase().equals("down")))
 			{
 				s = s.toLowerCase();
-				ArrayList<String> tokens = new ArrayList<String>();
+//				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
 				if (tokenizer.countTokens() != 3)
 				{
@@ -107,12 +107,12 @@ public class Server
 					{
 						System.out.println(tokenizer.nextToken());
 					}
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 				String num = tokenizer.nextToken();
@@ -120,17 +120,17 @@ public class Server
 				try
 				{
 					n = Integer.parseInt(num);
-					acrossNumber.add(n);
+					Server.acrossNumber.add(n);
 					System.out.println(n);
 				} catch (Exception e)
 				{
 					System.out.println("Malformatted:not number");
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 				String answer = tokenizer.nextToken();
@@ -140,19 +140,19 @@ public class Server
 					if (c < 'a' || c > 'z')
 					{
 						System.out.println("Malformatted:not letter");
-						acrossNumber.clear();
-						acrossAnswer.clear();
-						acrossQuestion.clear();
-						downNumber.clear();
-						downAnswer.clear();
-						downQuestion.clear();
+						Server.acrossNumber.clear();
+						Server.acrossAnswer.clear();
+						Server.acrossQuestion.clear();
+						Server.downNumber.clear();
+						Server.downAnswer.clear();
+						Server.downQuestion.clear();
 						return;
 					}
 				}
-				acrossAnswer.add(answer);
+				Server.acrossAnswer.add(answer);
 				System.out.println(answer);
 				String question = tokenizer.nextToken();
-				acrossQuestion.add(question);
+				Server.acrossQuestion.add(question);
 				System.out.println(question);
 				try
 				{
@@ -161,12 +161,12 @@ public class Server
 				} catch (IOException e)
 				{
 					System.out.println("Malformatted: no down");
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 			}
@@ -181,7 +181,7 @@ public class Server
 			while (s != null)
 			{
 				s = s.toLowerCase();
-				ArrayList<String> tokens = new ArrayList<String>();
+//				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
 				if (tokenizer.countTokens() != 3)
 				{
@@ -190,12 +190,12 @@ public class Server
 					{
 						System.out.println(tokenizer.nextToken());
 					}
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 				String num = tokenizer.nextToken();
@@ -203,17 +203,17 @@ public class Server
 				try
 				{
 					n = Integer.parseInt(num);
-					downNumber.add(n);
+					Server.downNumber.add(n);
 					System.out.println(n);
 				} catch (Exception e)
 				{
 					System.out.println("Malformatted:not number");
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 				String answer = tokenizer.nextToken();
@@ -223,19 +223,19 @@ public class Server
 					if (c < 'a' || c > 'z')
 					{
 						System.out.println("Malformatted:not letter");
-						acrossNumber.clear();
-						acrossAnswer.clear();
-						acrossQuestion.clear();
-						downNumber.clear();
-						downAnswer.clear();
-						downQuestion.clear();
+						Server.acrossNumber.clear();
+						Server.acrossAnswer.clear();
+						Server.acrossQuestion.clear();
+						Server.downNumber.clear();
+						Server.downAnswer.clear();
+						Server.downQuestion.clear();
 						return;
 					}
 				}
-				downAnswer.add(answer);
+				Server.downAnswer.add(answer);
 				System.out.println(answer);
 				String question = tokenizer.nextToken();
-				downQuestion.add(question);
+				Server.downQuestion.add(question);
 				System.out.println(question);
 				try
 				{
@@ -243,12 +243,12 @@ public class Server
 				} catch (IOException e)
 				{
 					System.out.println("Malformatted: no down");
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 			}
@@ -267,7 +267,7 @@ public class Server
 			while ((s != null) && (!s.toLowerCase().equals("across")))
 			{
 				s = s.toLowerCase();
-				ArrayList<String> tokens = new ArrayList<String>();
+//				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
 				if (tokenizer.countTokens() != 3)
 				{
@@ -276,12 +276,12 @@ public class Server
 					{
 						System.out.println(tokenizer.nextToken());
 					}
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 				String num = tokenizer.nextToken();
@@ -289,16 +289,16 @@ public class Server
 				try
 				{
 					n = Integer.parseInt(num);
-					downNumber.add(n);
+					Server.downNumber.add(n);
 				} catch (Exception e)
 				{
 					System.out.println("Malformatted:not number");
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 				String answer = tokenizer.nextToken();
@@ -308,30 +308,30 @@ public class Server
 					if (c < 'a' || c > 'z')
 					{
 						System.out.println("Malformatted:not letter");
-						acrossNumber.clear();
-						acrossAnswer.clear();
-						acrossQuestion.clear();
-						downNumber.clear();
-						downAnswer.clear();
-						downQuestion.clear();
+						Server.acrossNumber.clear();
+						Server.acrossAnswer.clear();
+						Server.acrossQuestion.clear();
+						Server.downNumber.clear();
+						Server.downAnswer.clear();
+						Server.downQuestion.clear();
 						return;
 					}
 				}
-				downAnswer.add(answer);
+				Server.downAnswer.add(answer);
 				String question = tokenizer.nextToken();
-				downQuestion.add(question);
+				Server.downQuestion.add(question);
 				try
 				{
 					s = reader.readLine();
 				} catch (IOException e)
 				{
 					System.out.println("Malformatted: no down");
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 			}
@@ -346,7 +346,7 @@ public class Server
 			while (s != null)
 			{
 				s = s.toLowerCase();
-				ArrayList<String> tokens = new ArrayList<String>();
+//				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
 				if (tokenizer.countTokens() != 3)
 				{
@@ -355,12 +355,12 @@ public class Server
 					{
 						System.out.println(tokenizer.nextToken());
 					}
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 				String num = tokenizer.nextToken();
@@ -368,16 +368,16 @@ public class Server
 				try
 				{
 					n = Integer.parseInt(num);
-					acrossNumber.add(n);
+					Server.acrossNumber.add(n);
 				} catch (Exception e)
 				{
 					System.out.println("Malformatted:not number");
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 				String answer = tokenizer.nextToken();
@@ -387,30 +387,30 @@ public class Server
 					if (c < 'a' || c > 'z')
 					{
 						System.out.println("Malformatted:not letter");
-						acrossNumber.clear();
-						acrossAnswer.clear();
-						acrossQuestion.clear();
-						downNumber.clear();
-						downAnswer.clear();
-						downQuestion.clear();
+						Server.acrossNumber.clear();
+						Server.acrossAnswer.clear();
+						Server.acrossQuestion.clear();
+						Server.downNumber.clear();
+						Server.downAnswer.clear();
+						Server.downQuestion.clear();
 						return;
 					}
 				}
-				acrossAnswer.add(answer);
+				Server.acrossAnswer.add(answer);
 				String question = tokenizer.nextToken();
-				acrossQuestion.add(question);
+				Server.acrossQuestion.add(question);
 				try
 				{
 					s = reader.readLine();
 				} catch (IOException e)
 				{
 					System.out.println("Malformatted: no down");
-					acrossNumber.clear();
-					acrossAnswer.clear();
-					acrossQuestion.clear();
-					downNumber.clear();
-					downAnswer.clear();
-					downQuestion.clear();
+					Server.acrossNumber.clear();
+					Server.acrossAnswer.clear();
+					Server.acrossQuestion.clear();
+					Server.downNumber.clear();
+					Server.downAnswer.clear();
+					Server.downQuestion.clear();
 					return;
 				}
 			}
@@ -419,8 +419,8 @@ public class Server
 			System.out.println("First line is malformatted.");
 			return;
 		}
-		int acrossSize = acrossNumber.size();
-		int downSize = downNumber.size();
+		Server.acrossSize = acrossNumber.size();
+		Server.downSize = downNumber.size();
 		for (int i = 0; i < acrossSize; ++i)
 		{
 			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
@@ -476,6 +476,35 @@ public class Server
 		for (int i = 0; i < downSize; ++i)
 		{
 			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
+		}
+		int i = 0;
+		int j = 0;
+		while( !((i == acrossSize)&&(j == downSize)))
+		{
+			if(i == acrossSize)
+			{
+				answers.add(new Pair(downAnswer.get(j),false));
+				++j;
+			}
+			else if(j == downSize)
+			{
+				answers.add(new Pair(acrossAnswer.get(i),true));
+				++i;
+			}
+			else if(acrossAnswer.get(i).length()>=downAnswer.get(j).length())
+			{
+				answers.add(new Pair(acrossAnswer.get(i),true));
+				++i;
+			}
+			else
+			{
+				answers.add(new Pair(downAnswer.get(j),false));
+				++j;
+			}
+		}
+		for(i = 0; i < answers.size();++i )
+		{
+			System.out.println(answers.get(i));
 		}
 //		for (int i = 0; i < acrossSize;)
 //		{
