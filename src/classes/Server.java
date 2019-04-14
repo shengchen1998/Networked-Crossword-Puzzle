@@ -12,6 +12,7 @@ import javafx.util.Pair;
 
 public class Server
 {
+	public static Board board;
 	public static int acrossSize;
 	public static int downSize;
 	public static ArrayList<Integer> acrossNumber;
@@ -429,6 +430,28 @@ public class Server
 		{
 			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
 		}
+		for (int i = 0; i < acrossSize; ++i)
+		{
+			int num = acrossNumber.get(i);
+			for (int j = 0; j < downSize; ++j)
+			{
+				if (downNumber.get(j) == num)
+				{
+					if (acrossAnswer.get(i).charAt(0) != downAnswer.get(j).charAt(0))
+					{
+						System.out.println("Malformatted: first letter does not match.");
+						Server.acrossNumber.clear();
+						Server.acrossAnswer.clear();
+						Server.acrossQuestion.clear();
+						Server.downNumber.clear();
+						Server.downAnswer.clear();
+						Server.downQuestion.clear();
+						return;
+					}
+				}
+			}
+		}
+		
 		for (int i = 0; i < acrossSize - 1; ++i)
 		{
 			int max = i;
@@ -440,14 +463,14 @@ public class Server
 				}
 			}
 			int t = acrossNumber.get(i);
-			acrossNumber.set(i,acrossNumber.get(max));
-			acrossNumber.set(max,t);
+			acrossNumber.set(i, acrossNumber.get(max));
+			acrossNumber.set(max, t);
 			String temp = acrossAnswer.get(i);
-			acrossAnswer.set(i,acrossAnswer.get(max));
-			acrossAnswer.set(max,temp);
+			acrossAnswer.set(i, acrossAnswer.get(max));
+			acrossAnswer.set(max, temp);
 			temp = acrossQuestion.get(i);
-			acrossQuestion.set(i,acrossQuestion.get(max));
-			acrossQuestion.set(max,temp);
+			acrossQuestion.set(i, acrossQuestion.get(max));
+			acrossQuestion.set(max, temp);
 		}
 		for (int i = 0; i < downSize - 1; ++i)
 		{
@@ -460,14 +483,14 @@ public class Server
 				}
 			}
 			int t = downNumber.get(i);
-			downNumber.set(i,downNumber.get(max));
-			downNumber.set(max,t);
+			downNumber.set(i, downNumber.get(max));
+			downNumber.set(max, t);
 			String temp = downAnswer.get(i);
-			downAnswer.set(i,downAnswer.get(max));
-			downAnswer.set(max,temp);
+			downAnswer.set(i, downAnswer.get(max));
+			downAnswer.set(max, temp);
 			temp = downQuestion.get(i);
-			downQuestion.set(i,downQuestion.get(max));
-			downQuestion.set(max,temp);
+			downQuestion.set(i, downQuestion.get(max));
+			downQuestion.set(max, temp);
 		}
 		for (int i = 0; i < acrossSize; ++i)
 		{
@@ -479,33 +502,31 @@ public class Server
 		}
 		int i = 0;
 		int j = 0;
-		while( !((i == acrossSize)&&(j == downSize)))
+		while (!((i == acrossSize) && (j == downSize)))
 		{
-			if(i == acrossSize)
+			if (i == acrossSize)
 			{
-				answers.add(new Pair(downAnswer.get(j),false));
+				answers.add(new Pair(downAnswer.get(j), false));
 				++j;
-			}
-			else if(j == downSize)
+			} else if (j == downSize)
 			{
-				answers.add(new Pair(acrossAnswer.get(i),true));
+				answers.add(new Pair(acrossAnswer.get(i), true));
 				++i;
-			}
-			else if(acrossAnswer.get(i).length()>=downAnswer.get(j).length())
+			} else if (acrossAnswer.get(i).length() >= downAnswer.get(j).length())
 			{
-				answers.add(new Pair(acrossAnswer.get(i),true));
+				answers.add(new Pair(acrossAnswer.get(i), true));
 				++i;
-			}
-			else
+			} else
 			{
-				answers.add(new Pair(downAnswer.get(j),false));
+				answers.add(new Pair(downAnswer.get(j), false));
 				++j;
 			}
 		}
-		for(i = 0; i < answers.size();++i )
+		for (i = 0; i < answers.size(); ++i)
 		{
 			System.out.println(answers.get(i));
 		}
+		Server.board = new Board();
 //		for (int i = 0; i < acrossSize;)
 //		{
 //			for (int j = 0; j < downSize;)
@@ -513,5 +534,23 @@ public class Server
 //				
 //			}
 //		}
+	}
+	
+	public void backtrack(int index)
+	{
+		if (index == answers.size())
+		{
+			// check validness of disjoint
+		}
+		if (answers.get(index).getValue())
+		{
+			for (int i = 0; i < Board.SIZE + 1 - (answers.get(index).getKey().length()); ++i)
+			{
+				for (int j = 0; j < Board.SIZE; ++j)
+				{
+					
+				}
+			}
+		}
 	}
 }
