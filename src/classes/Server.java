@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import javafx.util.Pair;
+
 public class Server
 {
 	int acrossSize;
@@ -18,6 +20,7 @@ public class Server
 	ArrayList<String> downAnswer;
 	ArrayList<String> acrossQuestion;
 	ArrayList<String> downQuestion;
+	ArrayList<Pair<String, Boolean>> answers;
 	
 	public Server(int acrossSize, int downSize, ArrayList<Integer> acrossNumber, ArrayList<Integer> downNumber,
 			ArrayList<String> acrossAnswer, ArrayList<String> downAnswer, ArrayList<String> acrossQuestion,
@@ -41,6 +44,7 @@ public class Server
 		ArrayList<String> downAnswer = new ArrayList<String>();
 		ArrayList<String> acrossQuestion = new ArrayList<String>();
 		ArrayList<String> downQuestion = new ArrayList<String>();
+		ArrayList<Pair<String, Boolean>> answers = new ArrayList<Pair<String, Boolean>>();
 		String path = "gamedata";
 		int fileCount = 0;
 		File d = new File(path);
@@ -91,7 +95,7 @@ public class Server
 				e1.printStackTrace();
 			}
 			
-			while ((s!=null)&&(!s.toLowerCase().equals("down")))
+			while ((s != null) && (!s.toLowerCase().equals("down")))
 			{
 				s = s.toLowerCase();
 				ArrayList<String> tokens = new ArrayList<String>();
@@ -99,7 +103,7 @@ public class Server
 				if (tokenizer.countTokens() != 3)
 				{
 					System.out.println("Malformatted:not 3 token");
-					for(int i = 0;i < tokenizer.countTokens();++i)
+					for (int i = 0; i < tokenizer.countTokens(); ++i)
 					{
 						System.out.println(tokenizer.nextToken());
 					}
@@ -182,7 +186,7 @@ public class Server
 				if (tokenizer.countTokens() != 3)
 				{
 					System.out.println("Malformatted:not 3 token");
-					for(int i = 0;i < tokenizer.countTokens();++i)
+					for (int i = 0; i < tokenizer.countTokens(); ++i)
 					{
 						System.out.println(tokenizer.nextToken());
 					}
@@ -260,7 +264,7 @@ public class Server
 				e1.printStackTrace();
 			}
 			
-			while ((s!=null)&&(!s.toLowerCase().equals("across")))
+			while ((s != null) && (!s.toLowerCase().equals("across")))
 			{
 				s = s.toLowerCase();
 				ArrayList<String> tokens = new ArrayList<String>();
@@ -268,7 +272,7 @@ public class Server
 				if (tokenizer.countTokens() != 3)
 				{
 					System.out.println("Malformatted:not 3 token");
-					for(int i = 0;i < tokenizer.countTokens();++i)
+					for (int i = 0; i < tokenizer.countTokens(); ++i)
 					{
 						System.out.println(tokenizer.nextToken());
 					}
@@ -347,7 +351,7 @@ public class Server
 				if (tokenizer.countTokens() != 3)
 				{
 					System.out.println("Malformatted:not 3 token");
-					for(int i = 0;i < tokenizer.countTokens();++i)
+					for (int i = 0; i < tokenizer.countTokens(); ++i)
 					{
 						System.out.println(tokenizer.nextToken());
 					}
@@ -410,33 +414,75 @@ public class Server
 					return;
 				}
 			}
-		}
-		else
+		} else
 		{
 			System.out.println("First line is malformatted.");
 			return;
 		}
-		for (int i = 0; i < acrossNumber.size(); ++i)
+		int acrossSize = acrossNumber.size();
+		int downSize = downNumber.size();
+		for (int i = 0; i < acrossSize; ++i)
 		{
 			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
 		}
-		for (int i = 0; i < downNumber.size(); ++i)
+		for (int i = 0; i < downSize; ++i)
 		{
 			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
 		}
-//		int line = 1;
-////			while ((tempString = reader.readLine()) != null)
-////			{
-////				System.out.println("line " + line + ": " + tempString);
-////				line++;
-////			}
-//		try
+		for (int i = 0; i < acrossSize - 1; ++i)
+		{
+			int max = i;
+			for (int j = i + 1; j < acrossAnswer.size(); ++j)
+			{
+				if (acrossAnswer.get(j).length() > acrossAnswer.get(max).length())
+				{
+					max = j;
+				}
+			}
+			int t = acrossNumber.get(i);
+			acrossNumber.set(i,acrossNumber.get(max));
+			acrossNumber.set(max,t);
+			String temp = acrossAnswer.get(i);
+			acrossAnswer.set(i,acrossAnswer.get(max));
+			acrossAnswer.set(max,temp);
+			temp = acrossQuestion.get(i);
+			acrossQuestion.set(i,acrossQuestion.get(max));
+			acrossQuestion.set(max,temp);
+		}
+		for (int i = 0; i < downSize - 1; ++i)
+		{
+			int max = i;
+			for (int j = i + 1; j < downAnswer.size(); ++j)
+			{
+				if (downAnswer.get(j).length() > downAnswer.get(max).length())
+				{
+					max = j;
+				}
+			}
+			int t = downNumber.get(i);
+			downNumber.set(i,downNumber.get(max));
+			downNumber.set(max,t);
+			String temp = downAnswer.get(i);
+			downAnswer.set(i,downAnswer.get(max));
+			downAnswer.set(max,temp);
+			temp = downQuestion.get(i);
+			downQuestion.set(i,downQuestion.get(max));
+			downQuestion.set(max,temp);
+		}
+		for (int i = 0; i < acrossSize; ++i)
+		{
+			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
+		}
+		for (int i = 0; i < downSize; ++i)
+		{
+			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
+		}
+//		for (int i = 0; i < acrossSize;)
 //		{
-//			reader.close();
-//		} catch (IOException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
+//			for (int j = 0; j < downSize;)
+//			{
+//				
+//			}
 //		}
 	}
 }
