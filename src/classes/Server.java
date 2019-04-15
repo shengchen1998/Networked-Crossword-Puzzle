@@ -127,44 +127,44 @@ public class Server
 			{
 				if (grids[x - 1][y].letter != 0)
 				{
-//					if (!set.contains(grids[x - 1][y]))
-//					{
+					if (!set.contains(grids[x - 1][y]))
+					{
 //						set.add(grids[x - 1][y]);
 						stk.push(grids[x - 1][y]);
-//					}
+					}
 				}
 			}
 			if (x < SIZE - 1)
 			{
 				if (grids[x + 1][y].letter != 0)
 				{
-//					if (!set.contains(grids[x + 1][y]))
-//					{
+					if (!set.contains(grids[x + 1][y]))
+					{
 //						set.add(grids[x + 1][y]);
 						stk.push(grids[x + 1][y]);
-//					}
+					}
 				}
 			}
 			if (y > 0)
 			{
 				if (grids[x][y - 1].letter != 0)
 				{
-//					if (!set.contains(grids[x][y - 1]))
-//					{
+					if (!set.contains(grids[x][y - 1]))
+					{
 //						set.add(grids[x][y - 1]);
 						stk.push(grids[x][y - 1]);
-//					}
+					}
 				}
 			}
 			if (y < SIZE - 1)
 			{
 				if (grids[x][y + 1].letter != 0)
 				{
-//					if (!set.contains(grids[x][y + 1]))
-//					{
+					if (!set.contains(grids[x][y + 1]))
+					{
 //						set.add(grids[x][y + 1]);
 						stk.push(grids[x][y + 1]);
-//					}
+					}
 				}
 			}
 		}
@@ -179,6 +179,7 @@ public class Server
 			}
 		}
 		return true;
+	
 	}
 	
 	public boolean put(int index, int x, int y)
@@ -1001,7 +1002,7 @@ class Grid
 	public int x;
 	public int y;
 	
-	public Grid(int x,int y)
+	public Grid(int x, int y)
 	{
 		index1 = -1;
 		index2 = -1;
