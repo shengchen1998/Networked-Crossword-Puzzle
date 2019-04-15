@@ -6,10 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 import java.util.StringTokenizer;
-
-import javafx.util.Pair;
 
 public class Server
 {
@@ -39,58 +39,142 @@ public class Server
 ////		this.acrossQuestion = acrossQuestion;
 ////		this.downQuestion = downQuestion;
 //	}
+//	class Coor
+//	{
+//		int x;
+//		int y;
+//		
+//		public Coor(int x, int y)
+//		{
+//			this.x = x;
+//			this.y = y;
+//		}
+//	}
+	
 	public boolean check()
 	{
+		HashSet<Grid> set = new HashSet<Grid>();
+		Stack<Grid> stk = new Stack<Grid>();
 		for (int i = 0; i < SIZE; ++i)
 		{
 			for (int j = 0; j < SIZE; ++j)
 			{
-				Grid g = grids[i][j];
-				int size = 0;
-				if (g.index1 > 0)
+//				Grid g = grids[i][j];
+//				int size = 0;
+//				if (g.index1 > 0)
+//				{
+//					++size;
+//				}
+//				if (g.index2 > 0)
+//				{
+//					++size;
+//				}
+//				if (size == 1)
+//				{
+//					int index = Math.max(g.index1, g.index2);
+//					boolean across = Server.answers[index].second;
+//					int length = Server.answers[index].first.length();
+//					boolean joint = false;
+//					if (across)
+//					{
+//						for (int k = 0; k < length; ++k)
+//						{
+//							if (grids[i + k][j].occurr == 2)
+//							{
+//								joint = true;
+//								break;
+//							}
+//						}
+//						if (joint == false)
+//						{
+//							return false;
+//						}
+//					} else
+//					{
+//						
+//						for (int k = 0; k < length; ++k)
+//						{
+//							if (grids[i][j + k].occurr == 2)
+//							{
+//								joint = true;
+//								break;
+//							}
+//						}
+//						if (joint == false)
+//						{
+//							return false;
+//						}
+//					}
+//				}
+				if (grids[i][j].letter != 0)
 				{
-					++size;
+					set.add(grids[i][j]);
+					stk.push(grids[i][j]);
+					break;
 				}
-				if (g.index2 > 0)
+			}
+		}
+		while (!stk.empty())
+		{
+			Grid g = stk.pop();
+			int x = g.x;
+			int y = g.y;
+			if(!set.contains(g))
+			{
+				set.add(g);
+			}
+			if (x > 0)
+			{
+				if (grids[x - 1][y].letter != 0)
 				{
-					++size;
+//					if (!set.contains(grids[x - 1][y]))
+//					{
+//						set.add(grids[x - 1][y]);
+						stk.push(grids[x - 1][y]);
+//					}
 				}
-				if (size == 1)
+			}
+			if (x < SIZE - 1)
+			{
+				if (grids[x + 1][y].letter != 0)
 				{
-					int index = Math.max(g.index1, g.index2);
-					boolean across = Server.answers[index].second;
-					int length = Server.answers[index].first.length();
-					boolean joint = false;
-					if (across)
-					{
-						for (int k = 0; k < length; ++k)
-						{
-							if (grids[i + k][j].occurr == 2)
-							{
-								joint = true;
-								break;
-							}
-						}
-						if (joint == false)
-						{
-							return false;
-						}
-					} else
-					{
-						
-						for (int k = 0; k < length; ++k)
-						{
-							if (grids[i][j + k].occurr == 2)
-							{
-								joint = true;
-								break;
-							}
-						}
-						if (joint == false)
-						{
-							return false;
-						}
-					}
+//					if (!set.contains(grids[x + 1][y]))
+//					{
+//						set.add(grids[x + 1][y]);
+						stk.push(grids[x + 1][y]);
+//					}
+				}
+			}
+			if (y > 0)
+			{
+				if (grids[x][y - 1].letter != 0)
+				{
+//					if (!set.contains(grids[x][y - 1]))
+//					{
+//						set.add(grids[x][y - 1]);
+						stk.push(grids[x][y - 1]);
+//					}
+				}
+			}
+			if (y < SIZE - 1)
+			{
+				if (grids[x][y + 1].letter != 0)
+				{
+//					if (!set.contains(grids[x][y + 1]))
+//					{
+//						set.add(grids[x][y + 1]);
+						stk.push(grids[x][y + 1]);
+//					}
+				}
+			}
+		}
+		for (int j = 0; j < SIZE; ++j)
+		{
+			for (int i = 0; i < SIZE; ++i)
+			{
+				if ((grids[i][j].letter != 0) && (!set.contains(grids[i][j])))
+				{
+					return false;
 				}
 			}
 		}
@@ -312,7 +396,7 @@ public class Server
 		{
 			for (int j = 0; j < SIZE; ++j)
 			{
-				grids[i][j] = new Grid();
+				grids[i][j] = new Grid(i,j);
 			}
 		}
 		Server.acrossNumber = new ArrayList<Integer>();
@@ -698,7 +782,7 @@ public class Server
 		}
 		Server.acrossSize = acrossNumber.size();
 		Server.downSize = downNumber.size();
-		Server.totalSize = acrossSize+downSize;
+		Server.totalSize = acrossSize + downSize;
 		for (int i = 0; i < acrossSize; ++i)
 		{
 			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
@@ -825,9 +909,9 @@ public class Server
 		{
 			if (check())
 			{
-				for (int i = 0; i < SIZE; ++i)
+				for (int j = 0; j < SIZE; ++j)
 				{
-					for (int j = 0; j < SIZE; ++j)
+					for (int i = 0; i < SIZE; ++i)
 					{
 						if (grids[i][j].letter == 0)
 						{
@@ -914,8 +998,10 @@ class Grid
 	public boolean across;
 	public char letter;
 	public int occurr;
+	public int x;
+	public int y;
 	
-	public Grid()
+	public Grid(int x,int y)
 	{
 		index1 = -1;
 		index2 = -1;
@@ -923,6 +1009,8 @@ class Grid
 		across = false;
 		letter = 0;
 		occurr = 0;
+		this.x = x;
+		this.y = y;
 	}
 }
 
