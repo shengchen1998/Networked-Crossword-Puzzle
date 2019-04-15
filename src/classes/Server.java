@@ -12,7 +12,8 @@ import javafx.util.Pair;
 
 public class Server
 {
-	public static Board board;
+	public static Grid[][] grids;
+	public static final int SIZE = 15;
 	public static int acrossSize;
 	public static int downSize;
 	public static ArrayList<Integer> acrossNumber;
@@ -36,9 +37,276 @@ public class Server
 ////		this.acrossQuestion = acrossQuestion;
 ////		this.downQuestion = downQuestion;
 //	}
+	public boolean check()
+	{
+		for(int i = 0;i < SIZE;++i)
+		{
+			for(int j = 0;j < SIZE;++j)
+			{
+				int size = 0;
+				if(grids[i][j].index1>0)
+				{
+					++size;
+				}
+				if(grids[i][j].index2>0)
+				{
+					++size;
+				}
+				if(size ==1)
+				{
+					int index = Math.max(grids[i][j].index1,grids[i][j].index2);
+					boolean across = Server.answers.get(index).getValue();
+					int length = Server.answers.get(index).getKey().length();
+					boolean joint = false;
+					if(across)
+					{
+						for(int k = 0;k < length;++k)
+						{
+							if(grids[i+k][j].occurr==2)
+							{
+								joint = true;
+								break;
+							}
+						}
+						if(joint == false)
+						{
+							return false;
+						}
+					}
+					else
+					{
+
+						for(int k = 0;k < length;++k)
+						{
+							if(grids[i][j+k].occurr==2)
+							{
+								joint = true;
+								break;
+							}
+						}
+						if(joint == false)
+						{
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
 	
+	public boolean put(int index, int x, int y)
+	{
+		String str = Server.answers.get(index).getKey();
+		int length = str.length();
+		boolean across = Server.answers.get(index).getValue();
+		
+		if (across)
+		{
+			if (x != 0 && grids[x - 1][y].letter != 0)
+			{
+				return false;
+			}
+			if (x+length != SIZE && grids[x + length][y].letter != 0)
+			{
+				return false;
+			}
+			boolean joint = false;
+			for (int i = 0; i < length; ++i)
+			{
+				if (!(grids[x + i][y].letter == 0 || grids[x + i][y].letter == str.charAt(i)))
+				{
+					return false;
+				}
+				if (y != 0)
+				{
+					if (grids[x + i][y - 1].across == true)
+					{
+						return false;
+					}
+					if (grids[x + i][y - 1].down == true&&grids[x + i][y].down!=true)
+					{
+						return false;
+					}
+				}
+				if (y != SIZE - 1)
+				{
+					if (grids[x + i][y + 1].across == true)
+					{
+						return false;
+					}
+					if (grids[x + i][y + 1].down == true&&grids[x + i][y].down!=true)
+					{
+						return false;
+					}
+				}
+				if (grids[x + i][y].letter == str.charAt(i))
+				{
+					joint = true;
+				}
+			}
+			if (index == Server.answers.size() - 1 && joint == false)
+			{
+				return false;
+			}
+			for (int i = 0; i < length; ++i)
+			{
+				if (grids[x + i][y].letter == 0)
+				{
+					grids[x + i][y].letter = str.charAt(i);
+				}
+//					for(int a = 0;a < SIZE;++a)
+//					{
+//						for(int b = 0;b < SIZE;++b)
+//						{
+//							if(grids[b][a].letter==0)
+//							{
+//								System.out.print(' ');
+//							}
+//							else
+//							{
+//								System.out.print(grids[b][a].letter);
+//							}
+//						}
+//						System.out.println();
+//					}
+				grids[x + i][y].across = true;
+				grids[x + i][y].occurr += 1;
+			}
+			
+		} else
+		{
+			if (y != 0 && grids[x][y-1].letter != 0)
+			{
+				return false;
+			}
+			if (y+length != SIZE && grids[x][y+length].letter != 0)
+			{
+				return false;
+			}
+			boolean joint = false;
+			for (int i = 0; i < length; ++i)
+			{
+				if (!(grids[x][y+i].letter == 0 || grids[x][y+1].letter == str.charAt(i)))
+				{
+					return false;
+				}
+				if (x != 0)
+				{
+					if (grids[x-1][y+i].down == true)
+					{
+						return false;
+					}
+					if (grids[x -1][y +i].across == true&&grids[x][y+i].across!=true)
+					{
+						return false;
+					}
+				}
+				if (x != SIZE - 1)
+				{
+					if (grids[x+1][y+i].down == true)
+					{
+						return false;
+					}
+					if (grids[x+1][y +i].across == true&&grids[x][y+i].across!=true)
+					{
+						return false;
+					}
+				}
+				if (grids[x][y+i].letter == str.charAt(i))
+				{
+					joint = true;
+				}
+			}
+			if (index == Server.answers.size() - 1 && joint == false)
+			{
+				return false;
+			}
+			for (int i = 0; i < length; ++i)
+			{
+				if (grids[x][y+i].letter == 0)
+				{
+					grids[x][y+i].letter = str.charAt(i);
+				}
+//					for(int a = 0;a < SIZE;++a)
+//					{
+//						for(int b = 0;b < SIZE;++b)
+//						{
+//							if(grids[b][a].letter==0)
+//							{
+//								System.out.print(' ');
+//							}
+//							else
+//							{
+//								System.out.print(grids[b][a].letter);
+//							}
+//						}
+//						System.out.println();
+//					}
+				grids[x][y+i].down = true;
+				grids[x][y+i].occurr += 1;
+			}
+		}
+		if(grids[x][y].index1<0)
+		{
+			grids[x][y].index1 = index;
+		}else
+		{
+			grids[x][y].index2 = index;
+		}
+		return true;
+		
+	}
+	public void remove(int index, int x, int y)
+	{
+		String str = Server.answers.get(index).getKey();
+		int length = str.length();
+		boolean across = Server.answers.get(index).getValue();
+		if(across)
+		{
+			for (int i = 0; i < length; ++i)
+			{
+				grids[x + i][y].across = false;
+				if (grids[x + i][y].occurr != 2)
+				{
+					grids[x + i][y].letter = 0;
+				}
+				grids[x + i][y].occurr -= 1;
+			}
+		}
+		else
+		{
+			for (int i = 0; i < length; ++i)
+			{
+				grids[x][y+i].down = false;
+				if (grids[x][y+i].occurr != 2)
+				{
+					grids[x][y+i].letter = 0;
+				}
+				grids[x][y+i].occurr -= 1;
+			}
+		}
+
+			if(grids[x][y].index1==index)
+			{
+				grids[x][y].index1= -1;
+			}
+			else
+			{
+				grids[x][y].index2 = -1;
+			}
+		
+	}
 	public static void main(String[] args)
 	{
+		grids = new Grid[SIZE][SIZE];
+		for (int i = 0; i < SIZE; ++i)
+		{
+			for (int j = 0; j < SIZE; ++j)
+			{
+				grids[i][j] = new Grid();
+			}
+		}
 		Server.acrossNumber = new ArrayList<Integer>();
 		Server.downNumber = new ArrayList<Integer>();
 		Server.acrossAnswer = new ArrayList<String>();
@@ -526,10 +794,10 @@ public class Server
 		{
 			System.out.println(answers.get(i));
 		}
-		Server.board = new Board();
+		Server server = new Server();
 //		try
 //		{
-			backtrack(0);
+			server.backtrack(0);
 //		}
 //		catch(Exception e)
 //		{
@@ -537,23 +805,23 @@ public class Server
 //		}
 	}
 	
-	public static void backtrack(int index) /*throws Exception*/
+	void backtrack(int index) /*throws Exception*/
 	{
 		if (index == answers.size())
 		{
-			if(Server.board.check())
+			if(check())
 			{
-				for(int i = 0;i < Board.SIZE;++i)
+				for(int i = 0;i < SIZE;++i)
 				{
-					for(int j = 0;j < Board.SIZE;++j)
+					for(int j = 0;j < SIZE;++j)
 					{
-						if(Board.grids[i][j].letter==0)
+						if(grids[i][j].letter==0)
 						{
 							System.out.print(' ');
 						}
 						else
 						{
-							System.out.print(Board.grids[i][j].letter);
+							System.out.print(grids[i][j].letter);
 						}
 					}
 					System.out.println();
@@ -564,63 +832,83 @@ public class Server
 		}
 		if (answers.get(index).getValue())
 		{
-			for (int j = 0; j < Board.SIZE ; ++j)
+			for (int j = 0; j < SIZE ; ++j)
 			{
-				for (int i = 0; i < Board.SIZE + 1 - (answers.get(index).getKey().length()); ++i)
+				for (int i = 0; i < SIZE + 1 - (answers.get(index).getKey().length()); ++i)
 				{
-					if(Server.board.put(index, i, j))
+					if(put(index, i, j))
 					{
-						for(int x = 0;x < Board.SIZE;++x)
-						{
-							for(int y = 0;y < Board.SIZE;++y)
-							{
-								if(Board.grids[y][x].letter==0)
-								{
-									System.out.print(' ');
-								}
-								else
-								{
-									System.out.print(Board.grids[y][x].letter);
-								}
-							}
-							System.out.println();
-						}
+//						for(int x = 0;x < SIZE;++x)
+//						{
+//							for(int y = 0;y < SIZE;++y)
+//							{
+//								if(grids[y][x].letter==0)
+//								{
+//									System.out.print(' ');
+//								}
+//								else
+//								{
+//									System.out.print(grids[y][x].letter);
+//								}
+//							}
+//							System.out.println();
+//						}
 //						System.out.println(answers.get(index).getKey()+" "+i+" "+j);
 						backtrack(index+1);
-						Server.board.remove(index, i, j);
+						remove(index, i, j);
 					}
 				}
 			}
 		}
 		else
 		{
-			for (int j = 0; j < Board.SIZE + 1 - (answers.get(index).getKey().length()); ++j)
+			for (int j = 0; j < SIZE + 1 - (answers.get(index).getKey().length()); ++j)
 			{
-				for (int i = 0; i < Board.SIZE; ++i)
+				for (int i = 0; i < SIZE; ++i)
 				{
-					if(Server.board.put(index, i, j))
+					if(put(index, i, j))
 					{
-						for(int x = 0;x < Board.SIZE;++x)
-						{
-							for(int y = 0;y < Board.SIZE;++y)
-							{
-								if(Board.grids[y][x].letter==0)
-								{
-									System.out.print(' ');
-								}
-								else
-								{
-									System.out.print(Board.grids[y][x].letter);
-								}
-							}
-							System.out.println();
-						}
+//						for(int x = 0;x < SIZE;++x)
+//						{
+//							for(int y = 0;y < SIZE;++y)
+//							{
+//								if(grids[y][x].letter==0)
+//								{
+//									System.out.print(' ');
+//								}
+//								else
+//								{
+//									System.out.print(grids[y][x].letter);
+//								}
+//							}
+//							System.out.println();
+//						}
 //						System.out.println(answers.get(index).getKey()+" "+i+" "+j);
 						backtrack(index+1);
-						Server.board.remove(index, i, j);
+						remove(index, i, j);
 					}
 				}
 			}
 		}
 	}
 }
+
+class Grid
+{
+	public int index1;
+	public int index2;
+	public boolean down;
+	public boolean across;
+	public char letter;
+	public int occurr;
+	public Grid()
+	{
+		index1 = -1;
+		index2 = -1;
+		down = false;
+		across = false;
+		letter = 0;
+		occurr = 0;
+	}
+}
+
