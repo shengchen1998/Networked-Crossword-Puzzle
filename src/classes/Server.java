@@ -45,18 +45,19 @@ public class Server
 		{
 			for (int j = 0; j < SIZE; ++j)
 			{
+				Grid g = grids[i][j];
 				int size = 0;
-				if (grids[i][j].index1 > 0)
+				if (g.index1 > 0)
 				{
 					++size;
 				}
-				if (grids[i][j].index2 > 0)
+				if (g.index2 > 0)
 				{
 					++size;
 				}
 				if (size == 1)
 				{
-					int index = Math.max(grids[i][j].index1, grids[i][j].index2);
+					int index = Math.max(g.index1, g.index2);
 					boolean across = Server.answers[index].second;
 					int length = Server.answers[index].first.length();
 					boolean joint = false;
@@ -268,39 +269,40 @@ public class Server
 	{
 		String str = Server.answers[index].first;
 		int length = str.length();
-		boolean across = Server.answers[index].second;
-		if (across)
+		if (answers[index].second)
 		{
 			for (int i = 0; i < length; ++i)
 			{
-				grids[x + i][y].across = false;
-				if (grids[x + i][y].occurr != 2)
+				Grid g = grids[x + i][y];
+				g.across = false;
+				if (g.occurr != 2)
 				{
-					grids[x + i][y].letter = 0;
+					g.letter = 0;
 				}
-				grids[x + i][y].occurr -= 1;
+				g.occurr -= 1;
 			}
 		} else
 		{
 			for (int i = 0; i < length; ++i)
 			{
-				grids[x][y + i].down = false;
-				if (grids[x][y + i].occurr != 2)
+				Grid g = grids[x][y + i];
+				g.down = false;
+				if (g.occurr != 2)
 				{
-					grids[x][y + i].letter = 0;
+					g.letter = 0;
 				}
-				grids[x][y + i].occurr -= 1;
+				g.occurr -= 1;
 			}
 		}
 		
-		if (grids[x][y].index1 == index)
+		Grid g = grids[x][y];
+		if (g.index1 == index)
 		{
-			grids[x][y].index1 = -1;
+			g.index1 = -1;
 		} else
 		{
-			grids[x][y].index2 = -1;
+			g.index2 = -1;
 		}
-		
 	}
 	
 	public static void main(String[] args)
