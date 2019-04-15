@@ -152,9 +152,10 @@ public class Server
 			}
 			for (int i = 0; i < length; ++i)
 			{
-				if (grids[x + i][y].letter == 0)
+				Grid g = grids[x + i][y];
+				if (g.letter == 0)
 				{
-					grids[x + i][y].letter = str.charAt(i);
+					g.letter = str.charAt(i);
 				}
 //					for(int a = 0;a < SIZE;++a)
 //					{
@@ -171,8 +172,8 @@ public class Server
 //						}
 //						System.out.println();
 //					}
-				grids[x + i][y].across = true;
-				grids[x + i][y].occurr += 1;
+				g.across = true;
+				g.occurr += 1;
 			}
 			
 		} else
@@ -227,9 +228,10 @@ public class Server
 			}
 			for (int i = 0; i < length; ++i)
 			{
-				if (grids[x][y + i].letter == 0)
+				Grid g = grids[x][y + i];
+				if (g.letter == 0)
 				{
-					grids[x][y + i].letter = str.charAt(i);
+					g.letter = str.charAt(i);
 				}
 //					for(int a = 0;a < SIZE;++a)
 //					{
@@ -246,16 +248,17 @@ public class Server
 //						}
 //						System.out.println();
 //					}
-				grids[x][y + i].down = true;
-				grids[x][y + i].occurr += 1;
+				g.down = true;
+				g.occurr += 1;
 			}
 		}
-		if (grids[x][y].index1 < 0)
+		Grid g = grids[x][y];
+		if (g.index1 < 0)
 		{
-			grids[x][y].index1 = index;
+			g.index1 = index;
 		} else
 		{
-			grids[x][y].index2 = index;
+			g.index2 = index;
 		}
 		return true;
 		
