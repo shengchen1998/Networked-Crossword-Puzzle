@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 
 public class Server
 {
+	public static Coor[][] coors;
 	public static boolean[][] discovered;
 	public static Grid[][] grids;
 	public static final int SIZE = 15;
@@ -26,79 +27,143 @@ public class Server
 	public static ArrayList<String> acrossQuestion;
 	public static ArrayList<String> downQuestion;
 	public static Answer[] answers;
+	public static Stack<Coor> stk;
 	
-	public void check(int x, int y)
+	
+	
+	
+	public boolean check()
 	{
-		discovered[x][y] = true;
-//		System.out.println("discover "+x+" "+y);
-		if (x > 0)
+		for (int i = 0; i < SIZE; ++i)
 		{
-			if (grids[x - 1][y].letter != 0)
+			for (int j = 0; j < SIZE; ++j)
 			{
-				if (!discovered[x - 1][y])
+				discovered[i][j] = false;
+			}
+		}
+		stk.clear();
+		for (int i = 0; i < SIZE; ++i)
+		{
+			boolean flag = false;
+			for (int j = 0; j < SIZE; ++j)
+			{
+				
+				if (grids[i][j].letter != 0)
 				{
-					check(x - 1, y);
+					stk.push(coors[i][j]);
+					flag = true;
+					break;
+				}
+			}
+			if(flag)
+			{
+				break;
+			}
+		}
+		while (!stk.empty())
+		{
+			Coor coor = stk.pop();
+			int x = coor.x;
+			int y = coor.y;
+			discovered[x][y] = true;
+			if (x > 0)
+			{
+				if (grids[x - 1][y].letter != 0)
+				{
+					if (discovered[x-1][y]==false)
+					{
+						stk.push(coors[x-1][y]);
+					}
+				}
+			}
+			if (x < SIZE - 1)
+			{
+				if (grids[x + 1][y].letter != 0)
+				{
+					if (discovered[x+1][y]==false)
+					{
+						stk.push(coors[x+1][y]);
+					}
+				}
+			}
+			if (y > 0)
+			{
+				if (grids[x][y - 1].letter != 0)
+				{
+					if (discovered[x][y-1]==false)
+					{
+						stk.push(coors[x][y-1]);
+					}
+				}
+			}
+			if (y < SIZE - 1)
+			{
+				if (grids[x][y + 1].letter != 0)
+				{
+					if (discovered[x][y+1]==false)
+					{
+						stk.push(coors[x][y+1]);
+					}
 				}
 			}
 		}
-		if (x < SIZE - 1)
+		for (int j = 0; j < SIZE; ++j)
 		{
-			if (grids[x + 1][y].letter != 0)
+			for (int i = 0; i < SIZE; ++i)
 			{
-				if (!discovered[x + 1][y])
+				if ((grids[i][j].letter != 0) && (discovered[i][j]==false))
 				{
-					check(x + 1, y);
+					return false;
 				}
 			}
 		}
-		if (y > 0)
-		{
-			if (grids[x][y - 1].letter != 0)
-			{
-				if (!discovered[x][y - 1])
-				{
-					check(x, y - 1);
-				}
-			}
-		}
-		if (y < SIZE - 1)
-		{
-			if (grids[x][y + 1].letter != 0)
-			{
-				if (!discovered[x][y + 1])
-				{
-					check(x, y + 1);
-				}
-			}
-		}
-		
-//		while (!stk.empty())
+		return true;
+	
+	}
+//	public void DFS(int x, int y)
+//	{
+//		discovered[x][y] = true;
+//		if (x > 0)
 //		{
-//			Grid g = stk.pop();
-//			int x = g.x;
-//			int y = g.y;
-//			if(!set.contains(g))
+//			if (grids[x - 1][y].letter != 0)
 //			{
-//				set.add(g);
-//			}
-//			
-//			
-//			
-//			
-//		}
-//		for (int j = 0; j < SIZE; ++j)
-//		{
-//			for (int i = 0; i < SIZE; ++i)
-//			{
-//				if ((grids[i][j].letter != 0) && (!set.contains(grids[i][j])))
+//				if (!discovered[x - 1][y])
 //				{
-//					return false;
+//					DFS(x - 1, y);
 //				}
 //			}
 //		}
-//		return true;
-		
-	}
+//		if (x < SIZE - 1)
+//		{
+//			if (grids[x + 1][y].letter != 0)
+//			{
+//				if (!discovered[x + 1][y])
+//				{
+//					DFS(x + 1, y);
+//				}
+//			}
+//		}
+//		if (y > 0)
+//		{
+//			if (grids[x][y - 1].letter != 0)
+//			{
+//				if (!discovered[x][y - 1])
+//				{
+//					DFS(x, y - 1);
+//				}
+//			}
+//		}
+//		if (y < SIZE - 1)
+//		{
+//			if (grids[x][y + 1].letter != 0)
+//			{
+//				if (!discovered[x][y + 1])
+//				{
+//					DFS(x, y + 1);
+//				}
+//			}
+//		}
+//	}
 	
 	public boolean put(int index, int x, int y)
 	{
@@ -313,10 +378,12 @@ public class Server
 	{
 		grids = new Grid[SIZE][SIZE];
 		discovered = new boolean[SIZE][SIZE];
+		coors = new Coor[SIZE][SIZE];
 		for (int i = 0; i < SIZE; ++i)
 		{
 			for (int j = 0; j < SIZE; ++j)
 			{
+				coors[i][j] = new Coor(i,j);
 				grids[i][j] = new Grid(i, j);
 				discovered[i][j] = false;
 			}
@@ -327,7 +394,7 @@ public class Server
 		Server.downAnswer = new ArrayList<String>();
 		Server.acrossQuestion = new ArrayList<String>();
 		Server.downQuestion = new ArrayList<String>();
-		
+		Server.stk = new Stack<Coor>();
 		String path = "gamedata";
 		int fileCount = 0;
 		File d = new File(path);
@@ -830,55 +897,25 @@ public class Server
 		
 		if (index == totalSize)
 		{
-			for (int i = 0; i < SIZE; ++i)
+			if (check())
 			{
 				for (int j = 0; j < SIZE; ++j)
 				{
-					discovered[i][j] = false;
-				}
-			}
-			for (int i = 0; i < SIZE; ++i)
-			{
-				boolean flag = false;
-				for (int j = 0; j < SIZE; ++j)
-				{
-					if (grids[i][j].letter != 0)
+					for (int i = 0; i < SIZE; ++i)
 					{
-						check(i, j);
-						flag = true;
-						break;
+						if (grids[i][j].letter == 0)
+						{
+							System.out.print(' ');
+						} else
+						{
+							System.out.print(grids[i][j].letter);
+						}
 					}
+					System.out.println();
 				}
-				if (flag)
-				{
-					break;
-				}
+				throw new Exception("Founded!");
 			}
-			for (int i = 0; i < SIZE; ++i)
-			{
-				for (int j = 0; j < SIZE; ++j)
-				{
-					if ((grids[i][j].letter != 0) && (discovered[i][j] == false))
-					{
-						return;
-					}
-				}
-			}
-			for (int j = 0; j < SIZE; ++j)
-			{
-				for (int i = 0; i < SIZE; ++i)
-				{
-					if (grids[i][j].letter == 0)
-					{
-						System.out.print(' ');
-					} else
-					{
-						System.out.print(grids[i][j].letter);
-					}
-				}
-				System.out.println();
-			}
-			throw new Exception("Founded!");
+			return;
 		}
 		String str = answers[index].first;
 		int length = str.length();
@@ -949,6 +986,18 @@ public class Server
 				}
 			}
 		}
+	}
+}
+
+class Coor
+{
+	int x;
+	int y;
+	
+	public Coor(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
 	}
 }
 
