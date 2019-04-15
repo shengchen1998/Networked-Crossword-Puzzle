@@ -527,6 +527,7 @@ public class Server
 			System.out.println(answers.get(i));
 		}
 		Server.board = new Board();
+		backtrack(0);
 //		for (int i = 0; i < acrossSize;)
 //		{
 //			for (int j = 0; j < downSize;)
@@ -536,17 +537,48 @@ public class Server
 //		}
 	}
 	
-	public void backtrack(int index)
+	public static void backtrack(int index)
 	{
 		if (index == answers.size())
 		{
-			// check validness of disjoint
+			if(board.check())
+			{
+				for(int i = 0;i < Board.SIZE;++i)
+				{
+					for(int j = 0;j < Board.SIZE;++j)
+					{
+						if(board.grids[i][j].letter==0)
+						{
+							System.out.print(' ');
+						}
+						else
+						{
+							System.out.print(board.grids[i][j].letter);
+						}
+					}
+					System.out.println();
+				}
+			}
 		}
 		if (answers.get(index).getValue())
 		{
 			for (int i = 0; i < Board.SIZE + 1 - (answers.get(index).getKey().length()); ++i)
 			{
-				for (int j = 0; j < Board.SIZE; ++j)
+				for (int j = 0; j < Board.SIZE ; ++j)
+				{
+					if(board.put(index, i, j))
+					{
+						backtrack(index+1);
+						board.remove(index, i, j);
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < Board.SIZE; ++i)
+			{
+				for (int j = 0; j < Board.SIZE + 1 - (answers.get(index).getKey().length()); ++j)
 				{
 					if(board.put(index, i, j))
 					{
