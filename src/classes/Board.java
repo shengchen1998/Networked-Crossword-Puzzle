@@ -222,7 +222,7 @@ public class Board
 //					}
 				}
 				Board.grids[x][y+i].down = true;
-				Board.grids[x + i][y].occurr += 1;
+				Board.grids[x][y+i].occurr += 1;
 			}
 		}
 		Board.grids[x][y].start.add(index);
