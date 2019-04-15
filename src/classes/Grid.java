@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 public class Grid
 {
-	public ArrayList<Integer> start;
+	public int index1;
+	public int index2;
 	public boolean down;
 	public boolean across;
 	public char letter;
 	public int occurr;
 	public Grid()
 	{
-		start = new ArrayList<Integer>();
+		index1 = -1;
+		index2 = -1;
 		down = false;
 		across = false;
 		letter = 0;

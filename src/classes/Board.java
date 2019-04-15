@@ -23,10 +23,18 @@ public class Board
 		{
 			for(int j = 0;j < SIZE;++j)
 			{
-				int size = Board.grids[i][j].start.size();
+				int size = 0;
+				if(Board.grids[i][j].index1>0)
+				{
+					++size;
+				}
+				if(Board.grids[i][j].index2>0)
+				{
+					++size;
+				}
 				if(size ==1)
 				{
-					int index = Board.grids[i][j].start.get(0);
+					int index = Math.max(Board.grids[i][j].index1,Board.grids[i][j].index2);
 					boolean across = Server.answers.get(index).getValue();
 					int length = Server.answers.get(index).getKey().length();
 					boolean joint = false;
@@ -126,9 +134,7 @@ public class Board
 				if (Board.grids[x + i][y].letter == 0)
 				{
 					Board.grids[x + i][y].letter = str.charAt(i);
-				} else
-				{
-					//Board.grids[x + i][y].occurr += 1;
+				}
 //					for(int a = 0;a < Board.SIZE;++a)
 //					{
 //						for(int b = 0;b < Board.SIZE;++b)
@@ -144,7 +150,6 @@ public class Board
 //						}
 //						System.out.println();
 //					}
-				}
 				Board.grids[x + i][y].across = true;
 				Board.grids[x + i][y].occurr += 1;
 			}
@@ -202,9 +207,7 @@ public class Board
 				if (Board.grids[x][y+i].letter == 0)
 				{
 					Board.grids[x][y+i].letter = str.charAt(i);
-				} else
-				{
-					//Board.grids[x][y+i].occurr += 1;
+				}
 //					for(int a = 0;a < Board.SIZE;++a)
 //					{
 //						for(int b = 0;b < Board.SIZE;++b)
@@ -220,12 +223,17 @@ public class Board
 //						}
 //						System.out.println();
 //					}
-				}
 				Board.grids[x][y+i].down = true;
 				Board.grids[x][y+i].occurr += 1;
 			}
 		}
-		Board.grids[x][y].start.add(index);
+		if(Board.grids[x][y].index1<0)
+		{
+			Board.grids[x][y].index1 = index;
+		}else
+		{
+			Board.grids[x][y].index2 = index;
+		}
 		return true;
 		
 	}
@@ -259,13 +267,15 @@ public class Board
 				Board.grids[x][y+i].occurr -= 1;
 			}
 		}
-		for(int i = 0;i <Board.grids[x][y].start.size();++i )
-		{
-			if(Board.grids[x][y].start.get(i)==index)
+
+			if(Board.grids[x][y].index1==index)
 			{
-				Board.grids[x][y].start.remove(i);
+				Board.grids[x][y].index1= -1;
 			}
-		}
+			else
+			{
+				Board.grids[x][y].index2 = -1;
+			}
 		
 	}
 }
