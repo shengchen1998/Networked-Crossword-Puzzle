@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 
 public class Server
 {
+	public static boolean[][] discovered;
 	public static Grid[][] grids;
 	public static final int SIZE = 15;
 	public static int acrossSize;
@@ -26,160 +27,77 @@ public class Server
 	public static ArrayList<String> downQuestion;
 	public static Answer[] answers;
 	
-//	public Server(int acrossSize, int downSize, ArrayList<Integer> acrossNumber, ArrayList<Integer> downNumber,
-//			ArrayList<String> acrossAnswer, ArrayList<String> downAnswer, ArrayList<String> acrossQuestion,
-//			ArrayList<String> downQuestion)
-//	{
-////		this.acrossSize = acrossSize;
-////		this.downSize = downSize;
-////		this.acrossNumber = acrossNumber;
-////		this.downNumber = downNumber;
-////		this.acrossAnswer = acrossAnswer;
-////		this.downAnswer = downAnswer;
-////		this.acrossQuestion = acrossQuestion;
-////		this.downQuestion = downQuestion;
-//	}
-//	class Coor
-//	{
-//		int x;
-//		int y;
-//		
-//		public Coor(int x, int y)
-//		{
-//			this.x = x;
-//			this.y = y;
-//		}
-//	}
-	
-	public boolean check()
+	public void check(int x, int y)
 	{
-		HashSet<Grid> set = new HashSet<Grid>();
-		Stack<Grid> stk = new Stack<Grid>();
-		for (int i = 0; i < SIZE; ++i)
+		discovered[x][y] = true;
+//		System.out.println("discover "+x+" "+y);
+		if (x > 0)
 		{
-			for (int j = 0; j < SIZE; ++j)
+			if (grids[x - 1][y].letter != 0)
 			{
-//				Grid g = grids[i][j];
-//				int size = 0;
-//				if (g.index1 > 0)
-//				{
-//					++size;
-//				}
-//				if (g.index2 > 0)
-//				{
-//					++size;
-//				}
-//				if (size == 1)
-//				{
-//					int index = Math.max(g.index1, g.index2);
-//					boolean across = Server.answers[index].second;
-//					int length = Server.answers[index].first.length();
-//					boolean joint = false;
-//					if (across)
-//					{
-//						for (int k = 0; k < length; ++k)
-//						{
-//							if (grids[i + k][j].occurr == 2)
-//							{
-//								joint = true;
-//								break;
-//							}
-//						}
-//						if (joint == false)
-//						{
-//							return false;
-//						}
-//					} else
-//					{
-//						
-//						for (int k = 0; k < length; ++k)
-//						{
-//							if (grids[i][j + k].occurr == 2)
-//							{
-//								joint = true;
-//								break;
-//							}
-//						}
-//						if (joint == false)
-//						{
-//							return false;
-//						}
-//					}
-//				}
-				if (grids[i][j].letter != 0)
+				if (!discovered[x - 1][y])
 				{
-					set.add(grids[i][j]);
-					stk.push(grids[i][j]);
-					break;
+					check(x - 1, y);
 				}
 			}
 		}
-		while (!stk.empty())
+		if (x < SIZE - 1)
 		{
-			Grid g = stk.pop();
-			int x = g.x;
-			int y = g.y;
-			if(!set.contains(g))
+			if (grids[x + 1][y].letter != 0)
 			{
-				set.add(g);
-			}
-			if (x > 0)
-			{
-				if (grids[x - 1][y].letter != 0)
+				if (!discovered[x + 1][y])
 				{
-					if (!set.contains(grids[x - 1][y]))
-					{
-//						set.add(grids[x - 1][y]);
-						stk.push(grids[x - 1][y]);
-					}
-				}
-			}
-			if (x < SIZE - 1)
-			{
-				if (grids[x + 1][y].letter != 0)
-				{
-					if (!set.contains(grids[x + 1][y]))
-					{
-//						set.add(grids[x + 1][y]);
-						stk.push(grids[x + 1][y]);
-					}
-				}
-			}
-			if (y > 0)
-			{
-				if (grids[x][y - 1].letter != 0)
-				{
-					if (!set.contains(grids[x][y - 1]))
-					{
-//						set.add(grids[x][y - 1]);
-						stk.push(grids[x][y - 1]);
-					}
-				}
-			}
-			if (y < SIZE - 1)
-			{
-				if (grids[x][y + 1].letter != 0)
-				{
-					if (!set.contains(grids[x][y + 1]))
-					{
-//						set.add(grids[x][y + 1]);
-						stk.push(grids[x][y + 1]);
-					}
+					check(x + 1, y);
 				}
 			}
 		}
-		for (int j = 0; j < SIZE; ++j)
+		if (y > 0)
 		{
-			for (int i = 0; i < SIZE; ++i)
+			if (grids[x][y - 1].letter != 0)
 			{
-				if ((grids[i][j].letter != 0) && (!set.contains(grids[i][j])))
+				if (!discovered[x][y - 1])
 				{
-					return false;
+					check(x, y - 1);
 				}
 			}
 		}
-		return true;
-	
+		if (y < SIZE - 1)
+		{
+			if (grids[x][y + 1].letter != 0)
+			{
+				if (!discovered[x][y + 1])
+				{
+					check(x, y + 1);
+				}
+			}
+		}
+		
+//		while (!stk.empty())
+//		{
+//			Grid g = stk.pop();
+//			int x = g.x;
+//			int y = g.y;
+//			if(!set.contains(g))
+//			{
+//				set.add(g);
+//			}
+//			
+//			
+//			
+//			
+//		}
+//		for (int j = 0; j < SIZE; ++j)
+//		{
+//			for (int i = 0; i < SIZE; ++i)
+//			{
+//				if ((grids[i][j].letter != 0) && (!set.contains(grids[i][j])))
+//				{
+//					return false;
+//				}
+//			}
+//		}
+//		return true;
+		
 	}
 	
 	public boolean put(int index, int x, int y)
@@ -360,11 +278,12 @@ public class Server
 			{
 				Grid g = grids[x + i][y];
 				g.across = false;
-				if (g.occurr != 2)
+				g.occurr -= 1;
+				if (g.occurr == 0)
 				{
 					g.letter = 0;
 				}
-				g.occurr -= 1;
+				
 			}
 		} else
 		{
@@ -372,11 +291,11 @@ public class Server
 			{
 				Grid g = grids[x][y + i];
 				g.down = false;
-				if (g.occurr != 2)
+				g.occurr -= 1;
+				if (g.occurr == 0)
 				{
 					g.letter = 0;
 				}
-				g.occurr -= 1;
 			}
 		}
 		
@@ -393,11 +312,13 @@ public class Server
 	public static void main(String[] args)
 	{
 		grids = new Grid[SIZE][SIZE];
+		discovered = new boolean[SIZE][SIZE];
 		for (int i = 0; i < SIZE; ++i)
 		{
 			for (int j = 0; j < SIZE; ++j)
 			{
-				grids[i][j] = new Grid(i,j);
+				grids[i][j] = new Grid(i, j);
+				discovered[i][j] = false;
 			}
 		}
 		Server.acrossNumber = new ArrayList<Integer>();
@@ -906,55 +827,91 @@ public class Server
 	
 	void backtrack(int index) throws Exception
 	{
+		
 		if (index == totalSize)
 		{
-			if (check())
+			for (int i = 0; i < SIZE; ++i)
 			{
 				for (int j = 0; j < SIZE; ++j)
 				{
-					for (int i = 0; i < SIZE; ++i)
-					{
-						if (grids[i][j].letter == 0)
-						{
-							System.out.print(' ');
-						} else
-						{
-							System.out.print(grids[i][j].letter);
-						}
-					}
-					System.out.println();
+					discovered[i][j] = false;
 				}
-				throw new Exception("Founded!");
 			}
-			return;
+			for (int i = 0; i < SIZE; ++i)
+			{
+				boolean flag = false;
+				for (int j = 0; j < SIZE; ++j)
+				{
+					if (grids[i][j].letter != 0)
+					{
+						check(i, j);
+						flag = true;
+						break;
+					}
+				}
+				if (flag)
+				{
+					break;
+				}
+			}
+			for (int i = 0; i < SIZE; ++i)
+			{
+				for (int j = 0; j < SIZE; ++j)
+				{
+					if ((grids[i][j].letter != 0) && (discovered[i][j] == false))
+					{
+						return;
+					}
+				}
+			}
+			for (int j = 0; j < SIZE; ++j)
+			{
+				for (int i = 0; i < SIZE; ++i)
+				{
+					if (grids[i][j].letter == 0)
+					{
+						System.out.print(' ');
+					} else
+					{
+						System.out.print(grids[i][j].letter);
+					}
+				}
+				System.out.println();
+			}
+			throw new Exception("Founded!");
 		}
-		int length = answers[index].first.length();
+		String str = answers[index].first;
+		int length = str.length();
 		if (answers[index].second)
 		{
 			for (int j = 0; j < SIZE; ++j)
 			{
 				for (int i = 0; i < SIZE + 1 - length; ++i)
 				{
-					if (put(index, i, j))
+					if (grids[i][j].letter == 0 || grids[i][j].letter == str.charAt(0))
 					{
-//						for(int x = 0;x < SIZE;++x)
-//						{
-//							for(int y = 0;y < SIZE;++y)
+						if (put(index, i, j))
+						{
+//							for(int x = 0;x < SIZE;++x)
 //							{
-//								if(grids[y][x].letter==0)
+//								for(int y = 0;y < SIZE;++y)
 //								{
-//									System.out.print(' ');
+//									if(grids[y][x].letter==0)
+//									{
+//										System.out.print(' ');
+//									}
+//									else
+//									{
+//										System.out.print(grids[y][x].letter);
+//									}
 //								}
-//								else
-//								{
-//									System.out.print(grids[y][x].letter);
-//								}
+//								System.out.println();
 //							}
-//							System.out.println();
-//						}
-//						System.out.println(answers.get(index).getKey()+" "+i+" "+j);
-						backtrack(index + 1);
-						remove(index, i, j);
+							
+							backtrack(index + 1);
+							remove(index, i, j);
+						}
+						
 					}
 				}
 			}
@@ -964,26 +921,30 @@ public class Server
 			{
 				for (int i = 0; i < SIZE; ++i)
 				{
-					if (put(index, i, j))
+					if (grids[i][j].letter == 0 || grids[i][j].letter == str.charAt(0))
 					{
-//						for(int x = 0;x < SIZE;++x)
-//						{
-//							for(int y = 0;y < SIZE;++y)
+						if (put(index, i, j))
+						{
+//							for(int x = 0;x < SIZE;++x)
 //							{
-//								if(grids[y][x].letter==0)
+//								for(int y = 0;y < SIZE;++y)
 //								{
-//									System.out.print(' ');
+//									if(grids[y][x].letter==0)
+//									{
+//										System.out.print(' ');
+//									}
+//									else
+//									{
+//										System.out.print(grids[y][x].letter);
+//									}
 //								}
-//								else
-//								{
-//									System.out.print(grids[y][x].letter);
-//								}
+//								System.out.println();
 //							}
-//							System.out.println();
-//						}
-//						System.out.println(answers.get(index).getKey()+" "+i+" "+j);
-						backtrack(index + 1);
-						remove(index, i, j);
+							
+							backtrack(index + 1);
+							remove(index, i, j);
+						}
+						
 					}
 				}
 			}
