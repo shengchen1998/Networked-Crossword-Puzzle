@@ -548,7 +548,11 @@ public class Server
 			{
 				for (int j = 0; j < Board.SIZE; ++j)
 				{
-					
+					if(board.put(index, i, j))
+					{
+						backtrack(index+1);
+						board.remove(index, i, j);
+					}
 				}
 			}
 		}
