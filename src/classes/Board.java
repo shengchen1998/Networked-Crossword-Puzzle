@@ -128,7 +128,7 @@ public class Board
 					Board.grids[x + i][y].letter = str.charAt(i);
 				} else
 				{
-					Board.grids[x + i][y].occurr += 1;
+					//Board.grids[x + i][y].occurr += 1;
 //					for(int a = 0;a < Board.SIZE;++a)
 //					{
 //						for(int b = 0;b < Board.SIZE;++b)
@@ -204,7 +204,7 @@ public class Board
 					Board.grids[x][y+i].letter = str.charAt(i);
 				} else
 				{
-					Board.grids[x][y+i].occurr += 1;
+					//Board.grids[x][y+i].occurr += 1;
 //					for(int a = 0;a < Board.SIZE;++a)
 //					{
 //						for(int b = 0;b < Board.SIZE;++b)

@@ -570,21 +570,21 @@ public class Server
 				{
 					if(Server.board.put(index, i, j))
 					{
-//						for(int x = 0;x < Board.SIZE;++x)
-//						{
-//							for(int y = 0;y < Board.SIZE;++y)
-//							{
-//								if(Board.grids[y][x].letter==0)
-//								{
-//									System.out.print(' ');
-//								}
-//								else
-//								{
-//									System.out.print(Board.grids[y][x].letter);
-//								}
-//							}
-//							System.out.println();
-//						}
+						for(int x = 0;x < Board.SIZE;++x)
+						{
+							for(int y = 0;y < Board.SIZE;++y)
+							{
+								if(Board.grids[y][x].letter==0)
+								{
+									System.out.print(' ');
+								}
+								else
+								{
+									System.out.print(Board.grids[y][x].letter);
+								}
+							}
+							System.out.println();
+						}
 //						System.out.println(answers.get(index).getKey()+" "+i+" "+j);
 						backtrack(index+1);
 						Server.board.remove(index, i, j);
@@ -600,21 +600,21 @@ public class Server
 				{
 					if(Server.board.put(index, i, j))
 					{
-//						for(int x = 0;x < Board.SIZE;++x)
-//						{
-//							for(int y = 0;y < Board.SIZE;++y)
-//							{
-//								if(Board.grids[y][x].letter==0)
-//								{
-//									System.out.print(' ');
-//								}
-//								else
-//								{
-//									System.out.print(Board.grids[y][x].letter);
-//								}
-//							}
-//							System.out.println();
-//						}
+						for(int x = 0;x < Board.SIZE;++x)
+						{
+							for(int y = 0;y < Board.SIZE;++y)
+							{
+								if(Board.grids[y][x].letter==0)
+								{
+									System.out.print(' ');
+								}
+								else
+								{
+									System.out.print(Board.grids[y][x].letter);
+								}
+							}
+							System.out.println();
+						}
 //						System.out.println(answers.get(index).getKey()+" "+i+" "+j);
 						backtrack(index+1);
 						Server.board.remove(index, i, j);
