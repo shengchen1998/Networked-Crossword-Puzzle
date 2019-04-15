@@ -23,19 +23,19 @@ public class Server
 	public static ArrayList<String> downQuestion;
 	public static ArrayList<Pair<String, Boolean>> answers;
 	
-	public Server(int acrossSize, int downSize, ArrayList<Integer> acrossNumber, ArrayList<Integer> downNumber,
-			ArrayList<String> acrossAnswer, ArrayList<String> downAnswer, ArrayList<String> acrossQuestion,
-			ArrayList<String> downQuestion)
-	{
-//		this.acrossSize = acrossSize;
-//		this.downSize = downSize;
-//		this.acrossNumber = acrossNumber;
-//		this.downNumber = downNumber;
-//		this.acrossAnswer = acrossAnswer;
-//		this.downAnswer = downAnswer;
-//		this.acrossQuestion = acrossQuestion;
-//		this.downQuestion = downQuestion;
-	}
+//	public Server(int acrossSize, int downSize, ArrayList<Integer> acrossNumber, ArrayList<Integer> downNumber,
+//			ArrayList<String> acrossAnswer, ArrayList<String> downAnswer, ArrayList<String> acrossQuestion,
+//			ArrayList<String> downQuestion)
+//	{
+////		this.acrossSize = acrossSize;
+////		this.downSize = downSize;
+////		this.acrossNumber = acrossNumber;
+////		this.downNumber = downNumber;
+////		this.acrossAnswer = acrossAnswer;
+////		this.downAnswer = downAnswer;
+////		this.acrossQuestion = acrossQuestion;
+////		this.downQuestion = downQuestion;
+//	}
 	
 	public static void main(String[] args)
 	{
@@ -506,19 +506,19 @@ public class Server
 		{
 			if (i == acrossSize)
 			{
-				answers.add(new Pair(downAnswer.get(j), false));
+				answers.add(new Pair<String,Boolean>(downAnswer.get(j), false));
 				++j;
 			} else if (j == downSize)
 			{
-				answers.add(new Pair(acrossAnswer.get(i), true));
+				answers.add(new Pair<String,Boolean>(acrossAnswer.get(i), true));
 				++i;
 			} else if (acrossAnswer.get(i).length() >= downAnswer.get(j).length())
 			{
-				answers.add(new Pair(acrossAnswer.get(i), true));
+				answers.add(new Pair<String,Boolean>(acrossAnswer.get(i), true));
 				++i;
 			} else
 			{
-				answers.add(new Pair(downAnswer.get(j), false));
+				answers.add(new Pair<String,Boolean>(downAnswer.get(j), false));
 				++j;
 			}
 		}
@@ -527,63 +527,97 @@ public class Server
 			System.out.println(answers.get(i));
 		}
 		Server.board = new Board();
-		backtrack(0);
-//		for (int i = 0; i < acrossSize;)
-//		{
-//			for (int j = 0; j < downSize;)
-//			{
-//				
-//			}
-//		}
+		try
+		{
+			backtrack(0);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
 	}
 	
-	public static void backtrack(int index)
+	public static void backtrack(int index) throws Exception
 	{
 		if (index == answers.size())
 		{
-			if(board.check())
+			if(Server.board.check())
 			{
 				for(int i = 0;i < Board.SIZE;++i)
 				{
 					for(int j = 0;j < Board.SIZE;++j)
 					{
-						if(board.grids[i][j].letter==0)
+						if(Board.grids[i][j].letter==0)
 						{
 							System.out.print(' ');
 						}
 						else
 						{
-							System.out.print(board.grids[i][j].letter);
+							System.out.print(Board.grids[i][j].letter);
 						}
 					}
 					System.out.println();
 				}
+				throw new Exception("Founded!");
 			}
+			return;
 		}
 		if (answers.get(index).getValue())
 		{
-			for (int i = 0; i < Board.SIZE + 1 - (answers.get(index).getKey().length()); ++i)
+			for (int j = 0; j < Board.SIZE ; ++j)
 			{
-				for (int j = 0; j < Board.SIZE ; ++j)
+				for (int i = 0; i < Board.SIZE + 1 - (answers.get(index).getKey().length()); ++i)
 				{
-					if(board.put(index, i, j))
+					if(Server.board.put(index, i, j))
 					{
+						for(int x = 0;x < Board.SIZE;++x)
+						{
+							for(int y = 0;y < Board.SIZE;++y)
+							{
+								if(Board.grids[y][x].letter==0)
+								{
+									System.out.print(' ');
+								}
+								else
+								{
+									System.out.print(Board.grids[y][x].letter);
+								}
+							}
+							System.out.println();
+						}
+//						System.out.println(answers.get(index).getKey()+" "+i+" "+j);
 						backtrack(index+1);
-						board.remove(index, i, j);
+						Server.board.remove(index, i, j);
 					}
 				}
 			}
 		}
 		else
 		{
-			for (int i = 0; i < Board.SIZE; ++i)
+			for (int j = 0; j < Board.SIZE + 1 - (answers.get(index).getKey().length()); ++j)
 			{
-				for (int j = 0; j < Board.SIZE + 1 - (answers.get(index).getKey().length()); ++j)
+				for (int i = 0; i < Board.SIZE; ++i)
 				{
-					if(board.put(index, i, j))
+					if(Server.board.put(index, i, j))
 					{
+						for(int x = 0;x < Board.SIZE;++x)
+						{
+							for(int y = 0;y < Board.SIZE;++y)
+							{
+								if(Board.grids[y][x].letter==0)
+								{
+									System.out.print(' ');
+								}
+								else
+								{
+									System.out.print(Board.grids[y][x].letter);
+								}
+							}
+							System.out.println();
+						}
+//						System.out.println(answers.get(index).getKey()+" "+i+" "+j);
 						backtrack(index+1);
-						board.remove(index, i, j);
+						Server.board.remove(index, i, j);
 					}
 				}
 			}
