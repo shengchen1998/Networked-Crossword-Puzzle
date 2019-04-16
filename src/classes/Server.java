@@ -16,7 +16,7 @@ public class Server
 	public static Coor[][] coors;
 	public static boolean[][] discovered;
 	public static Grid[][] grids;
-	public static final int SIZE = 20;
+	public static final int SIZE = 100;
 	public static int acrossSize;
 	public static int downSize;
 	public static int totalSize;
@@ -925,12 +925,12 @@ public class Server
 					{
 						if (put(0, x, y))
 						{
-							System.out.println("put " + str + " " + x + " " + y);
+//							System.out.println("put " + str + " " + x + " " + y);
 							for (int i = 1; i < totalSize; ++i)
 							{
 								if (answers[i].used == false && answers[i].second == false)
 								{
-									System.out.println("bt" + i);
+//									System.out.println("bt" + i);
 									bt(i);
 								}
 							}
@@ -947,12 +947,12 @@ public class Server
 					{
 						if (put(0, x, y))
 						{
-							System.out.println("put " + str + " " + x + " " + y);
+//							System.out.println("put " + str + " " + x + " " + y);
 							for (int i = 1; i < totalSize; ++i)
 							{
 								if (answers[i].used == false && answers[i].second == true)
 								{
-									System.out.println("bt" + i);
+//									System.out.println("bt" + i);
 									bt(i);
 								}
 							}
@@ -1003,8 +1003,8 @@ public class Server
 									{
 										if (put(index, answer.x - j1, answer.y + a))
 										{
-											System.out.println(
-													"put " + str + " " + (answer.x - j1) + " " + (answer.y + a));
+//											System.out.println(
+//													"put " + str + " " + (answer.x - j1) + " " + (answer.y + a));
 											for (int b = 1; b < totalSize; ++b)
 											{
 												if (answers[b].used == false)
@@ -1060,8 +1060,8 @@ public class Server
 									{
 										if (put(index, answer.x + a, answer.y - j1))
 										{
-											System.out.println(
-													"put " + str + " " + (answer.x + a) + " " + (answer.y - j1));
+//											System.out.println(
+//													"put " + str + " " + (answer.x + a) + " " + (answer.y - j1));
 											for (int b = 1; b < totalSize; ++b)
 											{
 												if (answers[b].used == false)
