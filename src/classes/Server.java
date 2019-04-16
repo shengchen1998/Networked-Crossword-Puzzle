@@ -117,9 +117,9 @@ public class Server
 //				}
 //			}
 //		}
-		for(int i = 0;i < totalSize;++i)
+		for (int i = 0; i < totalSize; ++i)
 		{
-			if(discovered[answers[i].x][answers[i].y] == false)
+			if (discovered[answers[i].x][answers[i].y] == false)
 			{
 				return false;
 			}
@@ -929,9 +929,9 @@ public class Server
 		{
 			if (answers[0].second)
 			{
-				for (int y = 0; y < SIZE; ++y)
+				for (int y = SIZE/2; y < SIZE; ++y)
 				{
-					for (int x = 0; x < SIZE + 1 - l; ++x)
+					for (int x = SIZE/2; x < SIZE + 1 - l; ++x)
 					{
 						if (put(0, x, y))
 						{
@@ -951,9 +951,9 @@ public class Server
 				}
 			} else
 			{
-				for (int x = 0; x < SIZE; ++x)
+				for (int x = SIZE/2; x < SIZE; ++x)
 				{
-					for (int y = 0; y < SIZE + 1 - l; ++y)
+					for (int y = SIZE/2; y < SIZE + 1 - l; ++y)
 					{
 						if (put(0, x, y))
 						{
@@ -976,8 +976,7 @@ public class Server
 		{
 			if (answers[index].second)
 			{
-				for (int j1 = 0; j1 < l; ++j1)
-				{
+				
 //					for (int y = 0; y < SIZE; ++y)
 //					{
 //						for (int x = j1; x < SIZE + 1 - l+j1; ++x)
@@ -999,19 +998,24 @@ public class Server
 //							}
 //						}
 //					}
-					for (int i = 0; i < totalSize; ++i)
+				for (int i = 0; i < totalSize; ++i)
+				{
+					Answer answer = answers[i];
+					if (answers[i].used == true && answers[i].second == false)
 					{
-						if (answers[i].used == true && answers[i].second == false)
+						String anstr = answer.first;
+						int x = answer.x;
+						int y = answer.y;
+						for (int j1 = 0; j1 < l; ++j1)
 						{
-							Answer answer = answers[i];
-							String anstr = answer.first;
 							for (int a = 0; a < anstr.length(); ++a)
 							{
 								if (anstr.charAt(a) == str.charAt(j1))
 								{
-									if ((answer.x - j1 >= 0) && (answer.x - j1 < SIZE + 1 - l) && (answer.y + a < SIZE))
+									if ((x - j1 >= 0) && (x - j1 < SIZE + 1 - l) && (y + a < SIZE)
+											&& (grids[x - j1][y + a].across == false))
 									{
-										if (put(index, answer.x - j1, answer.y + a))
+										if (put(index, x - j1, y + a))
 										{
 //											System.out.println(
 //													"put " + str + " " + (answer.x - j1) + " " + (answer.y + a));
@@ -1022,7 +1026,7 @@ public class Server
 													bt(b);
 												}
 											}
-											remove(index, answer.x - j1, answer.y + a);
+											remove(index, x - j1, y + a);
 										}
 									}
 								}
@@ -1030,10 +1034,10 @@ public class Server
 						}
 					}
 				}
+				
 			} else
 			{
-				for (int j1 = 0; j1 < l; ++j1)
-				{
+				
 //					for (int x = 0; x < Server.SIZE; ++x)
 //					{
 //						for (int y = j1; y < SIZE + 1 - l + j1; ++y)
@@ -1055,20 +1059,25 @@ public class Server
 //							}
 //						}
 //					}
-					for (int i = 0; i < totalSize; ++i)
+				for (int i = 0; i < totalSize; ++i)
+				{
+					Answer answer = answers[i];
+					
+					if (answer.used == true && answer.second == true)
 					{
-						Answer answer = answers[i];
-						
-						if (answer.used == true && answer.second == true)
+						String anstr = answer.first;
+						int x = answer.x;
+						int y = answer.y;
+						for (int j1 = 0; j1 < l; ++j1)
 						{
-							String anstr = answer.first;
 							for (int a = 0; a < anstr.length(); ++a)
 							{
 								if (anstr.charAt(a) == str.charAt(j1))
 								{
-									if ((answer.y - j1 >= 0) && (answer.y - j1 < SIZE + 1 - l) && (answer.x + a < SIZE))
+									if ((y - j1 >= 0) && (y - j1 < SIZE + 1 - l) && (x + a < SIZE)
+											&& (grids[x + a][y - j1].down == false))
 									{
-										if (put(index, answer.x + a, answer.y - j1))
+										if (put(index, x + a, y - j1))
 										{
 //											System.out.println(
 //													"put " + str + " " + (answer.x + a) + " " + (answer.y - j1));
@@ -1079,7 +1088,7 @@ public class Server
 													bt(b);
 												}
 											}
-											remove(index, answer.x + a, answer.y - j1);
+											remove(index, x + a, y - j1);
 										}
 									}
 									
@@ -1087,6 +1096,7 @@ public class Server
 							}
 						}
 					}
+					
 				}
 			}
 			return;
