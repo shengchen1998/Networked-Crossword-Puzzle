@@ -215,7 +215,7 @@ public class Server
 					joint = true;
 				}
 			}
-			if (index == totalSize - 1 && joint == false)
+			if (index != 0 && joint == false)
 			{
 				return false;
 			}
@@ -291,7 +291,7 @@ public class Server
 					joint = true;
 				}
 			}
-			if (index == totalSize - 1 && joint == false)
+			if (index != 0 && joint == false)
 			{
 				return false;
 			}
@@ -329,12 +329,14 @@ public class Server
 		{
 			g.index2 = index;
 		}
+		answers[index].used = true;
 		return true;
 		
 	}
 	
 	public void remove(int index, int x, int y)
 	{
+		answers[index].used = false;
 		String str = Server.answers[index].first;
 		int length = str.length();
 		if (answers[index].second)
@@ -917,16 +919,16 @@ public class Server
 			}
 			return;
 		}
+		
 		String str = answers[index].first;
 		int length = str.length();
+		System.out.println(str);
 		if (answers[index].second)
 		{
 			for (int j = 0; j < SIZE; ++j)
 			{
 				for (int i = 0; i < SIZE + 1 - length; ++i)
 				{
-					if (grids[i][j].letter == 0 || grids[i][j].letter == str.charAt(0))
-					{
 						if (put(index, i, j))
 						{
 //							for(int x = 0;x < SIZE;++x)
@@ -949,7 +951,7 @@ public class Server
 							remove(index, i, j);
 						}
 						
-					}
+					
 				}
 			}
 		} else
@@ -958,8 +960,7 @@ public class Server
 			{
 				for (int i = 0; i < SIZE; ++i)
 				{
-					if (grids[i][j].letter == 0 || grids[i][j].letter == str.charAt(0))
-					{
+
 						if (put(index, i, j))
 						{
 //							for(int x = 0;x < SIZE;++x)
@@ -982,7 +983,7 @@ public class Server
 							remove(index, i, j);
 						}
 						
-					}
+					
 				}
 			}
 		}
@@ -1029,10 +1030,12 @@ class Answer
 {
 	String first;
 	boolean second;
+	boolean used;
 	
 	public Answer(String first, boolean second)
 	{
 		this.first = first;
 		this.second = second;
+		this.used = false;
 	}
 }
