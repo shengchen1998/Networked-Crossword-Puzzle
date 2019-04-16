@@ -284,7 +284,7 @@ public class Server
 				{
 					g.letter = str.charAt(i);
 				}
-					
+				
 				g.down = true;
 				g.occurr += 1;
 			}
@@ -313,10 +313,12 @@ public class Server
 			g.index2 = index;
 		}
 		answers[index].used = true;
+		answers[index].x = x;
+		answers[index].y = y;
 		boolean flag = true;
-		for(int i = 0;i< totalSize;++i)
+		for (int i = 0; i < totalSize; ++i)
 		{
-			if(answers[i].used == false)
+			if (answers[i].used == false)
 			{
 				flag = false;
 				break;
@@ -350,6 +352,8 @@ public class Server
 	public void remove(int index, int x, int y)
 	{
 		answers[index].used = false;
+		answers[index].x = -1;
+		answers[index].y = -1;
 		String str = Server.answers[index].first;
 		int length = str.length();
 		if (answers[index].second)
@@ -856,14 +860,14 @@ public class Server
 			downQuestion.set(i, downQuestion.get(max));
 			downQuestion.set(max, temp);
 		}
-		for (int i = 0; i < acrossSize; ++i)
-		{
-			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
-		}
-		for (int i = 0; i < downSize; ++i)
-		{
-			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
-		}
+//		for (int i = 0; i < acrossSize; ++i)
+//		{
+//			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
+//		}
+//		for (int i = 0; i < downSize; ++i)
+//		{
+//			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
+//		}
 		Server.answers = new Answer[totalSize];
 		int i = 0;
 		int j = 0;
@@ -889,10 +893,10 @@ public class Server
 			}
 			++count;
 		}
-//		for (i = 0; i < answers.size(); ++i)
-//		{
-//			System.out.println(answers.get(i));
-//		}
+		for (i = 0; i < totalSize; ++i)
+		{
+			System.out.println(answers[i].first);
+		}
 		Server server = new Server();
 		long before = System.currentTimeMillis();
 		try
@@ -911,7 +915,7 @@ public class Server
 	{
 		String str = answers[index].first;
 		int l = str.length();
-		if(index==0)
+		if (index == 0)
 		{
 			if (answers[0].second)
 			{
@@ -919,88 +923,150 @@ public class Server
 				{
 					for (int x = 0; x < SIZE + 1 - l; ++x)
 					{
-						if(put(0,x,y))
+						if (put(0, x, y))
 						{
-							//System.out.println("put "+str+" "+x+" "+y);
-							for(int i = 1;i < totalSize;++i)
+							System.out.println("put "+str+" "+x+" "+y);
+							for (int i = 1; i < totalSize; ++i)
 							{
-								if(answers[i].used==false)
+								if (answers[i].used == false &&answers[i].second == false)
 								{
+									System.out.println("bt"+i);
 									bt(i);
 								}
 							}
-							remove(0,x,y);
+							remove(0, x, y);
 						}
 						
 					}
 				}
-			}else
+			} else
 			{
 				for (int x = 0; x < Server.SIZE; ++x)
 				{
 					for (int y = 0; y < SIZE + 1 - l; ++y)
 					{
-						if(put(0,x,y))
+						if (put(0, x, y))
 						{
-							//System.out.println("put "+str+" "+x+" "+y);
-							for(int i = 1;i < totalSize;++i)
+							System.out.println("put "+str+" "+x+" "+y);
+							for (int i = 1; i < totalSize; ++i)
 							{
-								if(answers[i].used==false)
+								if (answers[i].used == false&&answers[i].second == true)
 								{
+									System.out.println("bt"+i);
 									bt(i);
 								}
 							}
-							remove(0,x,y);
+							remove(0, x, y);
 						}
 					}
 				}
 			}
 			return;
 		}
-		for(int j1 = 0;j1 < l;++j1)
+		for (int j1 = 0; j1 < l; ++j1)
 		{
 			if (answers[index].second)
 			{
-				for (int y = 0; y < SIZE; ++y)
+//				for (int y = 0; y < SIZE; ++y)
+//				{
+//					for (int x = j1; x < SIZE + 1 - l+j1; ++x)
+//					{
+//						if(grids[x][y].letter == str.charAt(j1)&&grids[x][y].across == false)
+//						{
+//							if(put(index,x-j1,y))
+//							{
+//								//System.out.println("put "+str+" "+x+" "+y);
+//								for(int i = 1;i < totalSize;++i)
+//								{
+//									if(answers[i].used==false)
+//									{
+//										bt(i);
+//									}
+//								}
+//								remove(index,x-j1,y);
+//							}
+//						}
+//					}
+//				}
+				for (int i = 1; i < totalSize; ++i)
 				{
-					for (int x = j1; x < SIZE + 1 - l+j1; ++x)
+					if (answers[i].used == true && answers[i].second == false)
 					{
-						if(grids[x][y].letter == str.charAt(j1)&&grids[x][y].across == false)
+						Answer answer = answers[i];
+						String anstr = answer.first;
+						for (int a = 0; a < anstr.length(); ++a)
 						{
-							if(put(index,x-j1,y))
+							if (anstr.charAt(a) == str.charAt(j1))
 							{
-								//System.out.println("put "+str+" "+x+" "+y);
-								for(int i = 1;i < totalSize;++i)
+								if((answer.x -j1 >= 0)&&(answer.x -j1<SIZE + 1 - l) && (answer.y+a < SIZE))
 								{
-									if(answers[i].used==false)
+									if (put(index, answer.x -j1, answer.y+a))
 									{
-										bt(i);
+										System.out.println("put "+str+" "+(answer.x -j1)+" "+(answer.y+a));
+										for (int b = 1; b < totalSize; ++b)
+										{
+											if (answers[b].used == false)
+											{
+												bt(b);
+											}
+										}
+										remove(index, answer.x -j1, answer.y+a);
 									}
 								}
-								remove(index,x-j1,y);
 							}
 						}
 					}
 				}
-			}else
+			} else
 			{
-				for (int x = 0; x < Server.SIZE; ++x)
+//				for (int x = 0; x < Server.SIZE; ++x)
+//				{
+//					for (int y = j1; y < SIZE + 1 - l + j1; ++y)
+//					{
+//						if (grids[x][y].letter == str.charAt(j1) && grids[x][y].down == false)
+//						{
+//							if (put(index, x, y - j1))
+//							{
+//								// System.out.println("put "+str+" "+x+" "+y);
+//								for (int i = 1; i < totalSize; ++i)
+//								{
+//									if (answers[i].used == false)
+//									{
+//										bt(i);
+//									}
+//								}
+//								remove(index, x, y - j1);
+//							}
+//						}
+//					}
+//				}
+				for (int i = 1; i < totalSize; ++i)
 				{
-					for (int y = j1; y < SIZE + 1 - l+j1; ++y)
+					Answer answer = answers[i];
+					
+					if (answer.used == true && answer.second == true)
 					{
-						if(grids[x][y].letter == str.charAt(j1)&&grids[x][y].down == false)
+						String anstr = answer.first;
+						for (int a = 0; a < anstr.length(); ++a)
 						{
-							if(put(index,x,y-j1))
+							if (anstr.charAt(a) == str.charAt(j1))
 							{
-								//System.out.println("put "+str+" "+x+" "+y);
-								for(int i = 1;i < totalSize;++i)
+								if((answer.y -j1 >= 0)&&(answer.y -j1< SIZE + 1 - l) && (answer.x+a < SIZE))
 								{
-									if(answers[i].used==false)
+									if (put(index, answer.x+a, answer.y-j1))
 									{
-										bt(i);
+										System.out.println("put "+str+" "+(answer.x +a)+" "+(answer.y-j1));
+										for (int b = 1; b < totalSize; ++b)
+										{
+											if (answers[b].used == false)
+											{
+												bt(b);
+											}
+										}
+										remove(index, answer.x+a, answer.y-j1);
 									}
 								}
-								remove(index,x,y-j1);
+								
 							}
 						}
 					}
@@ -1011,7 +1077,7 @@ public class Server
 	}
 	
 	void backtrack(int index) throws Exception
-	{	
+	{
 		String str = answers[index].first;
 		int length = str.length();
 //		System.out.println(str);
@@ -1030,24 +1096,24 @@ public class Server
 								String s = answers[k].first;
 								String onBoard = "";
 								boolean flag = false;
-								for(int a = 0;a <totalSize;++a)
+								for (int a = 0; a < totalSize; ++a)
 								{
-									if(answers[a].used == true)
+									if (answers[a].used == true)
 									{
 										onBoard += answers[a].first;
 									}
 								}
-								for(int b = 0;b<s.length();++b)
+								for (int b = 0; b < s.length(); ++b)
 								{
-									for(int a = 0;a < onBoard.length();++a)
+									for (int a = 0; a < onBoard.length(); ++a)
 									{
-										if(s.charAt(b)==onBoard.charAt(a))
+										if (s.charAt(b) == onBoard.charAt(a))
 										{
 											flag = true;
 											break;
 										}
 									}
-									if(flag)
+									if (flag)
 									{
 										backtrack(k);
 										break;
@@ -1076,25 +1142,25 @@ public class Server
 								String s = answers[k].first;
 								String onBoard = "";
 								boolean flag = false;
-								for(int a = 0;a <totalSize;++a)
+								for (int a = 0; a < totalSize; ++a)
 								{
 									
-									if(answers[a].used == true)
+									if (answers[a].used == true)
 									{
 										onBoard += answers[a].first;
 									}
 								}
-								for(int b = 0;b<s.length();++b)
+								for (int b = 0; b < s.length(); ++b)
 								{
-									for(int a = 0;a < onBoard.length();++a)
+									for (int a = 0; a < onBoard.length(); ++a)
 									{
-										if(s.charAt(b)==onBoard.charAt(a))
+										if (s.charAt(b) == onBoard.charAt(a))
 										{
 											flag = true;
 											break;
 										}
 									}
-									if(flag)
+									if (flag)
 									{
 										backtrack(k);
 										break;
@@ -1152,11 +1218,15 @@ class Answer
 	String first;
 	boolean second;
 	boolean used;
+	int x;
+	int y;
 	
 	public Answer(String first, boolean second)
 	{
 		this.first = first;
 		this.second = second;
 		this.used = false;
+		this.x = -1;
+		this.y = -1;
 	}
 }
