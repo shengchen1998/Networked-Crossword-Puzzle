@@ -29,9 +29,6 @@ public class Server
 	public static Answer[] answers;
 	public static Stack<Coor> stk;
 	
-	
-	
-	
 	public boolean check()
 	{
 		for (int i = 0; i < SIZE; ++i)
@@ -55,7 +52,7 @@ public class Server
 					break;
 				}
 			}
-			if(flag)
+			if (flag)
 			{
 				break;
 			}
@@ -70,9 +67,9 @@ public class Server
 			{
 				if (grids[x - 1][y].letter != 0)
 				{
-					if (discovered[x-1][y]==false)
+					if (discovered[x - 1][y] == false)
 					{
-						stk.push(coors[x-1][y]);
+						stk.push(coors[x - 1][y]);
 					}
 				}
 			}
@@ -80,9 +77,9 @@ public class Server
 			{
 				if (grids[x + 1][y].letter != 0)
 				{
-					if (discovered[x+1][y]==false)
+					if (discovered[x + 1][y] == false)
 					{
-						stk.push(coors[x+1][y]);
+						stk.push(coors[x + 1][y]);
 					}
 				}
 			}
@@ -90,9 +87,9 @@ public class Server
 			{
 				if (grids[x][y - 1].letter != 0)
 				{
-					if (discovered[x][y-1]==false)
+					if (discovered[x][y - 1] == false)
 					{
-						stk.push(coors[x][y-1]);
+						stk.push(coors[x][y - 1]);
 					}
 				}
 			}
@@ -100,9 +97,9 @@ public class Server
 			{
 				if (grids[x][y + 1].letter != 0)
 				{
-					if (discovered[x][y+1]==false)
+					if (discovered[x][y + 1] == false)
 					{
-						stk.push(coors[x][y+1]);
+						stk.push(coors[x][y + 1]);
 					}
 				}
 			}
@@ -111,14 +108,14 @@ public class Server
 		{
 			for (int i = 0; i < SIZE; ++i)
 			{
-				if ((grids[i][j].letter != 0) && (discovered[i][j]==false))
+				if ((grids[i][j].letter != 0) && (discovered[i][j] == false))
 				{
 					return false;
 				}
 			}
 		}
 		return true;
-	
+		
 	}
 //	public void DFS(int x, int y)
 //	{
@@ -165,7 +162,7 @@ public class Server
 //		}
 //	}
 	
-	public boolean put(int index, int x, int y)
+	public boolean put(int index, int x, int y) throws Exception
 	{
 		String str = answers[index].first;
 		int length = str.length();
@@ -226,21 +223,6 @@ public class Server
 				{
 					g.letter = str.charAt(i);
 				}
-//					for(int a = 0;a < SIZE;++a)
-//					{
-//						for(int b = 0;b < SIZE;++b)
-//						{
-//							if(grids[b][a].letter==0)
-//							{
-//								System.out.print(' ');
-//							}
-//							else
-//							{
-//								System.out.print(grids[b][a].letter);
-//							}
-//						}
-//						System.out.println();
-//					}
 				g.across = true;
 				g.occurr += 1;
 			}
@@ -302,25 +284,26 @@ public class Server
 				{
 					g.letter = str.charAt(i);
 				}
-//					for(int a = 0;a < SIZE;++a)
-//					{
-//						for(int b = 0;b < SIZE;++b)
-//						{
-//							if(grids[b][a].letter==0)
-//							{
-//								System.out.print(' ');
-//							}
-//							else
-//							{
-//								System.out.print(grids[b][a].letter);
-//							}
-//						}
-//						System.out.println();
-//					}
+					
 				g.down = true;
 				g.occurr += 1;
 			}
 		}
+//		for(int a = 0;a < SIZE;++a)
+//		{
+//			for(int b = 0;b < SIZE;++b)
+//			{
+//				if(grids[b][a].letter==0)
+//				{
+//					System.out.print(' ');
+//				}
+//				else
+//				{
+//					System.out.print(grids[b][a].letter);
+//				}
+//			}
+//			System.out.println();
+//		}
 		Grid g = grids[x][y];
 		if (g.index1 < 0)
 		{
@@ -330,6 +313,35 @@ public class Server
 			g.index2 = index;
 		}
 		answers[index].used = true;
+		boolean flag = true;
+		for(int i = 0;i< totalSize;++i)
+		{
+			if(answers[i].used == false)
+			{
+				flag = false;
+			}
+		}
+		if (flag)
+		{
+			if (check())
+			{
+				for (int j = 0; j < SIZE; ++j)
+				{
+					for (int i = 0; i < SIZE; ++i)
+					{
+						if (grids[i][j].letter == 0)
+						{
+							System.out.print(' ');
+						} else
+						{
+							System.out.print(grids[i][j].letter);
+						}
+					}
+					System.out.println();
+				}
+				throw new Exception("Founded!");
+			}
+		}
 		return true;
 		
 	}
@@ -385,7 +397,7 @@ public class Server
 		{
 			for (int j = 0; j < SIZE; ++j)
 			{
-				coors[i][j] = new Coor(i,j);
+				coors[i][j] = new Coor(i, j);
 				grids[i][j] = new Grid(i, j);
 				discovered[i][j] = false;
 			}
@@ -897,60 +909,27 @@ public class Server
 	void backtrack(int index) throws Exception
 	{
 		
-		if (index == totalSize)
-		{
-			if (check())
-			{
-				for (int j = 0; j < SIZE; ++j)
-				{
-					for (int i = 0; i < SIZE; ++i)
-					{
-						if (grids[i][j].letter == 0)
-						{
-							System.out.print(' ');
-						} else
-						{
-							System.out.print(grids[i][j].letter);
-						}
-					}
-					System.out.println();
-				}
-				throw new Exception("Founded!");
-			}
-			return;
-		}
 		
 		String str = answers[index].first;
 		int length = str.length();
-		System.out.println(str);
+//		System.out.println(str);
 		if (answers[index].second)
 		{
 			for (int j = 0; j < SIZE; ++j)
 			{
 				for (int i = 0; i < SIZE + 1 - length; ++i)
 				{
-						if (put(index, i, j))
+					if (put(index, i, j))
+					{
+						for (int k = 0; k < totalSize; ++k)
 						{
-//							for(int x = 0;x < SIZE;++x)
-//							{
-//								for(int y = 0;y < SIZE;++y)
-//								{
-//									if(grids[y][x].letter==0)
-//									{
-//										System.out.print(' ');
-//									}
-//									else
-//									{
-//										System.out.print(grids[y][x].letter);
-//									}
-//								}
-//								System.out.println();
-//							}
-							
-							backtrack(index + 1);
-							remove(index, i, j);
+							if (answers[k].used == false)
+							{
+								backtrack(k);
+							}
 						}
-						
+						remove(index, i, j);
+					}
 					
 				}
 			}
@@ -960,29 +939,18 @@ public class Server
 			{
 				for (int i = 0; i < SIZE; ++i)
 				{
-
-						if (put(index, i, j))
+					
+					if (put(index, i, j))
+					{
+						for (int k = 0; k < totalSize; ++k)
 						{
-//							for(int x = 0;x < SIZE;++x)
-//							{
-//								for(int y = 0;y < SIZE;++y)
-//								{
-//									if(grids[y][x].letter==0)
-//									{
-//										System.out.print(' ');
-//									}
-//									else
-//									{
-//										System.out.print(grids[y][x].letter);
-//									}
-//								}
-//								System.out.println();
-//							}
-							
-							backtrack(index + 1);
-							remove(index, i, j);
+							if (answers[k].used == false)
+							{
+								backtrack(k);
+							}
 						}
-						
+						remove(index, i, j);
+					}
 					
 				}
 			}
