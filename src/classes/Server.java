@@ -39,24 +39,27 @@ public class Server
 			}
 		}
 		stk.clear();
-		for (int i = 0; i < SIZE; ++i)
-		{
-			boolean flag = false;
-			for (int j = 0; j < SIZE; ++j)
-			{
-				
-				if (grids[i][j].letter != 0)
-				{
-					stk.push(coors[i][j]);
-					flag = true;
-					break;
-				}
-			}
-			if (flag)
-			{
-				break;
-			}
-		}
+//		for (int i = 0; i < SIZE; ++i)
+//		{
+//			boolean flag = false;
+//			for (int j = 0; j < SIZE; ++j)
+//			{
+//				
+//				if (grids[i][j].letter != 0)
+//				{
+//					stk.push(coors[i][j]);
+//					flag = true;
+//					break;
+//				}
+//			}
+//			if (flag)
+//			{
+//				break;
+//			}
+//		}
+		int a = answers[0].x;
+		int b = answers[0].y;
+		stk.push(coors[a][b]);
 		while (!stk.empty())
 		{
 			Coor coor = stk.pop();
@@ -104,14 +107,21 @@ public class Server
 				}
 			}
 		}
-		for (int j = 0; j < SIZE; ++j)
+//		for (int j = 0; j < SIZE; ++j)
+//		{
+//			for (int i = 0; i < SIZE; ++i)
+//			{
+//				if ((grids[i][j].letter != 0) && (discovered[i][j] == false))
+//				{
+//					return false;
+//				}
+//			}
+//		}
+		for(int i = 0;i < totalSize;++i)
 		{
-			for (int i = 0; i < SIZE; ++i)
+			if(discovered[answers[i].x][answers[i].y] == false)
 			{
-				if ((grids[i][j].letter != 0) && (discovered[i][j] == false))
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 		return true;
@@ -919,7 +929,7 @@ public class Server
 		{
 			if (answers[0].second)
 			{
-				for (int y = 0; y < Server.SIZE; ++y)
+				for (int y = 0; y < SIZE; ++y)
 				{
 					for (int x = 0; x < SIZE + 1 - l; ++x)
 					{
@@ -941,7 +951,7 @@ public class Server
 				}
 			} else
 			{
-				for (int x = 0; x < Server.SIZE; ++x)
+				for (int x = 0; x < SIZE; ++x)
 				{
 					for (int y = 0; y < SIZE + 1 - l; ++y)
 					{
@@ -1083,105 +1093,105 @@ public class Server
 		}
 	}
 	
-	void backtrack(int index) throws Exception
-	{
-		String str = answers[index].first;
-		int length = str.length();
-//		System.out.println(str);
-		if (answers[index].second)
-		{
-			for (int j = 0; j < SIZE; ++j)
-			{
-				for (int i = 0; i < SIZE + 1 - length; ++i)
-				{
-					if (put(index, i, j))
-					{
-						for (int k = 0; k < totalSize; ++k)
-						{
-							if (answers[k].used == false)
-							{
-								String s = answers[k].first;
-								String onBoard = "";
-								boolean flag = false;
-								for (int a = 0; a < totalSize; ++a)
-								{
-									if (answers[a].used == true)
-									{
-										onBoard += answers[a].first;
-									}
-								}
-								for (int b = 0; b < s.length(); ++b)
-								{
-									for (int a = 0; a < onBoard.length(); ++a)
-									{
-										if (s.charAt(b) == onBoard.charAt(a))
-										{
-											flag = true;
-											break;
-										}
-									}
-									if (flag)
-									{
-										backtrack(k);
-										break;
-									}
-								}
-							}
-						}
-						remove(index, i, j);
-					}
-					
-				}
-			}
-		} else
-		{
-			for (int j = 0; j < SIZE + 1 - length; ++j)
-			{
-				for (int i = 0; i < SIZE; ++i)
-				{
-					
-					if (put(index, i, j))
-					{
-						for (int k = 0; k < totalSize; ++k)
-						{
-							if (answers[k].used == false)
-							{
-								String s = answers[k].first;
-								String onBoard = "";
-								boolean flag = false;
-								for (int a = 0; a < totalSize; ++a)
-								{
-									
-									if (answers[a].used == true)
-									{
-										onBoard += answers[a].first;
-									}
-								}
-								for (int b = 0; b < s.length(); ++b)
-								{
-									for (int a = 0; a < onBoard.length(); ++a)
-									{
-										if (s.charAt(b) == onBoard.charAt(a))
-										{
-											flag = true;
-											break;
-										}
-									}
-									if (flag)
-									{
-										backtrack(k);
-										break;
-									}
-								}
-							}
-						}
-						remove(index, i, j);
-					}
-					
-				}
-			}
-		}
-	}
+//	void backtrack(int index) throws Exception
+//	{
+//		String str = answers[index].first;
+//		int length = str.length();
+////		System.out.println(str);
+//		if (answers[index].second)
+//		{
+//			for (int j = 0; j < SIZE; ++j)
+//			{
+//				for (int i = 0; i < SIZE + 1 - length; ++i)
+//				{
+//					if (put(index, i, j))
+//					{
+//						for (int k = 0; k < totalSize; ++k)
+//						{
+//							if (answers[k].used == false)
+//							{
+//								String s = answers[k].first;
+//								String onBoard = "";
+//								boolean flag = false;
+//								for (int a = 0; a < totalSize; ++a)
+//								{
+//									if (answers[a].used == true)
+//									{
+//										onBoard += answers[a].first;
+//									}
+//								}
+//								for (int b = 0; b < s.length(); ++b)
+//								{
+//									for (int a = 0; a < onBoard.length(); ++a)
+//									{
+//										if (s.charAt(b) == onBoard.charAt(a))
+//										{
+//											flag = true;
+//											break;
+//										}
+//									}
+//									if (flag)
+//									{
+//										backtrack(k);
+//										break;
+//									}
+//								}
+//							}
+//						}
+//						remove(index, i, j);
+//					}
+//					
+//				}
+//			}
+//		} else
+//		{
+//			for (int j = 0; j < SIZE + 1 - length; ++j)
+//			{
+//				for (int i = 0; i < SIZE; ++i)
+//				{
+//					
+//					if (put(index, i, j))
+//					{
+//						for (int k = 0; k < totalSize; ++k)
+//						{
+//							if (answers[k].used == false)
+//							{
+//								String s = answers[k].first;
+//								String onBoard = "";
+//								boolean flag = false;
+//								for (int a = 0; a < totalSize; ++a)
+//								{
+//									
+//									if (answers[a].used == true)
+//									{
+//										onBoard += answers[a].first;
+//									}
+//								}
+//								for (int b = 0; b < s.length(); ++b)
+//								{
+//									for (int a = 0; a < onBoard.length(); ++a)
+//									{
+//										if (s.charAt(b) == onBoard.charAt(a))
+//										{
+//											flag = true;
+//											break;
+//										}
+//									}
+//									if (flag)
+//									{
+//										backtrack(k);
+//										break;
+//									}
+//								}
+//							}
+//						}
+//						remove(index, i, j);
+//					}
+//					
+//				}
+//			}
+//		}
+//	}
 }
 
 class Coor
