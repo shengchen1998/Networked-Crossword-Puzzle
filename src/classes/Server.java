@@ -925,12 +925,12 @@ public class Server
 					{
 						if (put(0, x, y))
 						{
-							System.out.println("put "+str+" "+x+" "+y);
+							System.out.println("put " + str + " " + x + " " + y);
 							for (int i = 1; i < totalSize; ++i)
 							{
-								if (answers[i].used == false &&answers[i].second == false)
+								if (answers[i].used == false && answers[i].second == false)
 								{
-									System.out.println("bt"+i);
+									System.out.println("bt" + i);
 									bt(i);
 								}
 							}
@@ -947,12 +947,12 @@ public class Server
 					{
 						if (put(0, x, y))
 						{
-							System.out.println("put "+str+" "+x+" "+y);
+							System.out.println("put " + str + " " + x + " " + y);
 							for (int i = 1; i < totalSize; ++i)
 							{
-								if (answers[i].used == false&&answers[i].second == true)
+								if (answers[i].used == false && answers[i].second == true)
 								{
-									System.out.println("bt"+i);
+									System.out.println("bt" + i);
 									bt(i);
 								}
 							}
@@ -962,55 +962,58 @@ public class Server
 				}
 			}
 			return;
-		}
-		for (int j1 = 0; j1 < l; ++j1)
+		} else
 		{
 			if (answers[index].second)
 			{
-//				for (int y = 0; y < SIZE; ++y)
-//				{
-//					for (int x = j1; x < SIZE + 1 - l+j1; ++x)
+				for (int j1 = 0; j1 < l; ++j1)
+				{
+//					for (int y = 0; y < SIZE; ++y)
 //					{
-//						if(grids[x][y].letter == str.charAt(j1)&&grids[x][y].across == false)
+//						for (int x = j1; x < SIZE + 1 - l+j1; ++x)
 //						{
-//							if(put(index,x-j1,y))
+//							if(grids[x][y].letter == str.charAt(j1)&&grids[x][y].across == false)
 //							{
-//								//System.out.println("put "+str+" "+x+" "+y);
-//								for(int i = 1;i < totalSize;++i)
+//								if(put(index,x-j1,y))
 //								{
-//									if(answers[i].used==false)
+//									//System.out.println("put "+str+" "+x+" "+y);
+//									for(int i = 1;i < totalSize;++i)
 //									{
-//										bt(i);
+//										if(answers[i].used==false)
+//										{
+//											bt(i);
+//										}
 //									}
+//									remove(index,x-j1,y);
 //								}
-//								remove(index,x-j1,y);
 //							}
 //						}
 //					}
-//				}
-				for (int i = 1; i < totalSize; ++i)
-				{
-					if (answers[i].used == true && answers[i].second == false)
+					for (int i = 0; i < totalSize; ++i)
 					{
-						Answer answer = answers[i];
-						String anstr = answer.first;
-						for (int a = 0; a < anstr.length(); ++a)
+						if (answers[i].used == true && answers[i].second == false)
 						{
-							if (anstr.charAt(a) == str.charAt(j1))
+							Answer answer = answers[i];
+							String anstr = answer.first;
+							for (int a = 0; a < anstr.length(); ++a)
 							{
-								if((answer.x -j1 >= 0)&&(answer.x -j1<SIZE + 1 - l) && (answer.y+a < SIZE))
+								if (anstr.charAt(a) == str.charAt(j1))
 								{
-									if (put(index, answer.x -j1, answer.y+a))
+									if ((answer.x - j1 >= 0) && (answer.x - j1 < SIZE + 1 - l) && (answer.y + a < SIZE))
 									{
-										System.out.println("put "+str+" "+(answer.x -j1)+" "+(answer.y+a));
-										for (int b = 1; b < totalSize; ++b)
+										if (put(index, answer.x - j1, answer.y + a))
 										{
-											if (answers[b].used == false)
+											System.out.println(
+													"put " + str + " " + (answer.x - j1) + " " + (answer.y + a));
+											for (int b = 1; b < totalSize; ++b)
 											{
-												bt(b);
+												if (answers[b].used == false)
+												{
+													bt(b);
+												}
 											}
+											remove(index, answer.x - j1, answer.y + a);
 										}
-										remove(index, answer.x -j1, answer.y+a);
 									}
 								}
 							}
@@ -1019,61 +1022,65 @@ public class Server
 				}
 			} else
 			{
-//				for (int x = 0; x < Server.SIZE; ++x)
-//				{
-//					for (int y = j1; y < SIZE + 1 - l + j1; ++y)
+				for (int j1 = 0; j1 < l; ++j1)
+				{
+//					for (int x = 0; x < Server.SIZE; ++x)
 //					{
-//						if (grids[x][y].letter == str.charAt(j1) && grids[x][y].down == false)
+//						for (int y = j1; y < SIZE + 1 - l + j1; ++y)
 //						{
-//							if (put(index, x, y - j1))
+//							if (grids[x][y].letter == str.charAt(j1) && grids[x][y].down == false)
 //							{
-//								// System.out.println("put "+str+" "+x+" "+y);
-//								for (int i = 1; i < totalSize; ++i)
+//								if (put(index, x, y - j1))
 //								{
-//									if (answers[i].used == false)
+//									// System.out.println("put "+str+" "+x+" "+y);
+//									for (int i = 1; i < totalSize; ++i)
 //									{
-//										bt(i);
+//										if (answers[i].used == false)
+//										{
+//											bt(i);
+//										}
 //									}
+//									remove(index, x, y - j1);
 //								}
-//								remove(index, x, y - j1);
 //							}
 //						}
 //					}
-//				}
-				for (int i = 1; i < totalSize; ++i)
-				{
-					Answer answer = answers[i];
-					
-					if (answer.used == true && answer.second == true)
+					for (int i = 0; i < totalSize; ++i)
 					{
-						String anstr = answer.first;
-						for (int a = 0; a < anstr.length(); ++a)
+						Answer answer = answers[i];
+						
+						if (answer.used == true && answer.second == true)
 						{
-							if (anstr.charAt(a) == str.charAt(j1))
+							String anstr = answer.first;
+							for (int a = 0; a < anstr.length(); ++a)
 							{
-								if((answer.y -j1 >= 0)&&(answer.y -j1< SIZE + 1 - l) && (answer.x+a < SIZE))
+								if (anstr.charAt(a) == str.charAt(j1))
 								{
-									if (put(index, answer.x+a, answer.y-j1))
+									if ((answer.y - j1 >= 0) && (answer.y - j1 < SIZE + 1 - l) && (answer.x + a < SIZE))
 									{
-										System.out.println("put "+str+" "+(answer.x +a)+" "+(answer.y-j1));
-										for (int b = 1; b < totalSize; ++b)
+										if (put(index, answer.x + a, answer.y - j1))
 										{
-											if (answers[b].used == false)
+											System.out.println(
+													"put " + str + " " + (answer.x + a) + " " + (answer.y - j1));
+											for (int b = 1; b < totalSize; ++b)
 											{
-												bt(b);
+												if (answers[b].used == false)
+												{
+													bt(b);
+												}
 											}
+											remove(index, answer.x + a, answer.y - j1);
 										}
-										remove(index, answer.x+a, answer.y-j1);
 									}
+									
 								}
-								
 							}
 						}
 					}
 				}
 			}
+			return;
 		}
-		return;
 	}
 	
 	void backtrack(int index) throws Exception
