@@ -10,16 +10,17 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ChatRoom {
+	private int numOfPlayers;
 	private Vector<Lock> locks;
 	private Vector<Condition> conditions;
-	private Vector<ServerThread> serverThreads;
+	public Vector<ServerThread> serverThreads;
 	public ChatRoom(int port) {
 		try {
 			Builder builder = new Builder();
-			builder.createBoard();
-			System.out.println("Binding to port " + port);
+			//builder.createBoard();
+			System.out.println("Listening on port " + port+".");
 			ServerSocket ss = new ServerSocket(port);
-			System.out.println("Bound to port " + port);
+			System.out.println("Waiting for players...");
 			serverThreads = new Vector<ServerThread>();
 			locks = new Vector<Lock>();
 			conditions = new Vector<Condition>();
@@ -34,6 +35,10 @@ public class ChatRoom {
 				ServerThread st = new ServerThread(s, this,lock,condition,isFirst);
 				isFirst = false;
 				serverThreads.add(st);
+				if(serverThreads.size()==1)
+				{
+					serverThreads.get(0).sendMessage("How many players will there be?");
+				}
 			}
 		} catch (IOException ioe) {
 			System.out.println("ioe in ChatRoom constructor: " + ioe.getMessage());
@@ -50,7 +55,12 @@ public class ChatRoom {
 			}
 		}
 	}
-	public void singalCLient(Lock lock)
+	public void setNumOfPlayers(int numOfPlayers)
+	{
+		this.numOfPlayers = numOfPlayers;
+		System.out.println("Number of players: "+this.numOfPlayers);
+	}
+	public void signalClient(Lock lock)
 	{
 		Condition nextCondition = null;
 		Lock nextLock = null;
@@ -81,6 +91,6 @@ public class ChatRoom {
 		
 	}
 	public static void main(String [] args) {
-		ChatRoom cr = new ChatRoom(6789);
+		ChatRoom cr = new ChatRoom(3456);
 	}
 }
