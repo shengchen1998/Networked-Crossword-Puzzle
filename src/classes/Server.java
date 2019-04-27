@@ -79,12 +79,14 @@ public class Server
 		{
 			System.out.println("File is empty.");
 		}
-		s = s.toLowerCase();
-//		if ((!s.equals("across")) && (!s.equals("down")))
-//		{
-//			System.out.println("First line is malformatted.");
-//			return;
-//		}
+		s = s.trim().toLowerCase();
+		
+		//1st check
+		if ((!s.equals("across")) && (!s.equals("down")))
+		{
+			System.out.println("First line is malformatted.");
+			return;
+		}
 		if (s.trim().equals("across"))
 		{
 			try
@@ -92,15 +94,15 @@ public class Server
 				s = reader.readLine();
 			} catch (IOException e1)
 			{
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
 			while ((s != null) && (!s.trim().toLowerCase().equals("down")))
 			{
 				s = s.toLowerCase();
-//				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
+				
+				//2nd check
 				if (tokenizer.countTokens() != 3)
 				{
 					System.out.println("Malformatted:not 3 token");
@@ -113,6 +115,8 @@ public class Server
 				}
 				String num = tokenizer.nextToken();
 				int n;
+				
+				//3rd check
 				try
 				{
 					n = Integer.parseInt(num);
@@ -124,6 +128,8 @@ public class Server
 					clear();
 					return;
 				}
+				
+				//4th check
 				String answer = tokenizer.nextToken();
 				for (int i = 0; i < answer.length(); ++i)
 				{
@@ -140,6 +146,8 @@ public class Server
 				String question = tokenizer.nextToken();
 				Server.acrossQuestion.add(question);
 				System.out.println(question);
+				
+				//5th check
 				try
 				{
 					s = reader.readLine();
@@ -156,14 +164,14 @@ public class Server
 				s = reader.readLine();
 			} catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			while (s != null)
 			{
 				s = s.toLowerCase();
-//				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
+				
+				//6th check
 				if (tokenizer.countTokens() != 3)
 				{
 					System.out.println("Malformatted:not 3 token");
@@ -176,6 +184,8 @@ public class Server
 				}
 				String num = tokenizer.nextToken();
 				int n;
+				
+				//7th check
 				try
 				{
 					n = Integer.parseInt(num);
@@ -188,6 +198,8 @@ public class Server
 					return;
 				}
 				String answer = tokenizer.nextToken();
+				
+				//8th check
 				for (int i = 0; i < answer.length(); ++i)
 				{
 					char c = answer.charAt(i);
@@ -208,9 +220,7 @@ public class Server
 					s = reader.readLine();
 				} catch (IOException e)
 				{
-					System.out.println("Malformatted: no down");
-					clear();
-					return;
+					e.printStackTrace();
 				}
 			}
 		} else if (s.trim().equals("down"))
@@ -221,15 +231,15 @@ public class Server
 				
 			} catch (IOException e1)
 			{
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
 			while ((s != null) && (!s.trim().toLowerCase().equals("across")))
 			{
 				s = s.toLowerCase();
-//				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
+				
+				//2nd check
 				if (tokenizer.countTokens() != 3)
 				{
 					System.out.println("Malformatted:not 3 token");
@@ -242,6 +252,8 @@ public class Server
 				}
 				String num = tokenizer.nextToken();
 				int n;
+				
+				//3rd check
 				try
 				{
 					n = Integer.parseInt(num);
@@ -253,6 +265,8 @@ public class Server
 					return;
 				}
 				String answer = tokenizer.nextToken();
+				
+				//4th check
 				for (int i = 0; i < answer.length(); ++i)
 				{
 					char c = answer.charAt(i);
@@ -266,12 +280,14 @@ public class Server
 				Server.downAnswer.add(answer);
 				String question = tokenizer.nextToken();
 				Server.downQuestion.add(question);
+				
+				//5th check
 				try
 				{
 					s = reader.readLine();
 				} catch (IOException e)
 				{
-					System.out.println("Malformatted: no down");
+					System.out.println("Malformatted: no across");
 					clear();
 					return;
 				}
@@ -289,6 +305,8 @@ public class Server
 				s = s.toLowerCase();
 //				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
+				
+				//6th check
 				if (tokenizer.countTokens() != 3)
 				{
 					System.out.println("Malformatted:not 3 token");
@@ -301,6 +319,8 @@ public class Server
 				}
 				String num = tokenizer.nextToken();
 				int n;
+				
+				//7th check
 				try
 				{
 					n = Integer.parseInt(num);
@@ -312,6 +332,8 @@ public class Server
 					return;
 				}
 				String answer = tokenizer.nextToken();
+				
+				//8th check
 				for (int i = 0; i < answer.length(); ++i)
 				{
 					char c = answer.charAt(i);
@@ -330,12 +352,12 @@ public class Server
 					s = reader.readLine();
 				} catch (IOException e)
 				{
-					System.out.println("Malformatted: no down");
-					clear();
+					e.printStackTrace();
 					return;
 				}
 			}
 		} else
+		//9th check
 		{
 			System.out.println("First line is malformatted.");
 			return;
