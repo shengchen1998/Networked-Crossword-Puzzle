@@ -1,7 +1,6 @@
 package classes;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -15,17 +14,16 @@ public class ServerThread extends Thread {
 	private PrintWriter pw;
 	private BufferedReader br;
 	private ChatRoom cr;
-	private DataInputStream inputFromClient;
-	private boolean isFirst;
-	public ServerThread(Socket s, ChatRoom cr, Lock lock, Condition condition,Boolean isFirst) {
+	//private boolean isFirst;
+	private int index;
+	public ServerThread(Socket s, ChatRoom cr, Lock lock, Condition condition,int index) {
 		try {
-			this.isFirst = isFirst;
+			this.index = index;
 			this.cr = cr;
 			this.lock = lock;
 			this.condition = condition;
 			pw = new PrintWriter(s.getOutputStream());
 			br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			inputFromClient = new DataInputStream(s.getInputStream());
 			this.start();
 		} catch (IOException ioe) {
 			System.out.println("ioe in ServerThread constructor: " + ioe.getMessage());
@@ -40,26 +38,22 @@ public class ServerThread extends Thread {
 	public void run() {
 		try {
 				lock.lock();
-				if(!isFirst)
+				if(index!=0)
 				{
 					condition.await();
 				}
 				else
 				{
-					String l = br.readLine();
-					int numOfPlayers = Integer.parseInt(l);
-					System.out.println(numOfPlayers);
-					cr.setNumOfPlayers(numOfPlayers);
+					sendMessage("How many players will there be? ");
 				}
-				//sendMessage("It is your turn to send message.");
 				String line = br.readLine();
 				while(true)
 				{
 					if(line.indexOf("END_OF_MESSAGE")!=-1)
 					{
-						cr.signalClient(lock);
+						cr.singalCLient(lock);
 						sendMessage("You will need to wait until your turn to send again.");
-						isFirst = false;
+						
 						condition.await();
 						sendMessage("It is your turn to send message.");
 						line = br.readLine();
