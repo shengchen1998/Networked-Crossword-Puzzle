@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -53,13 +51,10 @@ public class Server
 		Server.downQuestion = new ArrayList<String>();
 		Server.stk = new Stack<Coor>();
 		String path = "gamedata";
-		int fileCount = 0;
+		
 		File d = new File(path);
 		File list[] = d.listFiles();
-		for (int i = 0; i < list.length; i++)
-		{
-			++fileCount;
-		}
+		int fileCount = list.length;
 		int index;
 		if (fileCount == 1)
 		{
@@ -90,7 +85,7 @@ public class Server
 //			System.out.println("First line is malformatted.");
 //			return;
 //		}
-		if (s.equals("across"))
+		if (s.trim().equals("across"))
 		{
 			try
 			{
@@ -101,7 +96,7 @@ public class Server
 				e1.printStackTrace();
 			}
 			
-			while ((s != null) && (!s.toLowerCase().equals("down")))
+			while ((s != null) && (!s.trim().toLowerCase().equals("down")))
 			{
 				s = s.toLowerCase();
 //				ArrayList<String> tokens = new ArrayList<String>();
@@ -218,7 +213,7 @@ public class Server
 					return;
 				}
 			}
-		} else if (s.equals("down"))
+		} else if (s.trim().equals("down"))
 		{
 			try
 			{
@@ -230,7 +225,7 @@ public class Server
 				e1.printStackTrace();
 			}
 			
-			while ((s != null) && (!s.toLowerCase().equals("across")))
+			while ((s != null) && (!s.trim().toLowerCase().equals("across")))
 			{
 				s = s.toLowerCase();
 //				ArrayList<String> tokens = new ArrayList<String>();
@@ -473,7 +468,7 @@ public class Server
 		Server.downAnswer.clear();
 		Server.downQuestion.clear();
 	}
-	public boolean check()//check if the potential arrangement is valid
+	private boolean check()//check if the potential arrangement is valid
 	{
 		for (int i = 0; i < SIZE; ++i)
 		{
@@ -543,7 +538,7 @@ public class Server
 		return true;
 		
 	}
-	public boolean put(int index, int x, int y) throws Exception
+	private boolean put(int index, int x, int y) throws Exception
 	{
 		String str = answers[index].first;
 		int length = str.length();
@@ -812,28 +807,6 @@ public class Server
 		{
 			if (answers[index].second)
 			{
-				
-//					for (int y = 0; y < SIZE; ++y)
-//					{
-//						for (int x = j1; x < SIZE + 1 - l+j1; ++x)
-//						{
-//							if(grids[x][y].letter == str.charAt(j1)&&grids[x][y].across == false)
-//							{
-//								if(put(index,x-j1,y))
-//								{
-//									//System.out.println("put "+str+" "+x+" "+y);
-//									for(int i = 1;i < totalSize;++i)
-//									{
-//										if(answers[i].used==false)
-//										{
-//											bt(i);
-//										}
-//									}
-//									remove(index,x-j1,y);
-//								}
-//							}
-//						}
-//					}
 				for (int i = 0; i < totalSize; ++i)
 				{
 					Answer answer = answers[i];
@@ -873,28 +846,6 @@ public class Server
 				
 			} else
 			{
-				
-//					for (int x = 0; x < Server.SIZE; ++x)
-//					{
-//						for (int y = j1; y < SIZE + 1 - l + j1; ++y)
-//						{
-//							if (grids[x][y].letter == str.charAt(j1) && grids[x][y].down == false)
-//							{
-//								if (put(index, x, y - j1))
-//								{
-//									// System.out.println("put "+str+" "+x+" "+y);
-//									for (int i = 1; i < totalSize; ++i)
-//									{
-//										if (answers[i].used == false)
-//										{
-//											bt(i);
-//										}
-//									}
-//									remove(index, x, y - j1);
-//								}
-//							}
-//						}
-//					}
 				for (int i = 0; i < totalSize; ++i)
 				{
 					Answer answer = answers[i];
@@ -938,106 +889,6 @@ public class Server
 			return;
 		}
 	}
-	
-//	void backtrack(int index) throws Exception
-//	{
-//		String str = answers[index].first;
-//		int length = str.length();
-////		System.out.println(str);
-//		if (answers[index].second)
-//		{
-//			for (int j = 0; j < SIZE; ++j)
-//			{
-//				for (int i = 0; i < SIZE + 1 - length; ++i)
-//				{
-//					if (put(index, i, j))
-//					{
-//						for (int k = 0; k < totalSize; ++k)
-//						{
-//							if (answers[k].used == false)
-//							{
-//								String s = answers[k].first;
-//								String onBoard = "";
-//								boolean flag = false;
-//								for (int a = 0; a < totalSize; ++a)
-//								{
-//									if (answers[a].used == true)
-//									{
-//										onBoard += answers[a].first;
-//									}
-//								}
-//								for (int b = 0; b < s.length(); ++b)
-//								{
-//									for (int a = 0; a < onBoard.length(); ++a)
-//									{
-//										if (s.charAt(b) == onBoard.charAt(a))
-//										{
-//											flag = true;
-//											break;
-//										}
-//									}
-//									if (flag)
-//									{
-//										backtrack(k);
-//										break;
-//									}
-//								}
-//							}
-//						}
-//						remove(index, i, j);
-//					}
-//					
-//				}
-//			}
-//		} else
-//		{
-//			for (int j = 0; j < SIZE + 1 - length; ++j)
-//			{
-//				for (int i = 0; i < SIZE; ++i)
-//				{
-//					
-//					if (put(index, i, j))
-//					{
-//						for (int k = 0; k < totalSize; ++k)
-//						{
-//							if (answers[k].used == false)
-//							{
-//								String s = answers[k].first;
-//								String onBoard = "";
-//								boolean flag = false;
-//								for (int a = 0; a < totalSize; ++a)
-//								{
-//									
-//									if (answers[a].used == true)
-//									{
-//										onBoard += answers[a].first;
-//									}
-//								}
-//								for (int b = 0; b < s.length(); ++b)
-//								{
-//									for (int a = 0; a < onBoard.length(); ++a)
-//									{
-//										if (s.charAt(b) == onBoard.charAt(a))
-//										{
-//											flag = true;
-//											break;
-//										}
-//									}
-//									if (flag)
-//									{
-//										backtrack(k);
-//										break;
-//									}
-//								}
-//							}
-//						}
-//						remove(index, i, j);
-//					}
-//					
-//				}
-//			}
-//		}
-//	}
 }
 
 class Coor
