@@ -373,6 +373,8 @@ public class Server
 		{
 			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
 		}
+		
+		//10th check
 		for (int i = 0; i < acrossSize; ++i)
 		{
 			int num = acrossNumber.get(i);
@@ -393,7 +395,7 @@ public class Server
 		for (int i = 0; i < acrossSize - 1; ++i)
 		{
 			int max = i;
-			for (int j = i + 1; j < acrossAnswer.size(); ++j)
+			for (int j = i + 1; j < acrossSize; ++j)
 			{
 				if (acrossAnswer.get(j).length() > acrossAnswer.get(max).length())
 				{
@@ -413,7 +415,7 @@ public class Server
 		for (int i = 0; i < downSize - 1; ++i)
 		{
 			int max = i;
-			for (int j = i + 1; j < downAnswer.size(); ++j)
+			for (int j = i + 1; j < downSize; ++j)
 			{
 				if (downAnswer.get(j).length() > downAnswer.get(max).length())
 				{
@@ -555,6 +557,59 @@ public class Server
 			if (discovered[answers[i].x][answers[i].y] == false)
 			{
 				return false;
+			}
+		}
+		for(int i = 0;i < totalSize-1;++i)
+		{
+			for(int j = i + 1;j < totalSize;++j)
+			{
+				if(answers[i].x == answers[j].x&&answers[i].y==answers[j].y)
+				{
+					int num1 = -1;
+					int num2 = -1;
+					if(answers[i].second == true)
+					{
+						for(int k = 0;k < acrossSize;++k)
+						{
+							if(answers[i].first.equals(acrossAnswer.get(k)))
+							{
+								num1 = acrossNumber.get(k);
+								break;
+							}
+						}
+						for(int k = 0;k < downSize;++k)
+						{
+							if(answers[j].first.equals(downAnswer.get(k)))
+							{
+								num2 = downNumber.get(k);
+								break;
+							}
+						}
+					}
+					else
+					{
+						for(int k = 0;k < downSize;++k)
+						{
+							if(answers[i].first.equals(downAnswer.get(k)))
+							{
+								num1 = downNumber.get(k);
+								break;
+							}
+						}
+						for(int k = 0;k < acrossSize;++k)
+						{
+							if(answers[j].first.equals(acrossAnswer.get(k)))
+							{
+								num2 = acrossNumber.get(k);
+								break;
+							}
+						}
+					}
+					if(num1!=num2)
+					{
+						return false;
+					}
+				}
 			}
 		}
 		return true;
