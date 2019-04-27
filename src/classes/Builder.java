@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-public class Server
+public class Builder
 {
-	public static Coor[][] coors;
-	public static boolean[][] discovered;
+	private static Coor[][] coors;
+	private static boolean[][] discovered;
 	public static Grid[][] grids;
 	public static final int SIZE = 100;
 	public static int acrossSize;
@@ -25,11 +25,12 @@ public class Server
 	public static ArrayList<String> acrossQuestion;
 	public static ArrayList<String> downQuestion;
 	public static Answer[] answers;
-	public static Stack<Coor> stk;
-	
-	
-	
-	public static void main(String[] args)
+	private static Stack<Coor> stk;
+	private static String path;
+	private static File directory;
+	private static File list[];
+	private static int fileCount;
+	public Builder()
 	{
 		grids = new Grid[SIZE][SIZE];
 		discovered = new boolean[SIZE][SIZE];
@@ -43,18 +44,22 @@ public class Server
 				discovered[i][j] = false;
 			}
 		}
-		Server.acrossNumber = new ArrayList<Integer>();
-		Server.downNumber = new ArrayList<Integer>();
-		Server.acrossAnswer = new ArrayList<String>();
-		Server.downAnswer = new ArrayList<String>();
-		Server.acrossQuestion = new ArrayList<String>();
-		Server.downQuestion = new ArrayList<String>();
-		Server.stk = new Stack<Coor>();
-		String path = "gamedata";
-		
-		File d = new File(path);
-		File list[] = d.listFiles();
-		int fileCount = list.length;
+		Builder.acrossNumber = new ArrayList<Integer>();
+		Builder.downNumber = new ArrayList<Integer>();
+		Builder.acrossAnswer = new ArrayList<String>();
+		Builder.downAnswer = new ArrayList<String>();
+		Builder.acrossQuestion = new ArrayList<String>();
+		Builder.downQuestion = new ArrayList<String>();
+		Builder.stk = new Stack<Coor>();
+		path = "gamedata";
+		directory = new File(path);
+		list = directory.listFiles();
+		fileCount = list.length;
+	}
+	
+	
+	public void createBoard()
+	{
 		int index;
 		if (fileCount == 1)
 		{
@@ -120,7 +125,7 @@ public class Server
 				try
 				{
 					n = Integer.parseInt(num);
-					Server.acrossNumber.add(n);
+					Builder.acrossNumber.add(n);
 					System.out.println(n);
 				} catch (Exception e)
 				{
@@ -141,10 +146,10 @@ public class Server
 						return;
 					}
 				}
-				Server.acrossAnswer.add(answer);
+				Builder.acrossAnswer.add(answer);
 				System.out.println(answer);
 				String question = tokenizer.nextToken();
-				Server.acrossQuestion.add(question);
+				Builder.acrossQuestion.add(question);
 				System.out.println(question);
 				
 				//5th check
@@ -189,7 +194,7 @@ public class Server
 				try
 				{
 					n = Integer.parseInt(num);
-					Server.downNumber.add(n);
+					Builder.downNumber.add(n);
 					System.out.println(n);
 				} catch (Exception e)
 				{
@@ -210,10 +215,10 @@ public class Server
 						return;
 					}
 				}
-				Server.downAnswer.add(answer);
+				Builder.downAnswer.add(answer);
 				System.out.println(answer);
 				String question = tokenizer.nextToken();
-				Server.downQuestion.add(question);
+				Builder.downQuestion.add(question);
 				System.out.println(question);
 				try
 				{
@@ -257,7 +262,7 @@ public class Server
 				try
 				{
 					n = Integer.parseInt(num);
-					Server.downNumber.add(n);
+					Builder.downNumber.add(n);
 				} catch (Exception e)
 				{
 					System.out.println("Malformatted:not number");
@@ -277,9 +282,9 @@ public class Server
 						return;
 					}
 				}
-				Server.downAnswer.add(answer);
+				Builder.downAnswer.add(answer);
 				String question = tokenizer.nextToken();
-				Server.downQuestion.add(question);
+				Builder.downQuestion.add(question);
 				
 				//5th check
 				try
@@ -324,7 +329,7 @@ public class Server
 				try
 				{
 					n = Integer.parseInt(num);
-					Server.acrossNumber.add(n);
+					Builder.acrossNumber.add(n);
 				} catch (Exception e)
 				{
 					System.out.println("Malformatted:not number");
@@ -344,9 +349,9 @@ public class Server
 						return;
 					}
 				}
-				Server.acrossAnswer.add(answer);
+				Builder.acrossAnswer.add(answer);
 				String question = tokenizer.nextToken();
-				Server.acrossQuestion.add(question);
+				Builder.acrossQuestion.add(question);
 				try
 				{
 					s = reader.readLine();
@@ -362,9 +367,9 @@ public class Server
 			System.out.println("First line is malformatted.");
 			return;
 		}
-		Server.acrossSize = acrossNumber.size();
-		Server.downSize = downNumber.size();
-		Server.totalSize = acrossSize + downSize;
+		Builder.acrossSize = acrossNumber.size();
+		Builder.downSize = downNumber.size();
+		Builder.totalSize = acrossSize + downSize;
 		for (int i = 0; i < acrossSize; ++i)
 		{
 			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
@@ -440,7 +445,7 @@ public class Server
 //		{
 //			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
 //		}
-		Server.answers = new Answer[totalSize];
+		Builder.answers = new Answer[totalSize];
 		int i = 0;
 		int j = 0;
 		int count = 0;
@@ -469,11 +474,10 @@ public class Server
 		{
 			System.out.println(answers[i].first);
 		}
-		Server server = new Server();
 		long before = System.currentTimeMillis();
 		try
 		{
-			server.bt(0);
+			this.bt(0);
 		} catch (Exception e)
 		{
 			System.out.println(e.getMessage());
@@ -485,12 +489,12 @@ public class Server
 	
 	private static void clear()
 	{
-		Server.acrossNumber.clear();
-		Server.acrossAnswer.clear();
-		Server.acrossQuestion.clear();
-		Server.downNumber.clear();
-		Server.downAnswer.clear();
-		Server.downQuestion.clear();
+		Builder.acrossNumber.clear();
+		Builder.acrossAnswer.clear();
+		Builder.acrossQuestion.clear();
+		Builder.downNumber.clear();
+		Builder.downAnswer.clear();
+		Builder.downQuestion.clear();
 	}
 	private boolean check()//check if the potential arrangement is valid
 	{
@@ -787,12 +791,12 @@ public class Server
 		
 	}
 	
-	public void remove(int index, int x, int y)
+	private void remove(int index, int x, int y)
 	{
 		answers[index].used = false;
 		answers[index].x = -1;
 		answers[index].y = -1;
-		String str = Server.answers[index].first;
+		String str = Builder.answers[index].first;
 		int length = str.length();
 		if (answers[index].second)
 		{
@@ -829,7 +833,7 @@ public class Server
 			g.index2 = -1;
 		}
 	}
-	void bt(int index) throws Exception
+	private void bt(int index) throws Exception
 	{
 		String str = answers[index].first;
 		int l = str.length();
