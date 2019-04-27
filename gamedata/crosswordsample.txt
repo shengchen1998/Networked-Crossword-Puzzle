@@ -1,4 +1,4 @@
-ACROSS  
+ACROSS
 3|FRISBEE|What is USC's mascot?
 6|SALAD|ASFASS
 7|PIE|SDASDFA
@@ -10,7 +10,7 @@ ACROSS
 16|FIREWORKS|SFASF
 17|NAPKIN|SFASFSA
 18|HOTDOG|sfasfsa
-DOWN  
+DOWN
 1|COOLER|What is the name of USC's white horse?
 2|SANDWICH|What is one of USC's colors?
 4|SUMMER|ASFASF

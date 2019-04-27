@@ -58,7 +58,7 @@ public class Builder
 	}
 	
 	
-	public void createBoard()
+	public boolean createBoard()
 	{
 		int index;
 		if (fileCount == 1)
@@ -74,7 +74,13 @@ public class Builder
 			reader = new BufferedReader(new FileReader(list[index]));
 		} catch (FileNotFoundException e1)
 		{
-			System.out.println("Cannot open file " + index);
+			//System.out.println("Cannot open file " + index);
+			File temp = list[index];
+			list[index] = list[fileCount-1];
+			list[fileCount-1]= temp;
+			--fileCount;
+			clear();
+			return false;
 		}
 		String s = null;
 		try
@@ -82,15 +88,26 @@ public class Builder
 			s = reader.readLine();
 		} catch (IOException e)
 		{
-			System.out.println("File is empty.");
+			//System.out.println("File is empty.");
+			File temp = list[index];
+			list[index] = list[fileCount-1];
+			list[fileCount-1]= temp;
+			--fileCount;
+			clear();
+			return false;
 		}
 		s = s.trim().toLowerCase();
 		
 		//1st check
 		if ((!s.equals("across")) && (!s.equals("down")))
 		{
-			System.out.println("First line is malformatted.");
-			return;
+			//System.out.println("First line is malformatted.");
+			File temp = list[index];
+			list[index] = list[fileCount-1];
+			list[fileCount-1]= temp;
+			--fileCount;
+			clear();
+			return false;
 		}
 		if (s.trim().equals("across"))
 		{
@@ -99,7 +116,13 @@ public class Builder
 				s = reader.readLine();
 			} catch (IOException e1)
 			{
-				e1.printStackTrace();
+				//e1.printStackTrace();
+				File temp = list[index];
+				list[index] = list[fileCount-1];
+				list[fileCount-1]= temp;
+				--fileCount;
+				clear();
+				return false;
 			}
 			
 			while ((s != null) && (!s.trim().toLowerCase().equals("down")))
@@ -110,13 +133,12 @@ public class Builder
 				//2nd check
 				if (tokenizer.countTokens() != 3)
 				{
-					System.out.println("Malformatted:not 3 token");
-					for (int i = 0; i < tokenizer.countTokens(); ++i)
-					{
-						System.out.println(tokenizer.nextToken());
-					}
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
 					clear();
-					return;
+					return false;
 				}
 				String num = tokenizer.nextToken();
 				int n;
@@ -126,12 +148,16 @@ public class Builder
 				{
 					n = Integer.parseInt(num);
 					Builder.acrossNumber.add(n);
-					System.out.println(n);
+					//System.out.println(n);
 				} catch (Exception e)
 				{
-					System.out.println("Malformatted:not number");
+					//System.out.println("Malformatted:not number");
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
 					clear();
-					return;
+					return false;
 				}
 				
 				//4th check
@@ -141,16 +167,20 @@ public class Builder
 					char c = answer.charAt(i);
 					if (c < 'a' || c > 'z')
 					{
-						System.out.println("Malformatted:not letter");
+						//System.out.println("Malformatted:not letter");
+						File temp = list[index];
+						list[index] = list[fileCount-1];
+						list[fileCount-1]= temp;
+						--fileCount;
 						clear();
-						return;
+						return false;
 					}
 				}
 				Builder.acrossAnswer.add(answer);
-				System.out.println(answer);
+				//System.out.println(answer);
 				String question = tokenizer.nextToken();
 				Builder.acrossQuestion.add(question);
-				System.out.println(question);
+				//System.out.println(question);
 				
 				//5th check
 				try
@@ -159,9 +189,13 @@ public class Builder
 					
 				} catch (IOException e)
 				{
-					System.out.println("Malformatted: no down");
+					//System.out.println("Malformatted: no down");
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
 					clear();
-					return;
+					return false;
 				}
 			}
 			try
@@ -169,7 +203,13 @@ public class Builder
 				s = reader.readLine();
 			} catch (IOException e)
 			{
-				e.printStackTrace();
+				//e.printStackTrace();
+				File temp = list[index];
+				list[index] = list[fileCount-1];
+				list[fileCount-1]= temp;
+				--fileCount;
+				clear();
+				return false;
 			}
 			while (s != null)
 			{
@@ -179,13 +219,17 @@ public class Builder
 				//6th check
 				if (tokenizer.countTokens() != 3)
 				{
-					System.out.println("Malformatted:not 3 token");
-					for (int i = 0; i < tokenizer.countTokens(); ++i)
-					{
-						System.out.println(tokenizer.nextToken());
-					}
+//					System.out.println("Malformatted:not 3 token");
+//					for (int i = 0; i < tokenizer.countTokens(); ++i)
+//					{
+//						System.out.println(tokenizer.nextToken());
+//					}
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
 					clear();
-					return;
+					return false;
 				}
 				String num = tokenizer.nextToken();
 				int n;
@@ -195,12 +239,16 @@ public class Builder
 				{
 					n = Integer.parseInt(num);
 					Builder.downNumber.add(n);
-					System.out.println(n);
+					//System.out.println(n);
 				} catch (Exception e)
 				{
-					System.out.println("Malformatted:not number");
+					//System.out.println("Malformatted:not number");
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
 					clear();
-					return;
+					return false;
 				}
 				String answer = tokenizer.nextToken();
 				
@@ -210,22 +258,32 @@ public class Builder
 					char c = answer.charAt(i);
 					if (c < 'a' || c > 'z')
 					{
-						System.out.println("Malformatted:not letter");
+						//System.out.println("Malformatted:not letter");
+						File temp = list[index];
+						list[index] = list[fileCount-1];
+						list[fileCount-1]= temp;
+						--fileCount;
 						clear();
-						return;
+						return false;
 					}
 				}
 				Builder.downAnswer.add(answer);
-				System.out.println(answer);
+				//System.out.println(answer);
 				String question = tokenizer.nextToken();
 				Builder.downQuestion.add(question);
-				System.out.println(question);
+				//System.out.println(question);
 				try
 				{
 					s = reader.readLine();
 				} catch (IOException e)
 				{
-					e.printStackTrace();
+					//e.printStackTrace();
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
+					clear();
+					return false;
 				}
 			}
 		} else if (s.trim().equals("down"))
@@ -236,7 +294,13 @@ public class Builder
 				
 			} catch (IOException e1)
 			{
-				e1.printStackTrace();
+				//e1.printStackTrace();
+				File temp = list[index];
+				list[index] = list[fileCount-1];
+				list[fileCount-1]= temp;
+				--fileCount;
+				clear();
+				return false;
 			}
 			
 			while ((s != null) && (!s.trim().toLowerCase().equals("across")))
@@ -247,13 +311,17 @@ public class Builder
 				//2nd check
 				if (tokenizer.countTokens() != 3)
 				{
-					System.out.println("Malformatted:not 3 token");
-					for (int i = 0; i < tokenizer.countTokens(); ++i)
-					{
-						System.out.println(tokenizer.nextToken());
-					}
+					//System.out.println("Malformatted:not 3 token");
+//					for (int i = 0; i < tokenizer.countTokens(); ++i)
+//					{
+//						System.out.println(tokenizer.nextToken());
+//					}
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
 					clear();
-					return;
+					return false;
 				}
 				String num = tokenizer.nextToken();
 				int n;
@@ -265,9 +333,13 @@ public class Builder
 					Builder.downNumber.add(n);
 				} catch (Exception e)
 				{
-					System.out.println("Malformatted:not number");
+					//System.out.println("Malformatted:not number");
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
 					clear();
-					return;
+					return false;
 				}
 				String answer = tokenizer.nextToken();
 				
@@ -277,9 +349,13 @@ public class Builder
 					char c = answer.charAt(i);
 					if (c < 'a' || c > 'z')
 					{
-						System.out.println("Malformatted:not letter");
+						//System.out.println("Malformatted:not letter");
+						File temp = list[index];
+						list[index] = list[fileCount-1];
+						list[fileCount-1]= temp;
+						--fileCount;
 						clear();
-						return;
+						return false;
 					}
 				}
 				Builder.downAnswer.add(answer);
@@ -292,9 +368,13 @@ public class Builder
 					s = reader.readLine();
 				} catch (IOException e)
 				{
-					System.out.println("Malformatted: no across");
+					//System.out.println("Malformatted: no across");
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
 					clear();
-					return;
+					return false;
 				}
 			}
 			try
@@ -302,8 +382,13 @@ public class Builder
 				s = reader.readLine();
 			} catch (IOException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
+				File temp = list[index];
+				list[index] = list[fileCount-1];
+				list[fileCount-1]= temp;
+				--fileCount;
+				clear();
+				return false;
 			}
 			while (s != null)
 			{
@@ -314,13 +399,17 @@ public class Builder
 				//6th check
 				if (tokenizer.countTokens() != 3)
 				{
-					System.out.println("Malformatted:not 3 token");
-					for (int i = 0; i < tokenizer.countTokens(); ++i)
-					{
-						System.out.println(tokenizer.nextToken());
-					}
+//					System.out.println("Malformatted:not 3 token");
+//					for (int i = 0; i < tokenizer.countTokens(); ++i)
+//					{
+//						System.out.println(tokenizer.nextToken());
+//					}
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
 					clear();
-					return;
+					return false;
 				}
 				String num = tokenizer.nextToken();
 				int n;
@@ -332,9 +421,13 @@ public class Builder
 					Builder.acrossNumber.add(n);
 				} catch (Exception e)
 				{
-					System.out.println("Malformatted:not number");
+					//System.out.println("Malformatted:not number");
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
 					clear();
-					return;
+					return false;
 				}
 				String answer = tokenizer.nextToken();
 				
@@ -344,9 +437,13 @@ public class Builder
 					char c = answer.charAt(i);
 					if (c < 'a' || c > 'z')
 					{
-						System.out.println("Malformatted:not letter");
+						//System.out.println("Malformatted:not letter");
+						File temp = list[index];
+						list[index] = list[fileCount-1];
+						list[fileCount-1]= temp;
+						--fileCount;
 						clear();
-						return;
+						return false;
 					}
 				}
 				Builder.acrossAnswer.add(answer);
@@ -357,27 +454,37 @@ public class Builder
 					s = reader.readLine();
 				} catch (IOException e)
 				{
-					e.printStackTrace();
-					return;
+					//e.printStackTrace();
+					File temp = list[index];
+					list[index] = list[fileCount-1];
+					list[fileCount-1]= temp;
+					--fileCount;
+					clear();
+					return false;
 				}
 			}
 		} else
 		//9th check
 		{
-			System.out.println("First line is malformatted.");
-			return;
+			//System.out.println("First line is malformatted.");
+			File temp = list[index];
+			list[index] = list[fileCount-1];
+			list[fileCount-1]= temp;
+			--fileCount;
+			clear();
+			return false;
 		}
 		Builder.acrossSize = acrossNumber.size();
 		Builder.downSize = downNumber.size();
 		Builder.totalSize = acrossSize + downSize;
-		for (int i = 0; i < acrossSize; ++i)
-		{
-			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
-		}
-		for (int i = 0; i < downSize; ++i)
-		{
-			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
-		}
+//		for (int i = 0; i < acrossSize; ++i)
+//		{
+//			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
+//		}
+//		for (int i = 0; i < downSize; ++i)
+//		{
+//			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
+//		}
 		
 		//10th check
 		for (int i = 0; i < acrossSize; ++i)
@@ -389,9 +496,13 @@ public class Builder
 				{
 					if (acrossAnswer.get(i).charAt(0) != downAnswer.get(j).charAt(0))
 					{
-						System.out.println("Malformatted: first letter does not match.");
+						//System.out.println("Malformatted: first letter does not match.");
+						File temp = list[index];
+						list[index] = list[fileCount-1];
+						list[fileCount-1]= temp;
+						--fileCount;
 						clear();
-						return;
+						return false;
 					}
 				}
 			}
@@ -470,11 +581,11 @@ public class Builder
 			}
 			++count;
 		}
-		for (i = 0; i < totalSize; ++i)
-		{
-			System.out.println(answers[i].first);
-		}
-		long before = System.currentTimeMillis();
+//		for (i = 0; i < totalSize; ++i)
+//		{
+//			System.out.println(answers[i].first);
+//		}
+		//long before = System.currentTimeMillis();
 		try
 		{
 			this.bt(0);
@@ -483,8 +594,17 @@ public class Builder
 			System.out.println(e.getMessage());
 		}
 		
-		long after = System.currentTimeMillis();
-		System.out.println("time used: " + (after - before));
+		//long after = System.currentTimeMillis();
+		//System.out.println("time used: " + (after - before));
+		try
+		{
+			reader.close();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
 	}
 	
 	private static void clear()
@@ -770,21 +890,22 @@ public class Builder
 		{
 			if (check())
 			{
-				for (int j = 0; j < SIZE; ++j)
-				{
-					for (int i = 0; i < SIZE; ++i)
-					{
-						if (grids[i][j].letter == 0)
-						{
-							System.out.print(' ');
-						} else
-						{
-							System.out.print(grids[i][j].letter);
-						}
-					}
-					System.out.println();
-				}
-				throw new Exception("Founded!");
+//				for (int j = 0; j < SIZE; ++j)
+//				{
+//					for (int i = 0; i < SIZE; ++i)
+//					{
+//						if (grids[i][j].letter == 0)
+//						{
+//							System.out.print(' ');
+//						} else
+//						{
+//							System.out.print(grids[i][j].letter);
+//						}
+//					}
+//					System.out.println();
+//				}
+				//System.out.println("File read successfully.");
+				throw new Exception("File read successfully.");
 			}
 		}
 		return true;

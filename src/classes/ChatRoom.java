@@ -17,13 +17,14 @@ public class ChatRoom
 	private Vector<Lock> locks;
 	private Vector<Condition> conditions;
 	private Vector<ServerThread> serverThreads;
-	
+	private Builder builder;
 	public ChatRoom(int port)
 	{
 		try
 		{
+			numOfTotalPlayers = 0;
 			numOfExistingPlayers = 0;
-			Builder builder = new Builder();
+			builder = new Builder();
 			// builder.createBoard();
 			System.out.println("Listening on port " + port + ".");
 			ServerSocket ss = new ServerSocket(port);
@@ -52,11 +53,25 @@ public class ChatRoom
 	
 	public void broadcast(String message, ServerThread st)
 	{
-		if(numOfExistingPlayers==1)
+		if(numOfExistingPlayers==1&&numOfTotalPlayers ==0)
 		{
 			//isFirst = false;
 			numOfTotalPlayers= Integer.parseInt(message);
 			System.out.println("Number of players: "+numOfTotalPlayers+".");
+			if(numOfTotalPlayers>1)
+			{
+				System.out.println("Waiting for player 2.");
+				serverThreads.get(0).sendMessage("Waiting for player 2.");
+			}
+			System.out.println("Reading random game file.");
+			boolean validBoard;
+			validBoard = builder.createBoard();
+			while(validBoard==false)
+			{
+				validBoard = builder.createBoard();
+			}
+			
+			
 		}
 		else if (message != null)
 		{

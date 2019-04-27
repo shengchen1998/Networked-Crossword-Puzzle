@@ -42,7 +42,14 @@ public class ChatClient extends Thread
 			while (true)
 			{
 				String line = br.readLine();
-				System.out.println(line);
+				if(line.equals("How many players will there be? "))
+				{
+					System.out.print(line);
+				}
+				else
+				{
+					System.out.println(line);
+				}
 			}
 		} catch (IOException ioe)
 		{
