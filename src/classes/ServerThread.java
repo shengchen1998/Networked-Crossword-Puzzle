@@ -38,14 +38,22 @@ public class ServerThread extends Thread {
 	public void run() {
 		try {
 				lock.lock();
-				if(index!=0)
-				{
-					condition.await();
-				}
-				else
+				if(index == 0)
 				{
 					sendMessage("How many players will there be? ");
 				}
+				else if(index==1)
+				{
+					sendMessage("There is a game waiting for you.");
+					sendMessage("Player 1 has already joined.");
+				}
+				else
+				{
+					sendMessage("There is a game waiting for you.");
+					sendMessage("Player 1 has already joined.");
+					sendMessage("Player 2 has already joined.");
+				}
+				
 				String line = br.readLine();
 				while(true)
 				{

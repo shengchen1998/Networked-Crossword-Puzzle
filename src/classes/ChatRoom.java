@@ -45,6 +45,22 @@ public class ChatRoom
 				ServerThread st = new ServerThread(s, this, lock, condition, 0);
 				serverThreads.add(st);
 			//}
+				while(true)
+				{
+					Socket s1 = ss.accept(); // blocking
+					++numOfExistingPlayers;
+					System.out.println("Connection from: " + s1.getInetAddress());
+					Lock lock1 = new ReentrantLock();
+					locks.add(lock1);
+					Condition condition1 = lock1.newCondition();
+					conditions.add(condition1);
+					ServerThread st1 = new ServerThread(s1, this, lock1, condition1,numOfExistingPlayers-1 );
+					serverThreads.add(st1);
+					if(numOfExistingPlayers==numOfTotalPlayers)
+					{
+						break;
+					}
+				}
 		} catch (IOException ioe)
 		{
 			System.out.println("ioe in ChatRoom constructor: " + ioe.getMessage());
