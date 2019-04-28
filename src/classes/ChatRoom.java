@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ChatRoom
 {
 	private static int numOfExistingPlayers;
-	private static int numOfTotalPlayers;
+	protected static int numOfTotalPlayers;
 	//private static boolean isFirst;
 	private Vector<Lock> locks;
 	private Vector<Condition> conditions;
@@ -61,6 +61,12 @@ public class ChatRoom
 						break;
 					}
 				}
+				System.out.println("Game can now begin.");
+				for (ServerThread threads : serverThreads)
+				{
+					threads.sendMessage("The game is beginning.");
+				}
+				
 		} catch (IOException ioe)
 		{
 			System.out.println("ioe in ChatRoom constructor: " + ioe.getMessage());
@@ -86,8 +92,12 @@ public class ChatRoom
 			{
 				validBoard = builder.createBoard();
 			}
-			
-			
+		}
+		else if(message == "wait for 3")
+		{
+			System.out.println("Waiting for player 3.");
+			serverThreads.get(0).sendMessage("Waiting for player 3.");
+			serverThreads.get(1).sendMessage("Waiting for player 3.");
 		}
 		else if (message != null)
 		{

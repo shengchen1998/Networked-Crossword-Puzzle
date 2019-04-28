@@ -41,11 +41,17 @@ public class ServerThread extends Thread {
 				if(index == 0)
 				{
 					sendMessage("How many players will there be? ");
+					String num = br.readLine();
+					cr.broadcast(num, this);
 				}
 				else if(index==1)
 				{
 					sendMessage("There is a game waiting for you.");
 					sendMessage("Player 1 has already joined.");
+					if(ChatRoom.numOfTotalPlayers == 3)
+					{
+						cr.broadcast("wait for 3", this);
+					}
 				}
 				else
 				{
@@ -53,7 +59,7 @@ public class ServerThread extends Thread {
 					sendMessage("Player 1 has already joined.");
 					sendMessage("Player 2 has already joined.");
 				}
-				
+				condition.await();
 				String line = br.readLine();
 				while(true)
 				{
