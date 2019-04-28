@@ -57,7 +57,7 @@ public class ServerThread extends Thread
 				{
 					if (Builder.grids[i][j].index1 != -1)
 					{
-						row += Integer.toString(Builder.answers[Builder.grids[i][j].index1].num);
+						row += Builder.answers[Builder.grids[i][j].index1].num;
 					}
 					else
 					{

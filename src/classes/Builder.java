@@ -720,47 +720,14 @@ public class Builder
 			{
 				if (answers[i].x == answers[j].x && answers[i].y == answers[j].y)
 				{
-					int num1 = -1;
-					int num2 = -1;
-					if (answers[i].second == true)
+					if (answers[i].num != answers[j].num)
 					{
-						for (int k = 0; k < acrossSize; ++k)
-						{
-							if (answers[i].first.equals(acrossAnswer.get(k)))
-							{
-								num1 = acrossNumber.get(k);
-								break;
-							}
-						}
-						for (int k = 0; k < downSize; ++k)
-						{
-							if (answers[j].first.equals(downAnswer.get(k)))
-							{
-								num2 = downNumber.get(k);
-								break;
-							}
-						}
+						return false;
 					}
-					else
-					{
-						for (int k = 0; k < downSize; ++k)
-						{
-							if (answers[i].first.equals(downAnswer.get(k)))
-							{
-								num1 = downNumber.get(k);
-								break;
-							}
-						}
-						for (int k = 0; k < acrossSize; ++k)
-						{
-							if (answers[j].first.equals(acrossAnswer.get(k)))
-							{
-								num2 = acrossNumber.get(k);
-								break;
-							}
-						}
-					}
-					if (num1 != num2)
+				}
+				if(answers[i].num == answers[j].num)
+				{
+					if(answers[i].x != answers[j].x || answers[i].y != answers[j].y)
 					{
 						return false;
 					}
@@ -1272,5 +1239,6 @@ class Answer
 		this.x = -1;
 		this.y = -1;
 		this.answered = false;
+		this.num = num;
 	}
 }
