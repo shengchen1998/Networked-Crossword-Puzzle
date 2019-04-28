@@ -73,7 +73,14 @@ public class ChatClient extends Thread
 		String hostname = scan.nextLine();
 		System.out.print("Enter the server port: ");
 		int port = scan.nextInt();
-		ChatClient cc = new ChatClient(hostname, port);
+		try
+		{
+			ChatClient cc = new ChatClient(hostname, port);
+		}
+		catch(Exception e)
+		{
+			
+		}
 		scan.close();
 	}
 }

@@ -13,7 +13,6 @@ public class Builder
 {
 	
 	protected static int actualSize;
-	// protected static Grid[][] board;
 	protected static int upperbound, lowerbound, lefterbound, righterbound;
 	private static Coor[][] coors;
 	private static boolean[][] discovered;
@@ -84,7 +83,6 @@ public class Builder
 		}
 		catch (FileNotFoundException e1)
 		{
-			// System.out.println("Cannot open file " + index);
 			File temp = list[index];
 			list[index] = list[fileCount - 1];
 			list[fileCount - 1] = temp;
@@ -99,7 +97,6 @@ public class Builder
 		}
 		catch (IOException e)
 		{
-			// System.out.println("File is empty.");
 			File temp = list[index];
 			list[index] = list[fileCount - 1];
 			list[fileCount - 1] = temp;
@@ -112,7 +109,6 @@ public class Builder
 		// 1st check
 		if ((!s.equals("across")) && (!s.equals("down")))
 		{
-			// System.out.println("First line is malformatted.");
 			File temp = list[index];
 			list[index] = list[fileCount - 1];
 			list[fileCount - 1] = temp;
@@ -160,11 +156,9 @@ public class Builder
 				{
 					n = Integer.parseInt(num);
 					Builder.acrossNumber.add(n);
-					// System.out.println(n);
 				}
 				catch (Exception e)
 				{
-					// System.out.println("Malformatted:not number");
 					File temp = list[index];
 					list[index] = list[fileCount - 1];
 					list[fileCount - 1] = temp;
@@ -180,7 +174,6 @@ public class Builder
 					char c = answer.charAt(i);
 					if (c < 'a' || c > 'z')
 					{
-						// System.out.println("Malformatted:not letter");
 						File temp = list[index];
 						list[index] = list[fileCount - 1];
 						list[fileCount - 1] = temp;
@@ -190,10 +183,8 @@ public class Builder
 					}
 				}
 				Builder.acrossAnswer.add(answer);
-				// System.out.println(answer);
 				String question = tokenizer.nextToken();
 				Builder.acrossQuestion.add(question);
-				// System.out.println(question);
 				
 				// 5th check
 				try
@@ -203,7 +194,6 @@ public class Builder
 				}
 				catch (IOException e)
 				{
-					// System.out.println("Malformatted: no down");
 					File temp = list[index];
 					list[index] = list[fileCount - 1];
 					list[fileCount - 1] = temp;
@@ -234,11 +224,6 @@ public class Builder
 				// 6th check
 				if (tokenizer.countTokens() != 3)
 				{
-//					System.out.println("Malformatted:not 3 token");
-//					for (int i = 0; i < tokenizer.countTokens(); ++i)
-//					{
-//						System.out.println(tokenizer.nextToken());
-//					}
 					File temp = list[index];
 					list[index] = list[fileCount - 1];
 					list[fileCount - 1] = temp;
@@ -254,11 +239,9 @@ public class Builder
 				{
 					n = Integer.parseInt(num);
 					Builder.downNumber.add(n);
-					// System.out.println(n);
 				}
 				catch (Exception e)
 				{
-					// System.out.println("Malformatted:not number");
 					File temp = list[index];
 					list[index] = list[fileCount - 1];
 					list[fileCount - 1] = temp;
@@ -274,7 +257,6 @@ public class Builder
 					char c = answer.charAt(i);
 					if (c < 'a' || c > 'z')
 					{
-						// System.out.println("Malformatted:not letter");
 						File temp = list[index];
 						list[index] = list[fileCount - 1];
 						list[fileCount - 1] = temp;
@@ -284,10 +266,8 @@ public class Builder
 					}
 				}
 				Builder.downAnswer.add(answer);
-				// System.out.println(answer);
 				String question = tokenizer.nextToken();
 				Builder.downQuestion.add(question);
-				// System.out.println(question);
 				try
 				{
 					s = reader.readLine();
@@ -330,11 +310,6 @@ public class Builder
 				// 2nd check
 				if (tokenizer.countTokens() != 3)
 				{
-					// System.out.println("Malformatted:not 3 token");
-//					for (int i = 0; i < tokenizer.countTokens(); ++i)
-//					{
-//						System.out.println(tokenizer.nextToken());
-//					}
 					File temp = list[index];
 					list[index] = list[fileCount - 1];
 					list[fileCount - 1] = temp;
@@ -353,7 +328,6 @@ public class Builder
 				}
 				catch (Exception e)
 				{
-					// System.out.println("Malformatted:not number");
 					File temp = list[index];
 					list[index] = list[fileCount - 1];
 					list[fileCount - 1] = temp;
@@ -369,7 +343,6 @@ public class Builder
 					char c = answer.charAt(i);
 					if (c < 'a' || c > 'z')
 					{
-						// System.out.println("Malformatted:not letter");
 						File temp = list[index];
 						list[index] = list[fileCount - 1];
 						list[fileCount - 1] = temp;
@@ -389,7 +362,6 @@ public class Builder
 				}
 				catch (IOException e)
 				{
-					// System.out.println("Malformatted: no across");
 					File temp = list[index];
 					list[index] = list[fileCount - 1];
 					list[fileCount - 1] = temp;
@@ -415,17 +387,12 @@ public class Builder
 			while (s != null)
 			{
 				s = s.toLowerCase();
-//				ArrayList<String> tokens = new ArrayList<String>();
 				StringTokenizer tokenizer = new StringTokenizer(s, "|");
 				
 				// 6th check
 				if (tokenizer.countTokens() != 3)
 				{
-//					System.out.println("Malformatted:not 3 token");
-//					for (int i = 0; i < tokenizer.countTokens(); ++i)
-//					{
-//						System.out.println(tokenizer.nextToken());
-//					}
+
 					File temp = list[index];
 					list[index] = list[fileCount - 1];
 					list[fileCount - 1] = temp;
@@ -444,7 +411,6 @@ public class Builder
 				}
 				catch (Exception e)
 				{
-					// System.out.println("Malformatted:not number");
 					File temp = list[index];
 					list[index] = list[fileCount - 1];
 					list[fileCount - 1] = temp;
@@ -460,7 +426,6 @@ public class Builder
 					char c = answer.charAt(i);
 					if (c < 'a' || c > 'z')
 					{
-						// System.out.println("Malformatted:not letter");
 						File temp = list[index];
 						list[index] = list[fileCount - 1];
 						list[fileCount - 1] = temp;
@@ -491,7 +456,6 @@ public class Builder
 		else
 		// 9th check
 		{
-			// System.out.println("First line is malformatted.");
 			File temp = list[index];
 			list[index] = list[fileCount - 1];
 			list[fileCount - 1] = temp;
@@ -502,14 +466,6 @@ public class Builder
 		Builder.acrossSize = acrossNumber.size();
 		Builder.downSize = downNumber.size();
 		Builder.totalSize = acrossSize + downSize;
-//		for (int i = 0; i < acrossSize; ++i)
-//		{
-//			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
-//		}
-//		for (int i = 0; i < downSize; ++i)
-//		{
-//			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
-//		}
 		
 		// 10th check
 		for (int i = 0; i < acrossSize; ++i)
@@ -521,7 +477,6 @@ public class Builder
 				{
 					if (acrossAnswer.get(i).charAt(0) != downAnswer.get(j).charAt(0))
 					{
-						// System.out.println("Malformatted: first letter does not match.");
 						File temp = list[index];
 						list[index] = list[fileCount - 1];
 						list[fileCount - 1] = temp;
@@ -573,14 +528,6 @@ public class Builder
 			downQuestion.set(i, downQuestion.get(max));
 			downQuestion.set(max, temp);
 		}
-//		for (int i = 0; i < acrossSize; ++i)
-//		{
-//			System.out.println(acrossNumber.get(i) + "|" + acrossAnswer.get(i) + "|" + acrossQuestion.get(i));
-//		}
-//		for (int i = 0; i < downSize; ++i)
-//		{
-//			System.out.println(downNumber.get(i) + "|" + downAnswer.get(i) + "|" + downQuestion.get(i));
-//		}
 		Builder.answers = new Answer[totalSize];
 		int i = 0;
 		int j = 0;
@@ -609,11 +556,6 @@ public class Builder
 			}
 			++count;
 		}
-//		for (i = 0; i < totalSize; ++i)
-//		{
-//			System.out.println(answers[i].first);
-//		}
-		// long before = System.currentTimeMillis();
 		for (int i1 = 0; i1 < acrossSize - 1; ++i1)
 		{
 			int min = i1;
@@ -663,8 +605,6 @@ public class Builder
 			System.out.println(e.getMessage());
 		}
 		
-		// long after = System.currentTimeMillis();
-		// System.out.println("time used: " + (after - before));
 		try
 		{
 			reader.close();
@@ -765,14 +705,6 @@ public class Builder
 						return false;
 					}
 				}
-//不让同一个数字在不相同格子
-//				if(answers[i].num == answers[j].num)
-//				{
-//					if(answers[i].x != answers[j].x || answers[i].y != answers[j].y)
-//					{
-//						return false;
-//					}
-//				}
 			}
 		}
 		return true;
@@ -932,21 +864,6 @@ public class Builder
 		{
 			if (check())
 			{
-//				for (int j = 0; j < SIZE; ++j)
-//				{
-//					for (int i = 0; i < SIZE; ++i)
-//					{
-//						if (grids[i][j].letter == 0)
-//						{
-//							System.out.print(' ');
-//						} else
-//						{
-//							System.out.print(grids[i][j].letter);
-//						}
-//					}
-//					System.out.println();
-//				}
-				// System.out.println("File read successfully.");
 				
 				for (int i = 0; i < SIZE; ++i)
 				{
@@ -992,41 +909,6 @@ public class Builder
 						}
 					}
 				}
-//				actualSize = Math.max((lowerbound-upperbound+1),(righterbound-lefterbound+1));
-//				board = new Grid[lefterbound-righterbound+1][upperbound-lowerbound+1];
-//				for(int j = 0;j < upperbound-lowerbound+1;++j)
-//				{
-//					for(int i = 0;i < lefterbound-righterbound+1;++i)
-//					{
-//						board[i][j] = grids[righterbound+i][lowerbound+j];
-//						if (board[i][j].letter == 0)
-//							{
-//								System.out.print(' ');
-//							} else
-//							{
-//								System.out.print(board[i][j].letter);
-//							}
-//					}
-//					System.out.println();
-//				}
-//				System.out.println("upperbound "+upperbound);
-//				System.out.println("lowerbound "+lowerbound);
-//				System.out.println("lefterbound "+lefterbound);
-//				System.out.println("righterbound"+righterbound);
-//				for (int j = lowerbound; j <= upperbound; ++j)
-//				{
-//					for (int i = righterbound; i <= lefterbound; ++i)
-//					{
-//						if (grids[i][j].letter == 0)
-//						{
-//							System.out.print(' ');
-//						} else
-//						{
-//							System.out.print(grids[i][j].letter);
-//						}
-//					}
-//					System.out.println();
-//				}
 				throw new Exception("File read successfully.");
 			}
 		}
@@ -1094,12 +976,10 @@ public class Builder
 					{
 						if (put(0, x, y))
 						{
-//							System.out.println("put " + str + " " + x + " " + y);
 							for (int i = 1; i < totalSize; ++i)
 							{
 								if (answers[i].used == false && answers[i].second == false)
 								{
-//									System.out.println("bt" + i);
 									bt(i);
 								}
 							}
@@ -1117,12 +997,10 @@ public class Builder
 					{
 						if (put(0, x, y))
 						{
-//							System.out.println("put " + str + " " + x + " " + y);
 							for (int i = 1; i < totalSize; ++i)
 							{
 								if (answers[i].used == false && answers[i].second == true)
 								{
-//									System.out.println("bt" + i);
 									bt(i);
 								}
 							}
@@ -1156,8 +1034,6 @@ public class Builder
 									{
 										if (put(index, x - j1, y + a))
 										{
-//											System.out.println(
-//													"put " + str + " " + (answer.x - j1) + " " + (answer.y + a));
 											for (int b = 1; b < totalSize; ++b)
 											{
 												if (answers[b].used == false)
@@ -1197,8 +1073,6 @@ public class Builder
 									{
 										if (put(index, x + a, y - j1))
 										{
-//											System.out.println(
-//													"put " + str + " " + (answer.x + a) + " " + (answer.y - j1));
 											for (int b = 1; b < totalSize; ++b)
 											{
 												if (answers[b].used == false)

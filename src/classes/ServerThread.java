@@ -10,6 +10,7 @@ import java.util.concurrent.locks.Lock;
 
 public class ServerThread extends Thread
 {
+	private Socket s;
 	private static boolean gameEnd;
 	public int score;
 	public Lock lock;
@@ -24,6 +25,7 @@ public class ServerThread extends Thread
 	{
 		try
 		{
+			this.s = s;
 			gameEnd = false;
 			score = 0;
 			this.index = index;
@@ -218,6 +220,9 @@ public class ServerThread extends Thread
 						cr.sendFinalScore(this);
 						lock.unlock();
 						exit = true;
+						sendMessage("<Client terminates>");
+						s.shutdownInput();
+						s.shutdownOutput();
 						break;
 					}
 					cr.broadcast("Player " + (index + 1) + "'s turn.", this);
