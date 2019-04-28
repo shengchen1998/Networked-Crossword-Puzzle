@@ -14,7 +14,6 @@ public class ChatRoom
 	protected static boolean gameEnd;
 	private static int numOfExistingPlayers;
 	protected static int numOfTotalPlayers;
-	// private static boolean isFirst;
 	private Vector<Lock> locks;
 	private Vector<Condition> conditions;
 	private Vector<ServerThread> serverThreads;

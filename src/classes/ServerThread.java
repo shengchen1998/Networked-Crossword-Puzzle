@@ -18,7 +18,6 @@ public class ServerThread extends Thread
 	private PrintWriter pw;
 	protected BufferedReader br;
 	private ChatRoom cr;
-	// private boolean isFirst;
 	protected int index;
 	
 	public ServerThread(Socket s, ChatRoom cr, Lock lock, Condition condition, int index)
@@ -370,8 +369,6 @@ public class ServerThread extends Thread
 					}
 					
 					line = br.readLine();
-//				if(line!=null)
-//				{
 					line = line.trim();
 					line = line.toLowerCase();
 					if (chooseAcross == true)
@@ -385,11 +382,7 @@ public class ServerThread extends Thread
 								this);
 					}
 					
-//				}
-//				else
-//				{
-//					sendMessage("That is not a valid input.");
-//				}
+
 					if (chooseAcross == true)
 					{
 						for (int i = 0; i < Builder.acrossSize; ++i)
@@ -468,20 +461,7 @@ public class ServerThread extends Thread
 							}
 						}
 					}
-					// 如果对了 就update answered信息并且计分
-					// 如果错了 condition.await(),然后叫下一个人
-					
-//				if (line.indexOf("END_OF_MESSAGE") != -1)
-//				{
-//					cr.singalCLient(lock);
-//					sendMessage("You will need to wait until your turn to send again.");
-//					
-//					condition.await();
-//					sendMessage("It is your turn to send message.");
-//					line = br.readLine();
-//				}
-//				cr.broadcast(line, this);
-//				line = br.readLine();
+
 				}
 			}
 			catch (InterruptedException ie)
@@ -494,7 +474,6 @@ public class ServerThread extends Thread
 			}
 			finally
 			{
-				// lock.unlock();
 			}
 		}
 	}
