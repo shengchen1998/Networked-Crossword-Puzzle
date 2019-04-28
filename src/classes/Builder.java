@@ -33,7 +33,7 @@ public class Builder
 	private static String path;
 	private static File directory;
 	private static File list[];
-	private static int fileCount;
+	protected static int fileCount;
 	
 	protected Builder()
 	{

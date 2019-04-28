@@ -54,6 +54,10 @@ public class ChatClient extends Thread
 				{
 					System.out.println(line);
 				}
+				if(ChatRoom.gameEnd == true)
+				{
+					break;
+				}
 			}
 		} catch (IOException ioe)
 		{

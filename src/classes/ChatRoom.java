@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ChatRoom
 {
-	private static boolean gameEnd;
+	protected static boolean gameEnd;
 	private static int numOfExistingPlayers;
 	protected static int numOfTotalPlayers;
 	// private static boolean isFirst;
@@ -19,133 +19,127 @@ public class ChatRoom
 	private Vector<Condition> conditions;
 	private Vector<ServerThread> serverThreads;
 	private Builder builder;
-	
+	private ServerSocket ss;
 	public ChatRoom(int port)
 	{
-		
 		try
 		{
 			System.out.println("Listening on port " + port + ".");
-			ServerSocket ss = new ServerSocket(port);
-			while (true)
-			{
-				gameEnd = false;
-				numOfTotalPlayers = 0;
-				numOfExistingPlayers = 0;
-				builder = new Builder();
-				System.out.println("Waiting for players...");
-				serverThreads = new Vector<ServerThread>();
-				locks = new Vector<Lock>();
-				conditions = new Vector<Condition>();
-//				isFirst = true;
-//				while (true)
-//				{
-				Socket s = ss.accept(); // blocking
-				numOfExistingPlayers = 1;
-				System.out.println("Connection from: " + s.getInetAddress());
-				Lock lock = new ReentrantLock();
-				locks.add(lock);
-				Condition condition = lock.newCondition();
-				conditions.add(condition);
-				ServerThread st = new ServerThread(s, this, lock, condition, 0);
-				serverThreads.add(st);
-				st.sendMessage("How many players will there be? ");
-				String num = st.br.readLine();
-				numOfTotalPlayers = Integer.parseInt(num);
-				System.out.println("Number of players: " + numOfTotalPlayers + ".");
-				if (numOfTotalPlayers > 1)
-				{
-					System.out.println("Waiting for player 2.");
-					serverThreads.get(0).sendMessage("Waiting for player 2.");
-				}
-				System.out.println("Reading random game file.");
-				boolean validBoard;
-				validBoard = builder.createBoard();
-				while (validBoard == false)
-				{
-					validBoard = builder.createBoard();
-				}
-				// this.broadcast(num, st);
-				// }
-				if (numOfTotalPlayers == 2)
-				{
-//					while (true)
-//					{
-					Socket s1 = ss.accept(); // blocking
-					numOfExistingPlayers = 2;
-					System.out.println("Connection from: " + s1.getInetAddress());
-					Lock lock1 = new ReentrantLock();
-					locks.add(lock1);
-					Condition condition1 = lock1.newCondition();
-					conditions.add(condition1);
-					ServerThread st1 = new ServerThread(s1, this, lock1, condition1, 1);
-					serverThreads.add(st1);
-//						if (numOfExistingPlayers == numOfTotalPlayers)
-//						{
-//							break;
-//						}
-//					}
-				}
-				else if (numOfTotalPlayers == 3)
-				{
-					Socket s1 = ss.accept(); // blocking
-					numOfExistingPlayers = 2;
-					System.out.println("Connection from: " + s1.getInetAddress());
-					Lock lock1 = new ReentrantLock();
-					locks.add(lock1);
-					Condition condition1 = lock1.newCondition();
-					conditions.add(condition1);
-					ServerThread st1 = new ServerThread(s1, this, lock1, condition1, 1);
-					serverThreads.add(st1);
-					Socket s2 = ss.accept(); // blocking
-					numOfExistingPlayers = 2;
-					System.out.println("Connection from: " + s2.getInetAddress());
-					Lock lock2 = new ReentrantLock();
-					locks.add(lock2);
-					Condition condition2 = lock2.newCondition();
-					conditions.add(condition2);
-					ServerThread st2 = new ServerThread(s2, this, lock2, condition2, 2);
-					serverThreads.add(st2);
-				}
-				System.out.println("Game can now begin.");
-				for (ServerThread threads : serverThreads)
-				{
-					threads.sendMessage("The game is beginning.");
-				}
-				System.out.println("Sending game board.");
-				
-//					boolean endGame = false;
-//					int index = 0;
-//					while(endGame == false)
-//					{
-//				for (ServerThread thread : serverThreads)
-//				{
-//					if(thread.index!=0)
-//					{
-//						thread.sendBoard();
-//					}
-//				}
-				locks.get(0).lock();
-				conditions.get(0).signal();
-				locks.get(0).unlock();
-				// System.out.println("Player 1¡¯s turn.");
-				for (ServerThread thread : serverThreads)
-				{
-					if (thread.index != 0)
-					{
-						thread.sendMessage("Player 1¡¯s turn.");
-					}
-				}
-				while (gameEnd == false)
-				{
-					//System.out.println("false");
-				}
-				
-			}
+			ss = new ServerSocket(port);
+			gameEnd = true;
+			startNewGame();
 		}
 		catch (IOException ioe)
 		{
 			System.out.println("ioe in ChatRoom constructor: " + ioe.getMessage());
+		}
+		
+	}
+	
+	private void startNewGame()
+	{
+		try
+		{
+			gameEnd = false;
+			numOfTotalPlayers = 0;
+			numOfExistingPlayers = 0;
+			builder = new Builder();
+			System.out.println("Waiting for players...");
+			serverThreads = new Vector<ServerThread>();
+			locks = new Vector<Lock>();
+			conditions = new Vector<Condition>();
+			Socket s = ss.accept(); // blocking
+			numOfExistingPlayers = 1;
+			System.out.println("Connection from: " + s.getInetAddress());
+			Lock lock = new ReentrantLock();
+			locks.add(lock);
+			Condition condition = lock.newCondition();
+			conditions.add(condition);
+			ServerThread st = new ServerThread(s, this, lock, condition, 0);
+			serverThreads.add(st);
+			st.sendMessage("How many players will there be? ");
+			String num = st.br.readLine();
+			numOfTotalPlayers = Integer.parseInt(num);
+			System.out.println("Number of players: " + numOfTotalPlayers + ".");
+			if (numOfTotalPlayers > 1)
+			{
+				System.out.println("Waiting for player 2.");
+				serverThreads.get(0).sendMessage("Waiting for player 2.");
+			}
+			System.out.println("Reading random game file.");
+			boolean validBoard;
+			validBoard = builder.createBoard();
+			while (validBoard == false)
+			{
+				if(Builder.fileCount==0)
+				{
+					throw (new Exception("No valid game data file exists."));
+				}
+				else
+				{
+					validBoard = builder.createBoard();
+				}
+				
+			}
+			
+			if (numOfTotalPlayers == 2)
+			{
+				Socket s1 = ss.accept(); // blocking
+				numOfExistingPlayers = 2;
+				System.out.println("Connection from: " + s1.getInetAddress());
+				Lock lock1 = new ReentrantLock();
+				locks.add(lock1);
+				Condition condition1 = lock1.newCondition();
+				conditions.add(condition1);
+				ServerThread st1 = new ServerThread(s1, this, lock1, condition1, 1);
+				serverThreads.add(st1);
+			}
+			else if (numOfTotalPlayers == 3)
+			{
+				Socket s1 = ss.accept(); // blocking
+				numOfExistingPlayers = 2;
+				System.out.println("Connection from: " + s1.getInetAddress());
+				Lock lock1 = new ReentrantLock();
+				locks.add(lock1);
+				Condition condition1 = lock1.newCondition();
+				conditions.add(condition1);
+				ServerThread st1 = new ServerThread(s1, this, lock1, condition1, 1);
+				serverThreads.add(st1);
+				Socket s2 = ss.accept(); // blocking
+				numOfExistingPlayers = 3;
+				System.out.println("Connection from: " + s2.getInetAddress());
+				Lock lock2 = new ReentrantLock();
+				locks.add(lock2);
+				Condition condition2 = lock2.newCondition();
+				conditions.add(condition2);
+				ServerThread st2 = new ServerThread(s2, this, lock2, condition2, 2);
+				serverThreads.add(st2);
+			}
+			System.out.println("Game can now begin.");
+			for (ServerThread threads : serverThreads)
+			{
+				threads.sendMessage("The game is beginning.");
+			}
+			System.out.println("Sending game board.");
+			
+			locks.get(0).lock();
+			conditions.get(0).signal();
+			locks.get(0).unlock();
+			for (ServerThread thread : serverThreads)
+			{
+				if (thread.index != 0)
+				{
+					thread.sendMessage("Player 1's turn.");
+				}
+			}
+		}
+		catch(Exception e )
+		{
+			System.out.println(e.getMessage());
+			for (ServerThread thread : serverThreads)
+			{
+				thread.sendMessage(e.getMessage());
+			}
 		}
 		
 	}
@@ -160,6 +154,7 @@ public class ChatRoom
 	
 	protected void sendFinalScore(ServerThread st)
 	{
+		
 		System.out.println("The game has concluded.");
 		System.out.println("Sending scores.");
 		gameEnd = true;
@@ -182,7 +177,10 @@ public class ChatRoom
 					thread.sendMessage("Player " + (i + 1) + " is the winner.");
 				}
 			}
+			thread.interrupt();
+			thread.lock.lock();
 		}
+		startNewGame();
 		
 	}
 	

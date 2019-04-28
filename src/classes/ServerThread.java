@@ -12,7 +12,7 @@ public class ServerThread extends Thread
 {
 	private static boolean gameEnd;
 	public int score;
-	private Lock lock;
+	public Lock lock;
 	private Condition condition;
 	private PrintWriter pw;
 	protected BufferedReader br;
@@ -186,279 +186,286 @@ public class ServerThread extends Thread
 	
 	public void run()
 	{
-		try
+		boolean exit = false;
+		while (!exit)
 		{
-			lock.lock();
-			if (index == 1)
+			
+			try
 			{
-				sendMessage("There is a game waiting for you.");
-				sendMessage("Player 1 has already joined.");
-				if (ChatRoom.numOfTotalPlayers == 3)
+				lock.lock();
+				if (index == 1)
 				{
-					cr.broadcast("wait for 3", this);
-				}
-			}
-			else if (index == 2)
-			{
-				sendMessage("There is a game waiting for you.");
-				sendMessage("Player 1 has already joined.");
-				sendMessage("Player 2 has already joined.");
-			}
-			condition.await();
-			String line;
-			while (true)
-			{
-				cr.sendBoard();
-				if(gameEnd==true)
-				{
-					cr.sendFinalScore(this);
-					break;
-				}
-				cr.broadcast("Player " + (index+1) + "'s turn.", this);
-				boolean validOption1 = false;
-				boolean validOption2 = false;
-				boolean chooseAcross = true;
-				int number = 0;
-				while (validOption1 == false)
-				{
-					sendMessage("Would you like to answer a question across (a) or down (d)? ");
-					line = br.readLine();
-					if (line != null)
+					sendMessage("There is a game waiting for you.");
+					sendMessage("Player 1 has already joined.");
+					if (ChatRoom.numOfTotalPlayers == 3)
 					{
-						line = line.trim();
-						line = line.toLowerCase();
+						cr.broadcast("wait for 3", this);
 					}
-					else
+				}
+				else if (index == 2)
+				{
+					sendMessage("There is a game waiting for you.");
+					sendMessage("Player 1 has already joined.");
+					sendMessage("Player 2 has already joined.");
+				}
+				condition.await();
+				String line;
+				while (true)
+				{
+					cr.sendBoard();
+					if (gameEnd == true)
 					{
-						sendMessage("That is not a valid option.");
-						continue;
+						cr.sendFinalScore(this);
+						lock.unlock();
+						exit = true;
+						break;
 					}
-					if (line.equals("a"))
+					cr.broadcast("Player " + (index + 1) + "'s turn.", this);
+					boolean validOption1 = false;
+					boolean validOption2 = false;
+					boolean chooseAcross = true;
+					int number = 0;
+					while (validOption1 == false)
 					{
-						boolean flag = false;
-						for (int i = 0; i < Builder.totalSize; ++i)
+						sendMessage("Would you like to answer a question across (a) or down (d)? ");
+						line = br.readLine();
+						if (line != null)
 						{
-							if (Builder.answers[i].second == true && Builder.answers[i].answered == false)
-							{
-								flag = true;
-								break;
-							}
+							line = line.trim();
+							line = line.toLowerCase();
 						}
-						if (flag == false)
+						else
 						{
 							sendMessage("That is not a valid option.");
 							continue;
 						}
-						else
+						if (line.equals("a"))
 						{
-							validOption1 = true;
-							chooseAcross = true;
-						}
-					}
-					else if (line.equals("d"))
-					{
-						boolean flag = false;
-						for (int i = 0; i < Builder.totalSize; ++i)
-						{
-							if (Builder.answers[i].second == false && Builder.answers[i].answered == false)
+							boolean flag = false;
+							for (int i = 0; i < Builder.totalSize; ++i)
 							{
-								flag = true;
-								break;
+								if (Builder.answers[i].second == true && Builder.answers[i].answered == false)
+								{
+									flag = true;
+									break;
+								}
+							}
+							if (flag == false)
+							{
+								sendMessage("That is not a valid option.");
+								continue;
+							}
+							else
+							{
+								validOption1 = true;
+								chooseAcross = true;
 							}
 						}
-						if (flag == false)
+						else if (line.equals("d"))
+						{
+							boolean flag = false;
+							for (int i = 0; i < Builder.totalSize; ++i)
+							{
+								if (Builder.answers[i].second == false && Builder.answers[i].answered == false)
+								{
+									flag = true;
+									break;
+								}
+							}
+							if (flag == false)
+							{
+								sendMessage("That is not a valid option.");
+								continue;
+							}
+							else
+							{
+								validOption1 = true;
+								chooseAcross = false;
+							}
+						}
+						else
+						{
+							sendMessage("That is not a valid option.");
+						}
+					}
+					while (validOption2 == false)
+					{
+						sendMessage("Which number? ");
+						line = br.readLine();
+						if (line != null)
+						{
+							line = line.trim();
+						}
+						else
 						{
 							sendMessage("That is not a valid option.");
 							continue;
 						}
+						try
+						{
+							number = Integer.parseInt(line);
+						}
+						catch (Exception e)
+						{
+							sendMessage("That is not a valid option.");
+							continue;
+						}
+						if (chooseAcross == true)
+						{
+							boolean flag = false;
+							for (int i = 0; i < Builder.totalSize; ++i)
+							{
+								if (Builder.answers[i].second == true && Builder.answers[i].num == number
+										&& Builder.answers[i].answered == false)
+								{
+									flag = true;
+									break;
+								}
+							}
+							if (flag == false)
+							{
+								sendMessage("That is not a valid option.");
+								continue;
+							}
+							else
+							{
+								validOption2 = true;
+							}
+						}
 						else
 						{
-							validOption1 = true;
-							chooseAcross = false;
+							boolean flag = false;
+							for (int i = 0; i < Builder.totalSize; ++i)
+							{
+								if (Builder.answers[i].second == false && Builder.answers[i].num == number
+										&& Builder.answers[i].answered == false)
+								{
+									flag = true;
+									break;
+								}
+							}
+							if (flag == false)
+							{
+								sendMessage("That is not a valid option.");
+								continue;
+							}
+							else
+							{
+								validOption2 = true;
+							}
 						}
-					}
-					else
-					{
-						sendMessage("That is not a valid option.");
-					}
-				}
-				while (validOption2 == false)
-				{
-					sendMessage("Which number? ");
-					line = br.readLine();
-					if (line != null)
-					{
-						line = line.trim();
-					}
-					else
-					{
-						sendMessage("That is not a valid option.");
-						continue;
-					}
-					try
-					{
-						number = Integer.parseInt(line);
-					}
-					catch (Exception e)
-					{
-						sendMessage("That is not a valid option.");
-						continue;
 					}
 					if (chooseAcross == true)
 					{
-						boolean flag = false;
-						for (int i = 0; i < Builder.totalSize; ++i)
-						{
-							if (Builder.answers[i].second == true && Builder.answers[i].num == number
-									&& Builder.answers[i].answered == false)
-							{
-								flag = true;
-								break;
-							}
-						}
-						if (flag == false)
-						{
-							sendMessage("That is not a valid option.");
-							continue;
-						}
-						else
-						{
-							validOption2 = true;
-						}
+						sendMessage("What is your guess for " + number + " across?");
 					}
 					else
 					{
-						boolean flag = false;
-						for (int i = 0; i < Builder.totalSize; ++i)
-						{
-							if (Builder.answers[i].second == false && Builder.answers[i].num == number
-									&& Builder.answers[i].answered == false)
-							{
-								flag = true;
-								break;
-							}
-						}
-						if (flag == false)
-						{
-							sendMessage("That is not a valid option.");
-							continue;
-						}
-						else
-						{
-							validOption2 = true;
-						}
+						sendMessage("What is your guess for " + number + " down?");
 					}
-				}
-				if (chooseAcross == true)
-				{
-					sendMessage("What is your guess for " + number + " across?");
-				}
-				else
-				{
-					sendMessage("What is your guess for " + number + " down?");
-				}
-				
-				line = br.readLine();
+					
+					line = br.readLine();
 //				if(line!=null)
 //				{
-				line = line.trim();
-				line = line.toLowerCase();
-				if (chooseAcross == true)
-				{
-					cr.broadcast("Player " + (index + 1) + " guessed \"" + line + "\" for " + number + " across.",
-							this);
-				}
-				else
-				{
-					cr.broadcast("Player " + (index + 1) + " guessed \"" + line + "\" for " + number + " down.", this);
-				}
-				
+					line = line.trim();
+					line = line.toLowerCase();
+					if (chooseAcross == true)
+					{
+						cr.broadcast("Player " + (index + 1) + " guessed \"" + line + "\" for " + number + " across.",
+								this);
+					}
+					else
+					{
+						cr.broadcast("Player " + (index + 1) + " guessed \"" + line + "\" for " + number + " down.",
+								this);
+					}
+					
 //				}
 //				else
 //				{
 //					sendMessage("That is not a valid input.");
 //				}
-				if (chooseAcross == true)
-				{
-					for (int i = 0; i < Builder.acrossSize; ++i)
+					if (chooseAcross == true)
 					{
-						if (Builder.acrossNumber.get(i) == number)
+						for (int i = 0; i < Builder.acrossSize; ++i)
 						{
-							if (Builder.acrossAnswer.get(i).equals(line))
+							if (Builder.acrossNumber.get(i) == number)
 							{
-								++score;
-								cr.broadcast("That is correct.", this);
-								sendMessage("That is correct.");
-								for (int j = 0; j < Builder.totalSize; ++j)
+								if (Builder.acrossAnswer.get(i).equals(line))
 								{
-									if (Builder.answers[j].second == true && Builder.answers[j].num == number)
+									++score;
+									cr.broadcast("That is correct.", this);
+									sendMessage("That is correct.");
+									for (int j = 0; j < Builder.totalSize; ++j)
 									{
-										Builder.answers[j].answered = true;
-										for (int k = Builder.answers[j].x; k < (Builder.answers[j].x
-												+ Builder.answers[j].length); ++k)
+										if (Builder.answers[j].second == true && Builder.answers[j].num == number)
 										{
-											Builder.grids[k][Builder.answers[j].y].answered = true;
+											Builder.answers[j].answered = true;
+											for (int k = Builder.answers[j].x; k < (Builder.answers[j].x
+													+ Builder.answers[j].length); ++k)
+											{
+												Builder.grids[k][Builder.answers[j].y].answered = true;
+											}
 										}
 									}
+									break;
 								}
-								break;
-							}
-							else
-							{
-								cr.broadcast("That is incorrect.", this);
-								sendMessage("That is incorrect.");
-								if (ChatRoom.numOfTotalPlayers != 1)
+								else
 								{
-									cr.signalCLient(lock);
-									condition.await();
+									cr.broadcast("That is incorrect.", this);
+									sendMessage("That is incorrect.");
+									if (ChatRoom.numOfTotalPlayers != 1)
+									{
+										cr.signalCLient(lock);
+										condition.await();
+									}
+									break;
 								}
-								break;
 							}
 						}
 					}
-				}
-				else
-				{
-					for (int i = 0; i < Builder.downSize; ++i)
+					else
 					{
-						if (Builder.downNumber.get(i) == number)
+						for (int i = 0; i < Builder.downSize; ++i)
 						{
-							if (Builder.downAnswer.get(i).equals(line))
+							if (Builder.downNumber.get(i) == number)
 							{
-								++score;
-								cr.broadcast("That is correct.", this);
-								sendMessage("That is correct.");
-								for (int j = 0; j < Builder.totalSize; ++j)
+								if (Builder.downAnswer.get(i).equals(line))
 								{
-									if (Builder.answers[j].second == false && Builder.answers[j].num == number)
+									++score;
+									cr.broadcast("That is correct.", this);
+									sendMessage("That is correct.");
+									for (int j = 0; j < Builder.totalSize; ++j)
 									{
-										Builder.answers[j].answered = true;
-										for (int k = Builder.answers[j].y; k < (Builder.answers[j].y
-												+ Builder.answers[j].length); ++k)
+										if (Builder.answers[j].second == false && Builder.answers[j].num == number)
 										{
-											Builder.grids[Builder.answers[j].x][k].answered = true;
+											Builder.answers[j].answered = true;
+											for (int k = Builder.answers[j].y; k < (Builder.answers[j].y
+													+ Builder.answers[j].length); ++k)
+											{
+												Builder.grids[Builder.answers[j].x][k].answered = true;
+											}
 										}
 									}
+									break;
 								}
-								break;
-							}
-							else
-							{
-								cr.broadcast("That is incorrect.", this);
-								sendMessage("That is incorrect.");
-								if (ChatRoom.numOfTotalPlayers != 1)
+								else
 								{
-									cr.signalCLient(lock);
-									condition.await();
+									cr.broadcast("That is incorrect.", this);
+									sendMessage("That is incorrect.");
+									if (ChatRoom.numOfTotalPlayers != 1)
+									{
+										cr.signalCLient(lock);
+										condition.await();
+									}
+									break;
 								}
-								break;
 							}
 						}
 					}
-				}
-				// 如果对了 就update answered信息并且计分
-				// 如果错了 condition.await(),然后叫下一个人
-				
+					// 如果对了 就update answered信息并且计分
+					// 如果错了 condition.await(),然后叫下一个人
+					
 //				if (line.indexOf("END_OF_MESSAGE") != -1)
 //				{
 //					cr.singalCLient(lock);
@@ -470,19 +477,20 @@ public class ServerThread extends Thread
 //				}
 //				cr.broadcast(line, this);
 //				line = br.readLine();
+				}
 			}
-		}
-		catch (InterruptedException ie)
-		{
-			
-		}
-		catch (IOException ioe)
-		{
-			System.out.println("ioe in ServerThread.run(): " + ioe.getMessage());
-		}
-		finally
-		{
-//			lock.unlock();
+			catch (InterruptedException ie)
+			{
+				
+			}
+			catch (IOException ioe)
+			{
+				System.out.println("ioe in ServerThread.run(): " + ioe.getMessage());
+			}
+			finally
+			{
+				// lock.unlock();
+			}
 		}
 	}
 }
