@@ -138,7 +138,8 @@ public class ServerThread extends Thread
 				sendBoard();
 				boolean validOption1 = false;
 				boolean validOption2 = false;
-				boolean chooseAcross;
+				boolean chooseAcross = true;
+				int number;
 				while(validOption1 == false)
 				{
 					sendMessage("Would you like to answer a question across (a) or down (d)? ");
@@ -205,7 +206,74 @@ public class ServerThread extends Thread
 				while(validOption2 == false)
 				{
 					sendMessage("Which number? ");
+					line = br.readLine();
+					if(line!=null)
+					{
+						line = line.trim();
+					}
+					else
+					{
+						sendMessage("That is not a valid option.");
+						continue;
+					}
+					try
+					{
+						number = Integer.parseInt(line);
+					}
+					catch(Exception e)
+					{
+						sendMessage("That is not a valid option.");
+						continue;
+					}
+					if(chooseAcross==true)
+					{
+						boolean flag = false;
+						for(int i = 0;i < Builder.totalSize;++i)
+						{
+							if(Builder.answers[i].second==true&&Builder.answers[i].num==number&&Builder.answers[i].answered==false)
+							{
+								flag = true;
+								break;
+							}
+						}
+						if(flag==false)
+						{
+							sendMessage("That is not a valid option.");
+							continue;
+						}
+						else
+						{
+							validOption2 = true;
+						}
+					}
+					else
+					{
+						boolean flag = false;
+						for(int i = 0;i < Builder.totalSize;++i)
+						{
+							if(Builder.answers[i].second==false&&Builder.answers[i].num==number&&Builder.answers[i].answered==false)
+							{
+								flag = true;
+								break;
+							}
+						}
+						if(flag==false)
+						{
+							sendMessage("That is not a valid option.");
+							continue;
+						}
+						else
+						{
+							validOption2 = true;
+						}
+					}
 				}
+				sendMessage("What is your guess for 1 across?");
+				line = br.readLine();
+				//如果对了 就update answered信息并且计分
+				//如果错了 condition.await(),然后叫下一个人
+				
+				
 //				if (line.indexOf("END_OF_MESSAGE") != -1)
 //				{
 //					cr.singalCLient(lock);
