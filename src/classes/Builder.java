@@ -609,6 +609,11 @@ public class Builder
 			}
 			++count;
 		}
+//		for (i = 0; i < totalSize; ++i)
+//		{
+//			System.out.println(answers[i].first);
+//		}
+		// long before = System.currentTimeMillis();
 		for (int i1 = 0; i1 < acrossSize - 1; ++i1)
 		{
 			int min = i1;
@@ -649,11 +654,6 @@ public class Builder
 			downQuestion.set(i1, downQuestion.get(min));
 			downQuestion.set(min, temp);
 		}
-//		for (i = 0; i < totalSize; ++i)
-//		{
-//			System.out.println(answers[i].first);
-//		}
-		// long before = System.currentTimeMillis();
 		try
 		{
 			this.bt(0);
@@ -765,13 +765,14 @@ public class Builder
 						return false;
 					}
 				}
-				if(answers[i].num == answers[j].num)
-				{
-					if(answers[i].x != answers[j].x || answers[i].y != answers[j].y)
-					{
-						return false;
-					}
-				}
+//不让同一个数字在不相同格子
+//				if(answers[i].num == answers[j].num)
+//				{
+//					if(answers[i].x != answers[j].x || answers[i].y != answers[j].y)
+//					{
+//						return false;
+//					}
+//				}
 			}
 		}
 		return true;

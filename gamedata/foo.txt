@@ -1,14 +1,22 @@
 ACROSS
-1|trojans|What is USC's mascot?
-2|dodgers|What professional baseball team is closest to USC?
-3|csci|What is the four-letter prefix for Computer Science?
-7|mow|hahah?
-4|go|a?
-8|there|b?
+3|FRISBEE|What is USC's mascot?
+6|SALAD|ASFASS
+7|PIE|SDASDFA
+8|BASKET|SFASFA
+10|CORN|SAFSAF
+13|CHARCOALS|ASFASFSA
+14|RAIN|SFASF
+15|TREES|SAFSAFA
+16|FIREWORKS|SFASF
+17|NAPKIN|SFASFSA
+18|HOTDOG|sfasfsa
 DOWN
-1|traveler|What is the name of USC's white horse?
-2|dog|What is the barking animal?
-3|coco|c?
-4|gold|What is one of USC's colors?
-5|marshall|Who is USC's School of Business named after?
-6|random| No descriptions lol.
+1|COOLER|What is the name of USC's white horse?
+2|SANDWICH|What is one of USC's colors?
+4|SUMMER|ASFASF
+5|HAMBURGER|SAFASF
+6|SUNGLASSES|SFASFAS
+7|PLAYGROUND|SFASF
+9|KETCHUP|ASFAS
+11|MUSTARD|FSAFS
+12|ANTS|FASFA

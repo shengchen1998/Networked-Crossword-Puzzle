@@ -51,17 +51,26 @@ public class ServerThread extends Thread
 			{
 				if (Builder.grids[i][j].letter == 0)
 				{
-					row += "  ";
+					row += "   ";
 				}
 				else
 				{
 					if (Builder.grids[i][j].index1 != -1)
 					{
-						row += Builder.answers[Builder.grids[i][j].index1].num;
+						if(Builder.answers[Builder.grids[i][j].index1].num>=10)
+						{
+							row += Builder.answers[Builder.grids[i][j].index1].num;
+						}
+						else
+						{
+							row+=" ";
+							row += Builder.answers[Builder.grids[i][j].index1].num;
+						}
+						
 					}
 					else
 					{
-						row += " ";
+						row += "  ";
 					}
 					if(Builder.grids[i][j].answered == true)
 					{
@@ -166,7 +175,7 @@ public class ServerThread extends Thread
 							chooseAcross = true;
 						}
 					}
-					else if(line.equals("b"))
+					else if(line.equals("d"))
 					{
 						boolean flag = false;
 						for(int i = 0;i < Builder.totalSize;++i)

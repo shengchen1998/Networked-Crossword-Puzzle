@@ -36,7 +36,7 @@ public class ChatRoom
 //			while (true)
 //			{
 			Socket s = ss.accept(); // blocking
-			++numOfExistingPlayers;
+			numOfExistingPlayers=1;
 			System.out.println("Connection from: " + s.getInetAddress());
 			Lock lock = new ReentrantLock();
 			locks.add(lock);
@@ -62,24 +62,45 @@ public class ChatRoom
 			}
 			// this.broadcast(num, st);
 			// }
-			if (numOfTotalPlayers > 1)
+			if (numOfTotalPlayers == 2)
 			{
-				while (true)
-				{
+//				while (true)
+//				{
 					Socket s1 = ss.accept(); // blocking
-					++numOfExistingPlayers;
+					numOfExistingPlayers=2;
 					System.out.println("Connection from: " + s1.getInetAddress());
 					Lock lock1 = new ReentrantLock();
 					locks.add(lock1);
 					Condition condition1 = lock1.newCondition();
 					conditions.add(condition1);
-					ServerThread st1 = new ServerThread(s1, this, lock1, condition1, numOfExistingPlayers - 1);
+					ServerThread st1 = new ServerThread(s1, this, lock1, condition1, 1);
 					serverThreads.add(st1);
-					if (numOfExistingPlayers == numOfTotalPlayers)
-					{
-						break;
-					}
-				}
+//					if (numOfExistingPlayers == numOfTotalPlayers)
+//					{
+//						break;
+//					}
+//				}
+			}
+			else if(numOfTotalPlayers == 3)
+			{
+				Socket s1 = ss.accept(); // blocking
+				numOfExistingPlayers=2;
+				System.out.println("Connection from: " + s1.getInetAddress());
+				Lock lock1 = new ReentrantLock();
+				locks.add(lock1);
+				Condition condition1 = lock1.newCondition();
+				conditions.add(condition1);
+				ServerThread st1 = new ServerThread(s1, this, lock1, condition1, 1);
+				serverThreads.add(st1);
+				Socket s2 = ss.accept(); // blocking
+				numOfExistingPlayers=2;
+				System.out.println("Connection from: " + s2.getInetAddress());
+				Lock lock2 = new ReentrantLock();
+				locks.add(lock2);
+				Condition condition2 = lock2.newCondition();
+				conditions.add(condition2);
+				ServerThread st2 = new ServerThread(s2, this, lock2, condition2, 2);
+				serverThreads.add(st2);
 			}
 			System.out.println("Game can now begin.");
 			for (ServerThread threads : serverThreads)
