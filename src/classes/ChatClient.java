@@ -46,6 +46,10 @@ public class ChatClient extends Thread
 				{
 					System.out.print(line);
 				}
+				else if(line.equals("Would you like to answer a question across (a) or down (d)? "))
+				{
+					System.out.print(line);
+				}
 				else
 				{
 					System.out.println(line);

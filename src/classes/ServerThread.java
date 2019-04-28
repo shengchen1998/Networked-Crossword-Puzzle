@@ -16,7 +16,7 @@ public class ServerThread extends Thread
 	protected BufferedReader br;
 	private ChatRoom cr;
 	// private boolean isFirst;
-	private int index;
+	protected int index;
 	
 	public ServerThread(Socket s, ChatRoom cr, Lock lock, Condition condition, int index)
 	{
@@ -123,20 +123,91 @@ public class ServerThread extends Thread
 				sendMessage("Player 2 has already joined.");
 			}
 			condition.await();
-			String line = br.readLine();
+			String line;
 			while (true)
 			{
-				if (line.indexOf("END_OF_MESSAGE") != -1)
+				sendBoard();
+				boolean validOption1 = false;
+				boolean validOption2 = false;
+				boolean chooseAcross;
+				while(validOption1 == false)
 				{
-					cr.singalCLient(lock);
-					sendMessage("You will need to wait until your turn to send again.");
-					
-					condition.await();
-					sendMessage("It is your turn to send message.");
+					sendMessage("Would you like to answer a question across (a) or down (d)? ");
 					line = br.readLine();
+					if(line!=null)
+					{
+						line = line.trim();
+						line = line.toLowerCase();
+					}
+					else
+					{
+						sendMessage("That is not a valid option.");
+						continue;
+					}
+					if(line.equals("a"))
+					{
+						boolean flag = false;
+						for(int i = 0;i < Builder.totalSize;++i)
+						{
+							if(Builder.answers[i].second==true&&Builder.answers[i].answered==false)
+							{
+								flag = true;
+								break;
+							}
+						}
+						if(flag==false)
+						{
+							sendMessage("That is not a valid option.");
+							continue;
+						}
+						else
+						{
+							validOption1 = true;
+							chooseAcross = true;
+						}
+					}
+					else if(line.equals("b"))
+					{
+						boolean flag = false;
+						for(int i = 0;i < Builder.totalSize;++i)
+						{
+							if(Builder.answers[i].second==false&&Builder.answers[i].answered==false)
+							{
+								flag = true;
+								break;
+							}
+						}
+						if(flag==false)
+						{
+							sendMessage("That is not a valid option.");
+							continue;
+						}
+						else
+						{
+							validOption1 = true;
+							chooseAcross = false;
+						}
+					}
+					else
+					{
+						sendMessage("That is not a valid option.");
+					}
 				}
-				cr.broadcast(line, this);
-				line = br.readLine();
+				while(validOption2 == false)
+				{
+					sendMessage("Which number? ");
+				}
+//				if (line.indexOf("END_OF_MESSAGE") != -1)
+//				{
+//					cr.singalCLient(lock);
+//					sendMessage("You will need to wait until your turn to send again.");
+//					
+//					condition.await();
+//					sendMessage("It is your turn to send message.");
+//					line = br.readLine();
+//				}
+//				cr.broadcast(line, this);
+//				line = br.readLine();
 			}
 		}
 		catch (InterruptedException ie)
