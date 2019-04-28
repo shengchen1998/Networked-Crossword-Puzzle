@@ -609,6 +609,46 @@ public class Builder
 			}
 			++count;
 		}
+		for (int i1 = 0; i1 < acrossSize - 1; ++i1)
+		{
+			int min = i1;
+			for (int j1 = i1 + 1; j1 < acrossSize; ++j1)
+			{
+				if (acrossNumber.get(j1) < acrossNumber.get(min))
+				{
+					min = j1;
+				}
+			}
+			int t = acrossNumber.get(i1);
+			acrossNumber.set(i1, acrossNumber.get(min));
+			acrossNumber.set(min, t);
+			String temp = acrossAnswer.get(i1);
+			acrossAnswer.set(i1, acrossAnswer.get(min));
+			acrossAnswer.set(min, temp);
+			temp = acrossQuestion.get(i1);
+			acrossQuestion.set(i1, acrossQuestion.get(min));
+			acrossQuestion.set(min, temp);
+		}
+		for (int i1 = 0; i1 < downSize - 1; ++i1)
+		{
+			int min = i1;
+			for (int j1 = i1 + 1; j1 < downSize; ++j1)
+			{
+				if (downNumber.get(j1)< downNumber.get(min))
+				{
+					min = j1;
+				}
+			}
+			int t = downNumber.get(i1);
+			downNumber.set(i1, downNumber.get(min));
+			downNumber.set(min, t);
+			String temp = downAnswer.get(i1);
+			downAnswer.set(i1, downAnswer.get(min));
+			downAnswer.set(min, temp);
+			temp = downQuestion.get(i1);
+			downQuestion.set(i1, downQuestion.get(min));
+			downQuestion.set(min, temp);
+		}
 //		for (i = 0; i < totalSize; ++i)
 //		{
 //			System.out.println(answers[i].first);

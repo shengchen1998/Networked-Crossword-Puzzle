@@ -78,6 +78,28 @@ public class ServerThread extends Thread
 			pw.println();
 			pw.flush();
 		}
+		pw.println("Across");
+		pw.flush();
+		for(int i = 0;i<Builder.acrossSize;++i)
+		{
+			String line = "";
+			line+=Builder.acrossNumber.get(i);
+			line+=" ";
+			line+=Builder.acrossQuestion.get(i);
+			pw.println(line);
+			pw.flush();
+		}
+		pw.println("Down");
+		pw.flush();
+		for(int i = 0;i<Builder.downSize;++i)
+		{
+			String line = "";
+			line+=Builder.downNumber.get(i);
+			line+=" ";
+			line+=Builder.downQuestion.get(i);
+			pw.println(line);
+			pw.flush();
+		}
 	}
 	
 	public void run()
