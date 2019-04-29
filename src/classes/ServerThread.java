@@ -56,7 +56,7 @@ public class ServerThread extends Thread
 			{
 				if (Builder.grids[i][j].letter == 0)
 				{
-					row += "   ";
+					row += "    ";
 				}
 				else
 				{
@@ -85,6 +85,7 @@ public class ServerThread extends Thread
 					{
 						row += "_";
 					}
+					row+=" ";
 				}
 			}
 			pw.println(row);
@@ -470,7 +471,7 @@ public class ServerThread extends Thread
 			}
 			catch (IOException ioe)
 			{
-				System.out.println("ioe in ServerThread.run(): " + ioe.getMessage());
+				
 			}
 			finally
 			{

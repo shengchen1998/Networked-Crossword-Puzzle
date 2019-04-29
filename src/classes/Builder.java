@@ -238,7 +238,7 @@ public class Builder
 				try
 				{
 					n = Integer.parseInt(num);
-					Builder.downNumber.add(n);
+					downNumber.add(n);
 				}
 				catch (Exception e)
 				{
@@ -324,7 +324,7 @@ public class Builder
 				try
 				{
 					n = Integer.parseInt(num);
-					Builder.downNumber.add(n);
+					downNumber.add(n);
 				}
 				catch (Exception e)
 				{
@@ -392,7 +392,7 @@ public class Builder
 				// 6th check
 				if (tokenizer.countTokens() != 3)
 				{
-
+					
 					File temp = list[index];
 					list[index] = list[fileCount - 1];
 					list[fileCount - 1] = temp;
@@ -407,7 +407,7 @@ public class Builder
 				try
 				{
 					n = Integer.parseInt(num);
-					Builder.acrossNumber.add(n);
+					acrossNumber.add(n);
 				}
 				catch (Exception e)
 				{
@@ -463,9 +463,9 @@ public class Builder
 			clear();
 			return false;
 		}
-		Builder.acrossSize = acrossNumber.size();
-		Builder.downSize = downNumber.size();
-		Builder.totalSize = acrossSize + downSize;
+		acrossSize = acrossNumber.size();
+		downSize = downNumber.size();
+		totalSize = acrossSize + downSize;
 		
 		// 10th check
 		for (int i = 0; i < acrossSize; ++i)
@@ -556,6 +556,17 @@ public class Builder
 			}
 			++count;
 		}
+		for(int a = 0;a < totalSize-1;++a)
+		{
+			for(int b = a+1;b<totalSize;++b)
+			{
+				if(answers[a].num == answers[b].num)
+				{
+					answers[a].couple = b;
+					answers[b].couple = a;
+				}		
+			}
+		}
 		for (int i1 = 0; i1 < acrossSize - 1; ++i1)
 		{
 			int min = i1;
@@ -581,7 +592,7 @@ public class Builder
 			int min = i1;
 			for (int j1 = i1 + 1; j1 < downSize; ++j1)
 			{
-				if (downNumber.get(j1)< downNumber.get(min))
+				if (downNumber.get(j1) < downNumber.get(min))
 				{
 					min = j1;
 				}
@@ -707,8 +718,35 @@ public class Builder
 				}
 			}
 		}
+//		for (int a1 = 0; a1 < SIZE; ++a1)
+//		{
+//			for (int b1 = 0; b1 < SIZE; ++b1)
+//			{
+//				if (grids[b1][a1].letter == 0)
+//				{
+//					System.out.print(' ');
+//				}
+//				else
+//				{
+//					System.out.print(grids[b1][a1].letter);
+//				}
+//			}
+//			System.out.println();
+//		}
+//		for (int i = 0; i < totalSize - 1; ++i)
+//		{
+//			for (int j = i + 1; j < totalSize; ++j)
+//			{
+//				if (answers[i].num == answers[j].num)
+//				{
+//					if ((answers[i].x != answers[j].x) || (answers[i].y != answers[j].y))
+//					{
+//						return false;
+//					}
+//				}
+//			}
+//		}
 		return true;
-		
 	}
 	
 	private boolean put(int index, int x, int y) throws Exception
@@ -765,6 +803,26 @@ public class Builder
 			{
 				return false;
 			}
+//			for (int i = 0; i < totalSize ; ++i)
+//			{
+//				if(i !=index&&answers[i].used==true&&answers[i].num==answers[index].num)
+//				{
+//					if(answers[i].x!=x||answers[i].y!=y)
+//					{
+//						return false;
+//					}
+//				}
+//			}
+//			if(answers[index].couple!=-1)
+//			{
+//				if(answers[answers[index].couple].used == true)
+//				{
+//					if(answers[answers[index].couple].x != answers[index].x||answers[answers[index].couple].y != answers[index].y)
+//					{
+//						return false;
+//					}
+//				}
+//			}
 			for (int i = 0; i < length; ++i)
 			{
 				Grid g = grids[x + i][y];
@@ -827,6 +885,26 @@ public class Builder
 			{
 				return false;
 			}
+//			for (int i = 0; i < totalSize ; ++i)
+//			{
+//				if(i !=index&&answers[i].used==true&&answers[i].num==answers[index].num)
+//				{
+//					if(answers[i].x!=x||answers[i].y!=y)
+//					{
+//						return false;
+//					}
+//				}
+//			}
+//			if(answers[index].couple!=-1)
+//			{
+//				if(answers[answers[index].couple].used == true)
+//				{
+//					if(answers[answers[index].couple].x != answers[index].x||answers[answers[index].couple].y != answers[index].y)
+//					{
+//						return false;
+//					}
+//				}
+//			}
 			for (int i = 0; i < length; ++i)
 			{
 				Grid g = grids[x][y + i];
@@ -976,11 +1054,44 @@ public class Builder
 					{
 						if (put(0, x, y))
 						{
-							for (int i = 1; i < totalSize; ++i)
+							int couple = -1;
+							for (int i = 0; i < totalSize ; ++i)
 							{
-								if (answers[i].used == false && answers[i].second == false)
+								if(answers[i].used==false&&answers[i].num==answers[index].num)
 								{
-									bt(i);
+									//bt(i);
+									couple = i;
+									break;
+								}
+							}
+							if(couple!=-1)
+							{
+								if(put(couple,x,y))
+								{
+									for (int i = 1; i < totalSize; ++i)
+									{
+										if (answers[i].used == false)
+										{
+											bt(i);
+										}
+									}
+									remove(couple, x, y);
+								}
+								else
+								{
+									remove(0, x, y);
+									continue;
+								}
+								
+							}
+							else
+							{
+								for (int i = 1; i < totalSize; ++i)
+								{
+									if (answers[i].used == false && answers[i].second == false)
+									{
+										bt(i);
+									}
 								}
 							}
 							remove(0, x, y);
@@ -997,11 +1108,43 @@ public class Builder
 					{
 						if (put(0, x, y))
 						{
-							for (int i = 1; i < totalSize; ++i)
+							int couple = -1;
+							for (int i = 0; i < totalSize ; ++i)
 							{
-								if (answers[i].used == false && answers[i].second == true)
+								if(answers[i].used==false&&answers[i].num==answers[index].num)
 								{
-									bt(i);
+									//bt(i);
+									couple = i;
+									break;
+								}
+							}
+							if(couple!=-1)
+							{
+								if(put(couple,x,y))
+								{
+									for (int i = 1; i < totalSize; ++i)
+									{
+										if (answers[i].used == false)
+										{
+											bt(i);
+										}
+									}
+									remove(couple, x, y);
+								}
+								else
+								{
+									remove(0, x, y);
+									continue;
+								}
+							}
+							else
+							{
+								for (int i = 1; i < totalSize; ++i)
+								{
+									if (answers[i].used == false && answers[i].second == true)
+									{
+										bt(i);
+									}
 								}
 							}
 							remove(0, x, y);
@@ -1034,11 +1177,43 @@ public class Builder
 									{
 										if (put(index, x - j1, y + a))
 										{
-											for (int b = 1; b < totalSize; ++b)
+											int couple = -1;
+											for (int i1 = 0; i1 < totalSize ; ++i1)
 											{
-												if (answers[b].used == false)
+												if(answers[i1].used==false&&answers[i1].num==answers[index].num)
 												{
-													bt(b);
+													//bt(i1);
+													couple = i1;
+													break;
+												}
+											}
+											if(couple!=-1)
+											{
+												if(put(couple,x - j1, y + a))
+												{
+													for (int b = 1; b < totalSize; ++b)
+													{
+														if (answers[b].used == false)
+														{
+															bt(b);
+														}
+													}
+													remove(couple,x - j1, y + a);
+												}
+												else
+												{
+													remove(index, x - j1, y + a);
+													continue;
+												}
+											}
+											else
+											{
+												for (int b = 1; b < totalSize; ++b)
+												{
+													if (answers[b].used == false)
+													{
+														bt(b);
+													}
 												}
 											}
 											remove(index, x - j1, y + a);
@@ -1049,7 +1224,6 @@ public class Builder
 						}
 					}
 				}
-				
 			}
 			else
 			{
@@ -1073,11 +1247,44 @@ public class Builder
 									{
 										if (put(index, x + a, y - j1))
 										{
-											for (int b = 1; b < totalSize; ++b)
+											int couple = -1;
+											for (int i1 = 0; i1 < totalSize ; ++i1)
 											{
-												if (answers[b].used == false)
+												if(answers[i1].used==false&&answers[i1].num==answers[index].num)
 												{
-													bt(b);
+													//bt(i1);
+													couple = i1;
+													break;
+												}
+											}
+											if(couple!=-1)
+											{
+												if(put(couple,x + a, y - j1))
+												{
+													for (int b = 1; b < totalSize; ++b)
+													{
+														if (answers[b].used == false)
+														{
+															bt(b);
+														}
+													}
+													remove(couple,x + a, y - j1);
+												}
+												else
+												{
+													remove(index, x + a, y - j1);
+													continue;
+												}
+												
+											}
+											else
+											{
+												for (int b = 1; b < totalSize; ++b)
+												{
+													if (answers[b].used == false)
+													{
+														bt(b);
+													}
 												}
 											}
 											remove(index, x + a, y - j1);
@@ -1136,6 +1343,7 @@ class Grid
 
 class Answer
 {
+	int couple;
 	int num;
 	int length;
 	String first;
@@ -1155,5 +1363,6 @@ class Answer
 		this.y = -1;
 		this.answered = false;
 		this.num = num;
+		this.couple = -1;
 	}
 }
