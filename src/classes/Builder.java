@@ -718,34 +718,6 @@ public class Builder
 				}
 			}
 		}
-//		for (int a1 = 0; a1 < SIZE; ++a1)
-//		{
-//			for (int b1 = 0; b1 < SIZE; ++b1)
-//			{
-//				if (grids[b1][a1].letter == 0)
-//				{
-//					System.out.print(' ');
-//				}
-//				else
-//				{
-//					System.out.print(grids[b1][a1].letter);
-//				}
-//			}
-//			System.out.println();
-//		}
-//		for (int i = 0; i < totalSize - 1; ++i)
-//		{
-//			for (int j = i + 1; j < totalSize; ++j)
-//			{
-//				if (answers[i].num == answers[j].num)
-//				{
-//					if ((answers[i].x != answers[j].x) || (answers[i].y != answers[j].y))
-//					{
-//						return false;
-//					}
-//				}
-//			}
-//		}
 		return true;
 	}
 	
@@ -803,26 +775,7 @@ public class Builder
 			{
 				return false;
 			}
-//			for (int i = 0; i < totalSize ; ++i)
-//			{
-//				if(i !=index&&answers[i].used==true&&answers[i].num==answers[index].num)
-//				{
-//					if(answers[i].x!=x||answers[i].y!=y)
-//					{
-//						return false;
-//					}
-//				}
-//			}
-//			if(answers[index].couple!=-1)
-//			{
-//				if(answers[answers[index].couple].used == true)
-//				{
-//					if(answers[answers[index].couple].x != answers[index].x||answers[answers[index].couple].y != answers[index].y)
-//					{
-//						return false;
-//					}
-//				}
-//			}
+
 			for (int i = 0; i < length; ++i)
 			{
 				Grid g = grids[x + i][y];
@@ -885,26 +838,7 @@ public class Builder
 			{
 				return false;
 			}
-//			for (int i = 0; i < totalSize ; ++i)
-//			{
-//				if(i !=index&&answers[i].used==true&&answers[i].num==answers[index].num)
-//				{
-//					if(answers[i].x!=x||answers[i].y!=y)
-//					{
-//						return false;
-//					}
-//				}
-//			}
-//			if(answers[index].couple!=-1)
-//			{
-//				if(answers[answers[index].couple].used == true)
-//				{
-//					if(answers[answers[index].couple].x != answers[index].x||answers[answers[index].couple].y != answers[index].y)
-//					{
-//						return false;
-//					}
-//				}
-//			}
+
 			for (int i = 0; i < length; ++i)
 			{
 				Grid g = grids[x][y + i];
