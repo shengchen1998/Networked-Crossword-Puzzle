@@ -1,3 +1,4 @@
+Sample Input
 ACROSS
 1|trojans|What is USC’s mascot?
 2|dodgers|What professional baseball team is closest to USC?
